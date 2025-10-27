@@ -17,6 +17,7 @@
     "test:smart-contracts": "jest tests/integration/smart-contract-validation.test.js --runInBand --testTimeout=60000",
     "test:stress": "jest tests/performance/real-data-stress.test.js --runInBand --testTimeout=120000",
     "test:comprehensive": "jest tests/integration/comprehensive-integration.test.js --runInBand --testTimeout=120000",
+    "test:hedera": "jest --testPathPattern=hederaServiceIntegration --runInBand --testTimeout=30000",
     "test:coverage": "jest --coverage --runInBand",
     "test:watch": "jest --watch --runInBand",
     "test:all": "npm run test:unit && npm run test:integration && npm run test:performance && npm run test:edge-cases && npm run test:smoke && npm run test:real-data && npm run test:smart-contracts && npm run test:stress && npm run test:comprehensive",

@@ -26,7 +26,7 @@
     - Test treasury management and access controls
     - _Requirements: 1.1, 1.2, 1.3, 1.4_
 
-- [-] 3. Enhance AION Vault contract with Hedera features
+- [x] 3. Enhance AION Vault contract with Hedera features
   - [x] 3.1 Extend AIONVault with HTS tokenization
     - Modify deposit function to mint HTS shares
     - Update withdraw function to burn HTS shares
@@ -52,26 +52,26 @@
     - Test security controls and emergency functions
     - _Requirements: 1.1, 1.2, 2.1, 4.1, 4.2_
 
-- [ ] 4. Develop Hedera service integration layer
-  - [ ] 4.1 Create HederaService class for SDK operations
+- [x] 4. Develop Hedera service integration layer
+  - [x] 4.1 Create HederaService class for SDK operations
     - Implement HCS message submission functionality
     - Add HFS file storage and retrieval methods
     - Create event monitoring for vault contract
     - _Requirements: 2.2, 2.3, 3.1, 3.2_
 
-  - [ ] 4.2 Implement AI decision logging to HCS
+  - [x] 4.2 Implement AI decision logging to HCS
     - Monitor AIRebalance events from vault contract
     - Format and submit decision data to HCS topic
     - Maintain mapping between events and HCS messages
     - _Requirements: 2.2, 2.3, 2.4_
 
-  - [ ] 4.3 Add model metadata management with HFS
+  - [x] 4.3 Add model metadata management with HFS
     - Store AI model metadata on HFS
     - Reference HFS file IDs in HCS decision logs
     - Implement metadata retrieval and caching
     - _Requirements: 3.1, 3.2, 3.3, 3.5_
 
-  - [ ] 4.4 Write service integration tests
+  - [x] 4.4 Write service integration tests
     - Test HCS message submission and retrieval
     - Validate HFS file operations
     - Test event monitoring and processing
