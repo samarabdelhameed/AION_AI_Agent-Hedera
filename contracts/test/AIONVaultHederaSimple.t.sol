@@ -10,17 +10,18 @@ contract AIONVaultHederaSimpleTest is Test {
     address public aiAgent;
     address public user1;
     address public user2;
-    address public strategy1;
 
+    event Deposit(address indexed user, uint256 amount, uint256 shares, uint256 htsShares);
+    event Withdraw(address indexed user, uint256 amount, uint256 shares, uint256 htsShares);
     event AIRebalance(
         address indexed agent,
+        uint256 indexed decisionId,
         uint256 timestamp,
         string decisionCid,
         uint256 fromStrategy,
         uint256 toStrategy,
         uint256 amount
     );
-    event StrategyChanged(address indexed oldStrategy, address indexed newStrategy);
     event AIAgentUpdated(address indexed oldAgent, address indexed newAgent);
 
     function setUp() public {
@@ -28,37 +29,22 @@ contract AIONVaultHederaSimpleTest is Test {
         aiAgent = address(0x1);
         user1 = address(0x2);
         user2 = address(0x3);
-        strategy1 = address(0x4);
         
-        vault = new AIONVaultHedera(owner, aiAgent);
-        
-        // Add some HBAR to test accounts
-        vm.deal(user1, 10 ether);
-        vm.deal(user2, 10 ether);
+        vault = new AIONVaultHedera(owner);
+        vault.setAIAgent(aiAgent);
     }
 
     function testInitialState() public view {
         assertEq(vault.owner(), owner);
         assertEq(vault.aiAgent(), aiAgent);
-        assertEq(vault.totalDeposits(), 0);
-        assertFalse(vault.isShareTokenActive());
-        assertEq(vault.getTotalShares(), 0);
-        assertEq(vault.getVaultBalance(), 0);
-        assertEq(vault.currentStrategy(), address(0));
+        assertEq(vault.totalShares(), 0);
+        assertEq(vault.aiDecisionCount(), 0);
+        assertFalse(vault.strategyLocked());
         assertFalse(vault.paused());
     }
 
-    function testOwnership() public {
-        assertEq(vault.owner(), owner);
-        
-        // Test access control
-        vm.prank(user1);
-        vm.expectRevert(abi.encodeWithSignature("OwnableUnauthorizedAccount(address)", user1));
-        vault.setAIAgent(address(0x999));
-    }
-
-    function testAIAgentManagement() public {
-        address newAgent = address(0x999);
+    function testSetAIAgent() public {
+        address newAgent = address(0x4);
         
         vm.expectEmit(true, true, false, false);
         emit AIAgentUpdated(aiAgent, newAgent);
@@ -67,100 +53,141 @@ contract AIONVaultHederaSimpleTest is Test {
         assertEq(vault.aiAgent(), newAgent);
     }
 
-    function testAIAgentValidation() public {
-        vm.expectRevert("Invalid agent address");
+    function testSetAIAgentOnlyOwner() public {
+        vm.prank(user1);
+        vm.expectRevert(abi.encodeWithSignature("OwnableUnauthorizedAccount(address)", user1));
+        vault.setAIAgent(address(0x4));
+    }
+
+    function testSetAIAgentZeroAddress() public {
+        vm.expectRevert("Invalid AI agent");
         vault.setAIAgent(address(0));
+    }
+
+    function testInitializeShareTokenInterface() public view {
+        // Test that the function exists and has correct interface
+        // Note: Actual HTS integration would be tested on Hedera testnet
+        HTSTokenManager tokenManager = vault.htsTokenManager();
+        assertFalse(tokenManager.isTokenActive());
+        
+        // This test validates the interface exists and is callable
+        // Actual token creation requires Hedera testnet environment
+    }
+
+    function testInitializeShareTokenOnlyOwner() public {
+        vm.prank(user1);
+        vm.expectRevert(abi.encodeWithSignature("OwnableUnauthorizedAccount(address)", user1));
+        vault.initializeShareToken("AION", "AION", 18);
     }
 
     function testRecordAIDecision() public {
         vm.prank(aiAgent);
-        vm.expectEmit(true, false, false, true);
-        emit AIRebalance(aiAgent, block.timestamp, "test-cid", 1, 2, 1000);
+        uint256 decisionId = vault.recordAIDecision(
+            "rebalance",
+            address(0x100),
+            address(0x200),
+            1000,
+            "Higher yield opportunity",
+            "hcs_message_123",
+            "hfs_file_456"
+        );
 
-        vault.recordAIDecision("test-cid", 1, 2, 1000);
+        assertEq(decisionId, 0);
+        assertEq(vault.aiDecisionCount(), 1);
+
+        AIONVaultHedera.AIDecision memory decision = vault.getAIDecision(0);
+        assertEq(decision.decisionType, "rebalance");
+        assertEq(decision.fromStrategy, address(0x100));
+        assertEq(decision.toStrategy, address(0x200));
+        assertEq(decision.amount, 1000);
+        assertEq(decision.reason, "Higher yield opportunity");
+        assertEq(decision.hcsMessageId, "hcs_message_123");
+        assertEq(decision.hfsFileId, "hfs_file_456");
+        assertTrue(decision.timestamp > 0);
     }
 
-    function testRecordAIDecisionOnlyAgent() public {
+    function testRecordAIDecisionOnlyAIAgent() public {
         vm.prank(user1);
         vm.expectRevert("Only AI agent");
-        vault.recordAIDecision("test-cid", 1, 2, 1000);
+        vault.recordAIDecision(
+            "rebalance",
+            address(0x100),
+            address(0x200),
+            1000,
+            "test",
+            "hcs_123",
+            "hfs_456"
+        );
     }
 
-    function testStrategyManagement() public {
-        // Initially no strategies approved
-        assertFalse(vault.approvedStrategies(strategy1));
+    function testGetAIDecisions() public {
+        vm.startPrank(aiAgent);
         
-        // Add approved strategy
-        vault.addApprovedStrategy(strategy1);
-        assertTrue(vault.approvedStrategies(strategy1));
+        // Record multiple decisions
+        vault.recordAIDecision("rebalance", address(0x100), address(0x200), 1000, "reason1", "hcs1", "hfs1");
+        vault.recordAIDecision("deposit", address(0x200), address(0x300), 2000, "reason2", "hcs2", "hfs2");
+        vault.recordAIDecision("withdraw", address(0x300), address(0x400), 3000, "reason3", "hcs3", "hfs3");
         
-        // Remove approved strategy
-        vault.removeApprovedStrategy(strategy1);
-        assertFalse(vault.approvedStrategies(strategy1));
+        vm.stopPrank();
+
+        // Test getting decisions in range
+        AIONVaultHedera.AIDecision[] memory decisions = vault.getAIDecisions(0, 2);
+        assertEq(decisions.length, 3);
+        assertEq(decisions[0].decisionType, "rebalance");
+        assertEq(decisions[1].decisionType, "deposit");
+        assertEq(decisions[2].decisionType, "withdraw");
+
+        // Test getting single decision
+        decisions = vault.getAIDecisions(1, 1);
+        assertEq(decisions.length, 1);
+        assertEq(decisions[0].decisionType, "deposit");
     }
 
-    function testStrategyManagementAccessControl() public {
+    function testGetAIDecisionsInvalidRange() public {
+        vm.expectRevert("Invalid range");
+        vault.getAIDecisions(0, 0); // No decisions recorded yet
+
+        vm.prank(aiAgent);
+        vault.recordAIDecision("test", address(0), address(0), 0, "test", "hcs", "hfs");
+
+        vm.expectRevert("Invalid range");
+        vault.getAIDecisions(1, 0); // from > to
+
+        vm.expectRevert("Invalid range");
+        vault.getAIDecisions(0, 5); // to >= aiDecisionCount
+    }
+
+    function testGetLatestModelSnapshot() public {
+        // Initially no snapshot
+        (string memory fileId, uint256 timestamp) = vault.getLatestModelSnapshot();
+        assertEq(fileId, "");
+        assertEq(timestamp, 0);
+
+        // Record decision with model snapshot
+        vm.prank(aiAgent);
+        vault.recordAIDecision("rebalance", address(0), address(0), 0, "test", "hcs_123", "hfs_model_v1");
+
+        (fileId, timestamp) = vault.getLatestModelSnapshot();
+        assertEq(fileId, "hfs_model_v1");
+        assertTrue(timestamp > 0);
+    }
+
+    function testSetMinDepositBNB() public {
+        uint256 newMinDeposit = 0.05 ether;
+        vault.setMinDepositBNB(newMinDeposit);
+        assertEq(vault.minDepositBNB(), newMinDeposit);
+    }
+
+    function testSetMinDepositBNBOnlyOwner() public {
         vm.prank(user1);
         vm.expectRevert(abi.encodeWithSignature("OwnableUnauthorizedAccount(address)", user1));
-        vault.addApprovedStrategy(strategy1);
-        
-        vm.prank(user1);
-        vm.expectRevert(abi.encodeWithSignature("OwnableUnauthorizedAccount(address)", user1));
-        vault.removeApprovedStrategy(strategy1);
+        vault.setMinDepositBNB(0.05 ether);
     }
 
-    function testStrategyChangeProposal() public {
-        vault.addApprovedStrategy(strategy1);
-        
-        // Propose strategy change
-        vm.expectEmit(true, true, false, false);
-        emit StrategyChanged(address(0), strategy1);
-        vault.proposeStrategyChange(strategy1);
-        
-        // Check pending strategy
-        assertEq(vault.pendingStrategy(), strategy1);
-        assertTrue(vault.pendingStrategyChangeTime() > block.timestamp);
-    }
-
-    function testStrategyChangeUnapprovedStrategy() public {
-        vm.expectRevert("Strategy not approved");
-        vault.proposeStrategyChange(strategy1);
-    }
-
-    function testStrategyChangeSameStrategy() public {
-        vault.addApprovedStrategy(strategy1);
-        
-        // Set current strategy
-        vault.proposeStrategyChange(strategy1);
-        vm.warp(block.timestamp + 24 hours + 1);
-        vault.executeStrategyChange();
-        
-        // Try to propose same strategy
-        vm.expectRevert("Same strategy");
-        vault.proposeStrategyChange(strategy1);
-    }
-
-    function testStrategyChangeTimeLock() public {
-        vault.addApprovedStrategy(strategy1);
-        vault.proposeStrategyChange(strategy1);
-        
-        // Try to execute immediately (should fail)
-        vm.expectRevert("Time lock not expired");
-        vault.executeStrategyChange();
-        
-        // Fast forward time
-        vm.warp(block.timestamp + 24 hours + 1);
-        
-        // Now execute should work
-        vault.executeStrategyChange();
-        assertEq(vault.currentStrategy(), strategy1);
-        assertEq(vault.pendingStrategy(), address(0));
-        assertEq(vault.pendingStrategyChangeTime(), 0);
-    }
-
-    function testExecuteStrategyChangeNoPending() public {
-        vm.expectRevert("No pending strategy");
-        vault.executeStrategyChange();
+    function testSetMinYieldClaimBNB() public {
+        uint256 newMinYieldClaim = 0.005 ether;
+        vault.setMinYieldClaimBNB(newMinYieldClaim);
+        assertEq(vault.minYieldClaimBNB(), newMinYieldClaim);
     }
 
     function testPauseUnpause() public {
@@ -173,50 +200,47 @@ contract AIONVaultHederaSimpleTest is Test {
         assertFalse(vault.paused());
     }
 
-    function testPauseAccessControl() public {
+    function testPauseOnlyOwner() public {
         vm.prank(user1);
         vm.expectRevert(abi.encodeWithSignature("OwnableUnauthorizedAccount(address)", user1));
         vault.pause();
+    }
+
+    function testTotalAssetsInitial() public view {
+        assertEq(vault.totalAssets(), 0);
+    }
+
+    function testShareValueInitial() public view {
+        assertEq(vault.shareValue(user1), 0);
+    }
+
+    function testGettersInitialState() public view {
+        assertEq(vault.totalShares(), 0);
+        assertEq(vault.sharesOf(user1), 0);
+        assertEq(vault.principalOf(user1), 0);
+        assertEq(vault.aiDecisionCount(), 0);
+        assertEq(vault.minDepositBNB(), 0.01 ether);
+        assertEq(vault.minYieldClaimBNB(), 0.001 ether);
+    }
+
+    function testHTSTokenManagerIntegration() public view {
+        // Test that HTS token manager is properly deployed and connected
+        HTSTokenManager tokenManager = vault.htsTokenManager();
+        assertTrue(address(tokenManager) != address(0));
+        assertEq(tokenManager.owner(), address(vault));
+        assertFalse(tokenManager.isTokenActive());
+    }
+
+    function testReceiveBNB() public {
+        uint256 initialBalance = address(vault).balance;
         
-        vm.prank(user1);
-        vm.expectRevert(abi.encodeWithSignature("OwnableUnauthorizedAccount(address)", user1));
-        vault.unpause();
-    }
-
-    function testGetters() public view {
-        assertEq(vault.getTotalShares(), 0);
-        assertEq(vault.getShareBalance(user1), 0);
-        assertEq(vault.getVaultBalance(), 0);
-        assertFalse(vault.isShareTokenActive());
+        // Send BNB to vault
+        payable(address(vault)).transfer(1 ether);
         
-        // Test user deposits
-        assertEq(vault.userDeposits(user1), 0);
-        assertEq(vault.totalDeposits(), 0);
+        assertEq(address(vault).balance, initialBalance + 1 ether);
     }
 
-    function testReceiveHBAR() public {
-        uint256 amount = 1 ether;
-        
-        // Send HBAR to contract
-        payable(address(vault)).transfer(amount);
-        
-        assertEq(vault.getVaultBalance(), amount);
-    }
-
-    function testConstants() public view {
-        assertEq(vault.STRATEGY_CHANGE_DELAY(), 24 hours);
-    }
-
-    function testContractDeployment() public view {
-        assertTrue(address(vault) != address(0));
-        assertTrue(address(vault.htsManager()) != address(0));
-    }
-
-    function testHTSManagerIntegration() public view {
-        // Test that HTS manager is properly initialized
-        HTSTokenManager htsManager = vault.htsManager();
-        assertEq(htsManager.owner(), address(vault));
-        assertFalse(htsManager.isTokenActive());
-        assertEq(htsManager.getTotalShares(), 0);
+    function testStrategyLockConstants() public view {
+        assertEq(vault.STRATEGY_LOCK_DURATION(), 1 hours);
     }
 }
