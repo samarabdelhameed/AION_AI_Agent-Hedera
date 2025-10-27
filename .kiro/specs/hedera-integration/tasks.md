@@ -26,7 +26,7 @@
     - Test treasury management and access controls
     - _Requirements: 1.1, 1.2, 1.3, 1.4_
 
-- [ ] 3. Enhance AION Vault contract with Hedera features
+- [-] 3. Enhance AION Vault contract with Hedera features
   - [ ] 3.1 Extend AIONVault with HTS tokenization
     - Modify deposit function to mint HTS shares
     - Update withdraw function to burn HTS shares
