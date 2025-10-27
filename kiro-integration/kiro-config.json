@@ -1,0 +1,36 @@
+{
+  "mcpServers": {
+    "aion-defi-tools": {
+      "command": "node",
+      "args": ["./mcp-tools/index.js"],
+      "cwd": "./kiro-integration",
+      "env": {
+        "NODE_ENV": "production",
+        "AION_RPC_URL": "https://data-seed-prebsc-1-s1.binance.org:8545",
+        "AION_NETWORK": "bsc-testnet"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "analyze_defi_strategy",
+        "get_live_apy_data",
+        "assess_risk_profile"
+      ],
+      "description": "AION AI-powered DeFi analysis and strategy optimization tools"
+    },
+    "aion-code-generator": {
+      "command": "node", 
+      "args": ["./ai-code-generator/index.js"],
+      "cwd": "./kiro-integration",
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "generate_smart_contract",
+        "generate_strategy_template",
+        "audit_contract_security"
+      ],
+      "description": "AION AI code generator for smart contracts and DeFi strategies"
+    }
+  }
+}
