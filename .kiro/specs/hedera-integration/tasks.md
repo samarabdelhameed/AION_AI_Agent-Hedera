@@ -7,7 +7,7 @@
   - Set up environment variables for Hedera services
   - _Requirements: 5.1, 5.2, 6.1_
 
-- [ ] 2. Implement Hedera Solidity libraries integration
+- [-] 2. Implement Hedera Solidity libraries integration
   - [ ] 2.1 Add IHederaTokenService interface and implementation
     - Download and integrate official Hedera Solidity libraries
     - Create SafeHederaService wrapper with error handling
