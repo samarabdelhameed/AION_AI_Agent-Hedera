@@ -16,6 +16,13 @@ import OracleService from './services/oracleService.js';
 import CacheManager from './services/cacheManager.js';
 import { MainnetWeb3Service } from './services/mainnetWeb3Service.js';
 
+// Import Hedera services
+import HederaService from './services/hederaService.js';
+import AIDecisionLogger from './services/aiDecisionLogger.js';
+import ModelMetadataManager from './services/modelMetadataManager.js';
+import RealTimeEventMonitor from './services/realTimeEventMonitor.js';
+import HederaErrorHandler from './services/hederaErrorHandler.js';
+
 // 🚀 Advanced Environment Configuration
 (() => {
   const __dirname = path.dirname(new URL(import.meta.url).pathname);
@@ -48,6 +55,12 @@ const oracleService = new OracleService(errorManager);
 const cacheManager = new CacheManager();
 let web3Service = null;
 
+// Initialize Hedera services
+let hederaService = null;
+let aiDecisionLogger = null;
+let modelMetadataManager = null;
+let realTimeEventMonitor = null;
+
 // Register services in the container
 async function setupServices() {
   // Register core services
@@ -67,6 +80,67 @@ async function setupServices() {
   } catch (web3Error) {
     console.log('⚠️ Web3Service initialization failed, continuing without blockchain integration:', web3Error.message);
     web3Service = null;
+  }
+  
+  // Initialize Hedera services
+  try {
+    console.log('🚀 Initializing Hedera services...');
+    
+    // Initialize core Hedera service
+    hederaService = new HederaService();
+    await hederaService.initialize();
+    serviceContainer.singleton('hederaService', () => hederaService);
+    
+    // Initialize AI Decision Logger with Web3 provider
+    if (web3Service) {
+      const contractAddress = process.env.VAULT_CONTRACT_ADDRESS || '0x1234567890123456789012345678901234567890';
+      aiDecisionLogger = new AIDecisionLogger(web3Service.getProvider(), contractAddress, []);
+      await aiDecisionLogger.initialize();
+      serviceContainer.singleton('aiDecisionLogger', () => aiDecisionLogger);
+    }
+    
+    // Initialize Model Metadata Manager
+    modelMetadataManager = new ModelMetadataManager();
+    await modelMetadataManager.initialize();
+    serviceContainer.singleton('modelMetadataManager', () => modelMetadataManager);
+    
+    // Initialize Real-time Event Monitor
+    realTimeEventMonitor = new RealTimeEventMonitor(
+      web3Service ? web3Service.getProvider() : null,
+      hederaService,
+      aiDecisionLogger,
+      modelMetadataManager
+    );
+    await realTimeEventMonitor.initialize();
+    serviceContainer.singleton('realTimeEventMonitor', () => realTimeEventMonitor);
+    
+    // Add vault contract for monitoring if available
+    if (web3Service && process.env.VAULT_CONTRACT_ADDRESS) {
+      try {
+        // Get vault ABI (simplified for demo)
+        const vaultABI = [
+          "event AIRebalance(address indexed agent, uint256 timestamp, string decisionCid, uint256 fromStrategy, uint256 toStrategy, uint256 amount)"
+        ];
+        
+        await realTimeEventMonitor.addContract(
+          process.env.VAULT_CONTRACT_ADDRESS,
+          vaultABI,
+          ['AIRebalance']
+        );
+        
+        console.log('✅ Vault contract added to real-time monitoring');
+      } catch (contractError) {
+        console.warn('⚠️ Could not add vault contract to monitoring:', contractError.message);
+      }
+    }
+    
+    console.log('✅ Hedera services initialized successfully');
+  } catch (hederaError) {
+    console.log('⚠️ Hedera services initialization failed, continuing without Hedera integration:', hederaError.message);
+    hederaService = null;
+    aiDecisionLogger = null;
+    modelMetadataManager = null;
+    realTimeEventMonitor = null;
   }
   
   // Initialize configuration and lifecycle
@@ -113,6 +187,67 @@ async function setupServices() {
         try {
           const health = await web3Service.healthCheck();
           return health.healthy;
+        } catch (error) {
+          return false;
+        }
+      }
+    });
+  }
+  
+  // Register Hedera services
+  if (hederaService) {
+    lifecycleManager.registerService('hederaService', {
+      priority: 8,
+      essential: false,
+      healthCheck: async () => {
+        try {
+          const health = await hederaService.healthCheck();
+          return health.errors.length === 0;
+        } catch (error) {
+          return false;
+        }
+      }
+    });
+  }
+  
+  if (aiDecisionLogger) {
+    lifecycleManager.registerService('aiDecisionLogger', {
+      priority: 9,
+      essential: false,
+      healthCheck: async () => {
+        try {
+          const health = await aiDecisionLogger.healthCheck();
+          return health.status === 'healthy';
+        } catch (error) {
+          return false;
+        }
+      }
+    });
+  }
+  
+  if (modelMetadataManager) {
+    lifecycleManager.registerService('modelMetadataManager', {
+      priority: 10,
+      essential: false,
+      healthCheck: async () => {
+        try {
+          const health = await modelMetadataManager.healthCheck();
+          return health.status === 'healthy';
+        } catch (error) {
+          return false;
+        }
+      }
+    });
+  }
+  
+  if (realTimeEventMonitor) {
+    lifecycleManager.registerService('realTimeEventMonitor', {
+      priority: 11,
+      essential: false,
+      healthCheck: async () => {
+        try {
+          const health = await realTimeEventMonitor.healthCheck();
+          return health.status === 'healthy';
         } catch (error) {
           return false;
         }
@@ -226,6 +361,17 @@ app.get('/api/health', async (request, reply) => {
     const healthStatus = await lifecycleManager.getHealthStatus();
     const containerHealth = await serviceContainer.getHealthStatus();
     
+    // Get Hedera services health
+    let hederaHealth = null;
+    if (hederaService || aiDecisionLogger || modelMetadataManager || realTimeEventMonitor) {
+      hederaHealth = {
+        hederaService: hederaService ? await hederaService.healthCheck() : null,
+        aiDecisionLogger: aiDecisionLogger ? await aiDecisionLogger.healthCheck() : null,
+        modelMetadataManager: modelMetadataManager ? await modelMetadataManager.healthCheck() : null,
+        realTimeEventMonitor: realTimeEventMonitor ? await realTimeEventMonitor.healthCheck() : null
+      };
+    }
+    
     return {
       status: healthStatus.overall === 'healthy' ? 'operational' : 'degraded',
       timestamp: new Date().toISOString(),
@@ -235,6 +381,7 @@ app.get('/api/health', async (request, reply) => {
         totalServices: containerHealth.totalServices,
         initializedServices: containerHealth.initializedServices
       },
+      hedera: hederaHealth,
       metrics: lifecycleManager.getMetrics()
     };
   } catch (error) {
@@ -243,6 +390,290 @@ app.get('/api/health', async (request, reply) => {
       timestamp: new Date().toISOString(),
       error: error.message
     });
+  }
+});
+
+// Hedera services status endpoint
+app.get('/api/hedera/status', async (request, reply) => {
+  const context = errorManager.createContext('hedera-status', '/api/hedera/status');
+  
+  try {
+    if (!hederaService && !aiDecisionLogger && !modelMetadataManager && !realTimeEventMonitor) {
+      return reply.status(503).send({
+        success: false,
+        error: 'Hedera services not initialized',
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    const status = {
+      hederaService: hederaService ? {
+        initialized: hederaService.initialized,
+        status: hederaService.getStatus(),
+        statistics: hederaService.getStatistics()
+      } : null,
+      aiDecisionLogger: aiDecisionLogger ? {
+        isMonitoring: aiDecisionLogger.isMonitoring,
+        statistics: aiDecisionLogger.getStatistics()
+      } : null,
+      modelMetadataManager: modelMetadataManager ? {
+        initialized: modelMetadataManager.initialized,
+        statistics: modelMetadataManager.getStatistics()
+      } : null,
+      realTimeEventMonitor: realTimeEventMonitor ? {
+        isMonitoring: realTimeEventMonitor.isMonitoring,
+        statistics: realTimeEventMonitor.getStatistics()
+      } : null,
+      timestamp: new Date().toISOString()
+    };
+    
+    return { success: true, data: status };
+  } catch (error) {
+    const errorResponse = errorManager.createErrorResponse(error, context);
+    return reply.status(errorResponse.statusCode).send(errorResponse);
+  }
+});
+
+// Hedera decision logging endpoint
+app.post('/api/hedera/log-decision', async (request, reply) => {
+  const context = errorManager.createContext('hedera-log-decision', '/api/hedera/log-decision');
+  
+  try {
+    if (!hederaService) {
+      return reply.status(503).send({
+        success: false,
+        error: 'Hedera service not available'
+      });
+    }
+    
+    const decisionData = request.body;
+    
+    // Add model reference if available
+    if (modelMetadataManager) {
+      const modelReference = modelMetadataManager.getModelReferenceForHCS();
+      if (modelReference) {
+        decisionData.hfsFileId = modelReference.hfsFileId;
+        decisionData.modelVersion = modelReference.version;
+        decisionData.modelChecksum = modelReference.checksum;
+      }
+    }
+    
+    const result = await hederaService.submitDecisionWithRetry(decisionData, 3, 1000);
+    
+    return {
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString()
+    };
+  } catch (error) {
+    const errorResponse = errorManager.createErrorResponse(error, context);
+    return reply.status(errorResponse.statusCode).send(errorResponse);
+  }
+});
+
+// Model metadata management endpoint
+app.post('/api/hedera/store-model', async (request, reply) => {
+  const context = errorManager.createContext('hedera-store-model', '/api/hedera/store-model');
+  
+  try {
+    if (!modelMetadataManager) {
+      return reply.status(503).send({
+        success: false,
+        error: 'Model metadata manager not available'
+      });
+    }
+    
+    const modelData = request.body;
+    const result = await modelMetadataManager.storeModelMetadata(modelData);
+    
+    return {
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString()
+    };
+  } catch (error) {
+    const errorResponse = errorManager.createErrorResponse(error, context);
+    return reply.status(errorResponse.statusCode).send(errorResponse);
+  }
+});
+
+// Real-time event monitoring control endpoint
+app.post('/api/hedera/monitoring/:action', async (request, reply) => {
+  const context = errorManager.createContext('hedera-monitoring', '/api/hedera/monitoring');
+  
+  try {
+    const { action } = request.params;
+    
+    if (!realTimeEventMonitor) {
+      return reply.status(503).send({
+        success: false,
+        error: 'Real-time event monitor not available'
+      });
+    }
+    
+    let result;
+    if (action === 'start') {
+      const { pollInterval = 5000 } = request.body;
+      result = await realTimeEventMonitor.startMonitoring(pollInterval);
+    } else if (action === 'stop') {
+      result = await realTimeEventMonitor.stopMonitoring();
+    } else {
+      return reply.status(400).send({
+        success: false,
+        error: 'Invalid action. Use "start" or "stop"'
+      });
+    }
+    
+    return {
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString()
+    };
+  } catch (error) {
+    const errorResponse = errorManager.createErrorResponse(error, context);
+    return reply.status(errorResponse.statusCode).send(errorResponse);
+  }
+});
+
+// Add contract to monitoring endpoint
+app.post('/api/hedera/monitoring/add-contract', async (request, reply) => {
+  const context = errorManager.createContext('hedera-add-contract', '/api/hedera/monitoring/add-contract');
+  
+  try {
+    if (!realTimeEventMonitor) {
+      return reply.status(503).send({
+        success: false,
+        error: 'Real-time event monitor not available'
+      });
+    }
+    
+    const { contractAddress, contractABI, eventNames = ['AIRebalance'] } = request.body;
+    
+    if (!contractAddress || !contractABI) {
+      return reply.status(400).send({
+        success: false,
+        error: 'contractAddress and contractABI are required'
+      });
+    }
+    
+    const result = await realTimeEventMonitor.addContract(contractAddress, contractABI, eventNames);
+    
+    return {
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString()
+    };
+  } catch (error) {
+    const errorResponse = errorManager.createErrorResponse(error, context);
+    return reply.status(errorResponse.statusCode).send(errorResponse);
+  }
+});
+
+// Event monitoring statistics endpoint
+app.get('/api/hedera/monitoring/stats', async (request, reply) => {
+  const context = errorManager.createContext('hedera-monitoring-stats', '/api/hedera/monitoring/stats');
+  
+  try {
+    if (!realTimeEventMonitor) {
+      return reply.status(503).send({
+        success: false,
+        error: 'Real-time event monitor not available'
+      });
+    }
+    
+    const stats = realTimeEventMonitor.getStatistics();
+    const health = await realTimeEventMonitor.healthCheck();
+    
+    return {
+      success: true,
+      data: {
+        statistics: stats,
+        health: health
+      },
+      timestamp: new Date().toISOString()
+    };
+  } catch (error) {
+    const errorResponse = errorManager.createErrorResponse(error, context);
+    return reply.status(errorResponse.statusCode).send(errorResponse);
+  }
+});
+
+// Error handler statistics endpoint
+app.get('/api/hedera/error-handler/stats', async (request, reply) => {
+  const context = errorManager.createContext('hedera-error-stats', '/api/hedera/error-handler/stats');
+  
+  try {
+    if (!hederaService) {
+      return reply.status(503).send({
+        success: false,
+        error: 'Hedera service not available'
+      });
+    }
+    
+    const stats = hederaService.getErrorHandlerStats();
+    
+    return {
+      success: true,
+      data: stats,
+      timestamp: new Date().toISOString()
+    };
+  } catch (error) {
+    const errorResponse = errorManager.createErrorResponse(error, context);
+    return reply.status(errorResponse.statusCode).send(errorResponse);
+  }
+});
+
+// Reset circuit breaker endpoint
+app.post('/api/hedera/error-handler/reset-circuit/:serviceName', async (request, reply) => {
+  const context = errorManager.createContext('hedera-reset-circuit', '/api/hedera/error-handler/reset-circuit');
+  
+  try {
+    const { serviceName } = request.params;
+    
+    if (!hederaService) {
+      return reply.status(503).send({
+        success: false,
+        error: 'Hedera service not available'
+      });
+    }
+    
+    hederaService.resetCircuitBreaker(serviceName);
+    
+    return {
+      success: true,
+      message: `Circuit breaker reset for ${serviceName}`,
+      timestamp: new Date().toISOString()
+    };
+  } catch (error) {
+    const errorResponse = errorManager.createErrorResponse(error, context);
+    return reply.status(errorResponse.statusCode).send(errorResponse);
+  }
+});
+
+// Clear error queue endpoint
+app.post('/api/hedera/error-handler/clear-queue', async (request, reply) => {
+  const context = errorManager.createContext('hedera-clear-queue', '/api/hedera/error-handler/clear-queue');
+  
+  try {
+    if (!hederaService) {
+      return reply.status(503).send({
+        success: false,
+        error: 'Hedera service not available'
+      });
+    }
+    
+    const clearedCount = hederaService.clearErrorQueue();
+    
+    return {
+      success: true,
+      data: {
+        clearedOperations: clearedCount
+      },
+      timestamp: new Date().toISOString()
+    };
+  } catch (error) {
+    const errorResponse = errorManager.createErrorResponse(error, context);
+    return reply.status(errorResponse.statusCode).send(errorResponse);
   }
 });
 
@@ -369,7 +800,7 @@ app.post('/api/execute', {
   }
 });
 
-// AI decision endpoint
+// AI decision endpoint with Hedera logging
 app.post('/api/decide', {
   preHandler: [
     securityManager.createRateLimitMiddleware('decide'),
@@ -389,8 +820,56 @@ app.post('/api/decide', {
       reasoning: `Based on current market conditions, ${recommendation} offers the best risk-adjusted returns`,
       expectedApy: 8 + Math.random() * 8,
       riskScore: Math.floor(Math.random() * 5) + 1,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      decisionId: `decision_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
     };
+    
+    // Log decision to Hedera if available
+    if (hederaService) {
+      try {
+        const decisionData = {
+          txHash: `0x${Math.random().toString(16).substr(2, 64)}`, // Simulated tx hash
+          blockNumber: Math.floor(Math.random() * 1000000) + 45000000,
+          logIndex: 0,
+          type: 'ai_decision',
+          agent: process.env.AI_AGENT_ADDRESS || '0xdAFEE25F98Ff62504C1086eAcbb406190F3110D5',
+          decisionId: decision.decisionId,
+          timestamp: Date.now(),
+          decisionCid: `Qm${Math.random().toString(36).substr(2, 44)}`, // Simulated IPFS CID
+          fromStrategy: params.currentStrategy || '0',
+          toStrategy: recommendation,
+          amount: params.amount || '1000000000000000000',
+          reason: decision.reasoning,
+          confidence: decision.confidence,
+          expectedYield: decision.expectedApy,
+          riskScore: decision.riskScore
+        };
+        
+        // Add model reference if available
+        if (modelMetadataManager) {
+          const modelReference = modelMetadataManager.getModelReferenceForHCS();
+          if (modelReference) {
+            decisionData.hfsFileId = modelReference.hfsFileId;
+            decisionData.modelVersion = modelReference.version;
+            decisionData.modelChecksum = modelReference.checksum;
+          }
+        }
+        
+        const hcsResult = await hederaService.submitDecisionWithRetry(decisionData, 2, 500);
+        decision.hederaLogging = {
+          success: true,
+          topicId: hcsResult.topicId,
+          sequenceNumber: hcsResult.sequenceNumber,
+          transactionId: hcsResult.transactionId
+        };
+      } catch (hederaError) {
+        console.warn('⚠️ Failed to log decision to Hedera:', hederaError.message);
+        decision.hederaLogging = {
+          success: false,
+          error: hederaError.message
+        };
+      }
+    }
     
     return decision;
   } catch (error) {
@@ -634,11 +1113,41 @@ const start = async () => {
     console.log('  - GET  /api/proof-of-yield/snapshot');
     console.log('  - GET  /api/transactions');
     console.log('');
+    console.log('🔗 Hedera Integration:');
+    console.log('  - GET  /api/hedera/status');
+    console.log('  - POST /api/hedera/log-decision');
+    console.log('  - POST /api/hedera/store-model');
+    console.log('  - POST /api/hedera/monitoring/start');
+    console.log('  - POST /api/hedera/monitoring/stop');
+    console.log('  - POST /api/hedera/monitoring/add-contract');
+    console.log('  - GET  /api/hedera/monitoring/stats');
+    console.log('  - GET  /api/hedera/error-handler/stats');
+    console.log('  - POST /api/hedera/error-handler/reset-circuit/:serviceName');
+    console.log('  - POST /api/hedera/error-handler/clear-queue');
+    console.log('');
     console.log('🌐 Mainnet Integration:');
     console.log('  ✅ BSC Mainnet contracts loaded');
     console.log('  ✅ Real-time blockchain data');
     console.log('  ✅ Multi-network support (Mainnet + Testnet)');
     console.log('  ✅ Production-ready configuration');
+    console.log('');
+    console.log('🔗 Hedera Services:');
+    if (hederaService) {
+      console.log('  ✅ Hedera Consensus Service (HCS) - Decision logging');
+      console.log('  ✅ Hedera File Service (HFS) - Model metadata storage');
+    }
+    if (aiDecisionLogger) {
+      console.log('  ✅ AI Decision Logger - Real-time event monitoring');
+    }
+    if (modelMetadataManager) {
+      console.log('  ✅ Model Metadata Manager - Version control & caching');
+    }
+    if (realTimeEventMonitor) {
+      console.log('  ✅ Real-time Event Monitor - Cross-chain coordination');
+    }
+    if (!hederaService && !aiDecisionLogger && !modelMetadataManager && !realTimeEventMonitor) {
+      console.log('  ⚠️ Hedera services not initialized (check credentials)');
+    }
     
     // Log service status
     const healthStatus = await lifecycleManager.getHealthStatus();
@@ -650,6 +1159,20 @@ const start = async () => {
     // Attempt graceful shutdown
     try {
       await lifecycleManager.stopAll();
+      
+      // Close Hedera services
+      if (realTimeEventMonitor) {
+        await realTimeEventMonitor.close();
+      }
+      if (aiDecisionLogger) {
+        await aiDecisionLogger.close();
+      }
+      if (modelMetadataManager) {
+        await modelMetadataManager.close();
+      }
+      if (hederaService) {
+        await hederaService.close();
+      }
     } catch (shutdownError) {
       console.error('❌ Graceful shutdown failed:', shutdownError.message);
     }

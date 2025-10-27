@@ -8,6 +8,7 @@ import {
     AccountId,
     Hbar
 } from '@hashgraph/sdk';
+import HederaErrorHandler from './hederaErrorHandler.js';
 
 class HederaService {
     constructor() {
@@ -15,6 +16,7 @@ class HederaService {
         this.topicId = null;
         this.fileId = null;
         this.initialized = false;
+        this.errorHandler = new HederaErrorHandler();
     }
 
     /**
@@ -22,6 +24,9 @@ class HederaService {
      */
     async initialize() {
         try {
+            // Initialize error handler
+            this.errorHandler.initialize();
+            
             // Configure client for testnet
             this.client = Client.forTestnet();
             
@@ -57,7 +62,7 @@ class HederaService {
             throw new Error('Hedera service not initialized');
         }
 
-        try {
+        return await this.errorHandler.executeWithRetry('hcs_create_topic', async () => {
             const transaction = new TopicCreateTransaction()
                 .setTopicMemo(memo)
                 .setMaxTransactionFee(new Hbar(2));
@@ -69,10 +74,7 @@ class HederaService {
             console.log(`✅ HCS Topic created: ${this.topicId}`);
             
             return this.topicId.toString();
-        } catch (error) {
-            console.error('❌ Failed to create HCS topic:', error);
-            throw error;
-        }
+        }, { memo });
     }
 
     /**
@@ -88,7 +90,7 @@ class HederaService {
             throw new Error('No HCS topic ID available');
         }
 
-        try {
+        return await this.errorHandler.executeWithRetry('hcs_submit', async () => {
             // Enhanced message structure with comprehensive metadata
             const message = JSON.stringify({
                 // Core event data
@@ -157,10 +159,7 @@ class HederaService {
                 messageSize: message.length,
                 timestamp: Date.now()
             };
-        } catch (error) {
-            console.error('❌ Failed to submit decision to HCS:', error);
-            throw error;
-        }
+        }, { decisionData, topicId: targetTopicId.toString() });
     }
 
     /**
@@ -180,7 +179,7 @@ class HederaService {
             throw new Error('Hedera service not initialized');
         }
 
-        try {
+        return await this.errorHandler.executeWithRetry('hfs_store', async () => {
             const modelMetadata = {
                 // Version information
                 version: modelData.version || 'v1.0.0',
@@ -254,10 +253,7 @@ class HederaService {
                 size: content.length,
                 timestamp: modelMetadata.timestamp
             };
-        } catch (error) {
-            console.error('❌ Failed to store model metadata on HFS:', error);
-            throw error;
-        }
+        }, { modelData, previousFileId });
     }
 
     /**
@@ -548,8 +544,35 @@ class HederaService {
             client: this.client ? 'connected' : 'disconnected',
             network: 'testnet',
             topicId: this.topicId?.toString() || null,
-            fileId: this.fileId?.toString() || null
+            fileId: this.fileId?.toString() || null,
+            errorHandler: this.errorHandler ? this.errorHandler.getStatistics() : null
         };
+    }
+
+    /**
+     * Get error handler statistics
+     */
+    getErrorHandlerStats() {
+        return this.errorHandler ? this.errorHandler.getStatistics() : null;
+    }
+
+    /**
+     * Reset circuit breaker for specific service
+     */
+    resetCircuitBreaker(serviceName) {
+        if (this.errorHandler) {
+            this.errorHandler.resetCircuitBreaker(serviceName);
+        }
+    }
+
+    /**
+     * Clear error handler queue
+     */
+    clearErrorQueue() {
+        if (this.errorHandler) {
+            return this.errorHandler.clearQueue();
+        }
+        return 0;
     }
 
     /**
@@ -693,6 +716,11 @@ class HederaService {
         try {
             // Stop event monitoring
             this.stopEventMonitoring();
+            
+            // Close error handler
+            if (this.errorHandler) {
+                await this.errorHandler.close();
+            }
             
             // Close client connection
             if (this.client) {
