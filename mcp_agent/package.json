@@ -24,7 +24,12 @@
     "test:enhanced": "node tests/enhanced_execution_test.mjs",
     "test:mainnet": "node scripts/test-mainnet-integration.js",
     "test:mainnet-integration": "node scripts/test-mainnet-integration.js",
-    "warmup": "node scripts/warmup.js"
+    "warmup": "node scripts/warmup.js",
+    "setup:hedera": "node scripts/setup-hedera-services.js",
+    "create:hcs-topic": "node scripts/create-hcs-topic.js",
+    "init:hfs-storage": "node scripts/init-hfs-storage.js",
+    "monitor:events": "node scripts/monitor-events.js",
+    "validate:config": "node scripts/validate-config.js"
   },
   "keywords": [
     "defi",

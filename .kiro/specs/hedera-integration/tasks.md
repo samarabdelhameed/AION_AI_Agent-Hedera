@@ -102,20 +102,20 @@
     - Test cross-chain event coordination
     - _Requirements: 2.2, 2.4, 3.3_
 
-- [ ] 6. Create deployment scripts and configuration
-  - [ ] 6.1 Update Foundry deployment for Hedera testnet
+- [x] 6. Create deployment scripts and configuration
+  - [x] 6.1 Update Foundry deployment for Hedera testnet
     - Modify deployment script for Hedera RPC configuration
     - Add Hedera account and credential management
     - Configure contract deployment with HTS integration
     - _Requirements: 5.1, 5.2_
 
-  - [ ] 6.2 Set up Hedera testnet services
+  - [x] 6.2 Set up Hedera testnet services
     - Create HCS topic for vault decision logging
     - Initialize HFS storage for model metadata
     - Configure testnet account with sufficient HBAR
     - _Requirements: 5.3, 5.4_
 
-  - [ ] 6.3 Configure environment and credentials
+  - [x] 6.3 Configure environment and credentials
     - Set up environment variables for all Hedera services
     - Configure MCP agent with Hedera credentials
     - Update deployment documentation with setup instructions
