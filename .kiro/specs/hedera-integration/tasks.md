@@ -27,13 +27,13 @@
     - _Requirements: 1.1, 1.2, 1.3, 1.4_
 
 - [-] 3. Enhance AION Vault contract with Hedera features
-  - [ ] 3.1 Extend AIONVault with HTS tokenization
+  - [x] 3.1 Extend AIONVault with HTS tokenization
     - Modify deposit function to mint HTS shares
     - Update withdraw function to burn HTS shares
     - Integrate HTS operations with existing vault logic
     - _Requirements: 1.1, 1.2, 1.5_
 
-  - [ ] 3.2 Add AI decision recording functionality
+  - [x] 3.2 Add AI decision recording functionality
     - Implement recordAIDecision function for agent calls
     - Create AIRebalance event with comprehensive metadata
     - Add decision validation and access control
