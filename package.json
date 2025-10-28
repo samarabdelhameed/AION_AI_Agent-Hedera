@@ -52,7 +52,8 @@
     "compare:performance": "node scripts/generate-performance-comparison.js",
     "collect:links": "node scripts/collect-verification-links.js",
     "verify:real": "node scripts/verify-real-data-generation.js",
-    "execute:complete": "node scripts/execute-complete-verification.js"
+    "execute:complete": "node scripts/execute-complete-verification.js",
+    "generate:hackathon": "node scripts/generate-hackathon-report.js"
   },
   "keywords": [
     "defi",

@@ -2971,6 +2971,49 @@ After running the commands above, you should see:
 
 ---
 
+## 🏆 **Final Hackathon Preparation Commands**
+
+### 🎯 **Complete Preparation Sequence**
+```bash
+# 1. Generate all real data (18 steps, ~15 minutes)
+npm run execute:complete
+
+# 2. Generate hackathon validation report with real links
+npm run generate:hackathon
+
+# 3. Final verification that all data is real
+npm run verify:real
+```
+
+### 📋 **Generated Files for Judges**
+After running the commands above, you'll have:
+
+| **File** | **Purpose** | **For Judges** |
+|----------|-------------|----------------|
+| `docs/HACKATHON_VALIDATION_REPORT_FINAL.md` | Complete validation report with real links | ✅ **PRIMARY DOCUMENT** |
+| `docs/QUICK_REFERENCE.md` | Quick verification links and metrics | ✅ **DEMO REFERENCE** |
+| `reports/verification-links-*.json` | All verification data in JSON format | ✅ **TECHNICAL REVIEW** |
+| `reports/complete-user-journey-*.md` | User journey execution report | ✅ **FUNCTIONALITY PROOF** |
+
+### 🎭 **Live Demonstration Script**
+```bash
+# Show current system status
+npm run verify:real
+
+# Execute live user journey (2-3 minutes)
+npm run user:journey
+
+# Show performance comparison
+npm run compare:performance
+
+# Generate fresh verification links
+npm run collect:links
+```
+
+**Expected Output**: All commands should show ✅ SUCCESS with real Hedera IDs (not 0.0.XXXXXX)
+
+---
+
 <div align="center">
 
 **Built with ❤️ by the AION Team**
