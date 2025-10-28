@@ -42,7 +42,11 @@
     "validate:hcs": "node scripts/validate-hcs-messages.js",
     "create:metadata": "node scripts/create-real-model-metadata.js",
     "store:hfs": "node scripts/store-metadata-on-hfs.js",
-    "cross:reference": "node scripts/cross-reference-hfs-hcs.js"
+    "cross:reference": "node scripts/cross-reference-hfs-hcs.js",
+    "deposit:flow": "node scripts/execute-real-deposit-flow.js",
+    "ai:rebalancing": "node scripts/execute-ai-rebalancing.js",
+    "withdrawal:flow": "node scripts/execute-real-withdrawal-flow.js",
+    "user:journey": "node scripts/execute-complete-user-journey.js"
   },
   "keywords": [
     "defi",

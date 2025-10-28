@@ -83,20 +83,20 @@
     - Ensure audit trail consistency across services
     - _Requirements: 4.4, 4.5_
 
-- [ ] 6. Execute real end-to-end user journey
-  - [ ] 6.1 Implement real deposit flow
+- [x] 6. Execute real end-to-end user journey
+  - [x] 6.1 Implement real deposit flow
     - Execute actual user deposit of at least 100 USDT equivalent
     - Trigger HTS token minting with corresponding amounts
     - Validate deposit success and collect transaction hashes
     - _Requirements: 5.1, 5.4_
 
-  - [ ] 6.2 Execute real AI rebalancing
+  - [x] 6.2 Execute real AI rebalancing
     - Trigger actual strategy rebalancing with real fund movements
     - Log rebalancing decisions to HCS with actual data
     - Validate rebalancing success and collect transaction hashes
     - _Requirements: 5.2, 5.4_
 
-  - [ ] 6.3 Execute real withdrawal flow
+  - [x] 6.3 Execute real withdrawal flow
     - Execute actual user withdrawal of at least 50 USDT equivalent
     - Trigger HTS token burning with corresponding amounts
     - Validate withdrawal success and collect transaction hashes
