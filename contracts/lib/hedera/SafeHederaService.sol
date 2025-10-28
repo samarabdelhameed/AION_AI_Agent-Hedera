@@ -7,6 +7,7 @@ import "./HederaResponseCodes.sol";
 /**
  * @title SafeHederaService
  * @dev Safe wrapper for Hedera Token Service operations with proper error handling
+ * @notice Updated for Hedera Smart Contracts v0.11.0 compatibility
  */
 library SafeHederaService {
     IHederaTokenService constant HTS = IHederaTokenService(address(0x167));
@@ -18,8 +19,8 @@ library SafeHederaService {
      */
     function safeCreateFungibleToken(
         IHederaTokenService.HederaToken memory token,
-        uint64 initialTotalSupply,
-        uint32 decimals
+        int64 initialTotalSupply,
+        int32 decimals
     ) internal returns (address tokenAddress) {
         (int responseCode, address createdToken) = HTS.createFungibleToken(
             token,
@@ -39,10 +40,10 @@ library SafeHederaService {
      */
     function safeMintToken(
         address token,
-        uint64 amount,
+        int64 amount,
         bytes[] memory metadata
-    ) internal returns (uint64 newTotalSupply, int64[] memory serialNumbers) {
-        (int responseCode, uint64 supply, int64[] memory serials) = HTS.mintToken(
+    ) internal returns (int64 newTotalSupply, int64[] memory serialNumbers) {
+        (int responseCode, int64 supply, int64[] memory serials) = HTS.mintToken(
             token,
             amount,
             metadata
@@ -60,10 +61,10 @@ library SafeHederaService {
      */
     function safeBurnToken(
         address token,
-        uint64 amount,
+        int64 amount,
         int64[] memory serialNumbers
-    ) internal returns (uint64 newTotalSupply) {
-        (int responseCode, uint64 supply) = HTS.burnToken(
+    ) internal returns (int64 newTotalSupply) {
+        (int responseCode, int64 supply) = HTS.burnToken(
             token,
             amount,
             serialNumbers
@@ -91,9 +92,10 @@ library SafeHederaService {
      * @dev Safely transfer tokens
      */
     function safeCryptoTransfer(
-        IHederaTokenService.TransferList memory transferList
+        IHederaTokenService.TransferList memory transferList,
+        IHederaTokenService.TokenTransferList[] memory tokenTransfers
     ) internal {
-        int responseCode = HTS.cryptoTransfer(transferList);
+        int responseCode = HTS.cryptoTransfer(transferList, tokenTransfers);
         
         if (responseCode != HederaResponseCodes.SUCCESS) {
             revert HTSOperationFailed(responseCode, "cryptoTransfer");

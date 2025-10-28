@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@hedera/IHederaTokenService.sol";
-import "@hedera/HederaResponseCodes.sol";
-import "@hedera/SafeHederaService.sol";
+import "../../lib/hedera/IHederaTokenService.sol";
+import "../../lib/hedera/HederaResponseCodes.sol";
+import "../../lib/hedera/SafeHederaService.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
@@ -100,8 +100,8 @@ contract HTSTokenManager is Ownable, ReentrancyGuard {
         // Create the token using SafeHederaService
         tokenAddress = SafeHederaService.safeCreateFungibleToken(
             token,
-            initialSupply,
-            decimals
+            int64(uint64(initialSupply)),
+            int32(uint32(decimals))
         );
 
         // Store token information
@@ -135,11 +135,12 @@ contract HTSTokenManager is Ownable, ReentrancyGuard {
 
         // Mint tokens using SafeHederaService
         bytes[] memory metadata = new bytes[](0);
-        (newTotalSupply,) = SafeHederaService.safeMintToken(
+        (int64 supply,) = SafeHederaService.safeMintToken(
             shareToken.tokenAddress,
-            uint64(amount),
+            int64(uint64(amount)),
             metadata
         );
+        newTotalSupply = uint64(supply);
 
         // Update internal accounting
         userShares[user] += amount;
@@ -165,11 +166,12 @@ contract HTSTokenManager is Ownable, ReentrancyGuard {
 
         // Burn tokens using SafeHederaService
         int64[] memory serialNumbers = new int64[](0);
-        newTotalSupply = SafeHederaService.safeBurnToken(
+        int64 supply = SafeHederaService.safeBurnToken(
             shareToken.tokenAddress,
-            uint64(amount),
+            int64(uint64(amount)),
             serialNumbers
         );
+        newTotalSupply = uint64(supply);
 
         // Update internal accounting
         userShares[user] -= amount;
@@ -228,7 +230,8 @@ contract HTSTokenManager is Ownable, ReentrancyGuard {
             });
 
         // Execute transfer using SafeHederaService
-        SafeHederaService.safeCryptoTransfer(transferList);
+        IHederaTokenService.TokenTransferList[] memory tokenTransfers = new IHederaTokenService.TokenTransferList[](0);
+        SafeHederaService.safeCryptoTransfer(transferList, tokenTransfers);
 
         // Update internal accounting
         userShares[from] -= amount;

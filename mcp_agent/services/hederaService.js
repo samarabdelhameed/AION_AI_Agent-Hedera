@@ -710,12 +710,335 @@ class HederaService {
     }
 
     /**
+     * Create HCS topic for bridge operations
+     */
+    async createHCSTopicForBridge() {
+        if (!this.initialized) {
+            throw new Error('Hedera service not initialized');
+        }
+
+        try {
+            const transaction = new TopicCreateTransaction()
+                .setTopicMemo("AION Bridge Operations Audit Trail")
+                .setMaxTransactionFee(new Hbar(2));
+
+            const txResponse = await transaction.execute(this.client);
+            const receipt = await txResponse.getReceipt(this.client);
+            
+            const bridgeTopicId = receipt.topicId;
+            console.log(`✅ Bridge HCS topic created: ${bridgeTopicId}`);
+            
+            return bridgeTopicId.toString();
+        } catch (error) {
+            console.error('❌ Failed to create bridge HCS topic:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Submit message to specific HCS topic
+     */
+    async submitMessageToHCS(topicId, message) {
+        if (!this.initialized) {
+            throw new Error('Hedera service not initialized');
+        }
+
+        try {
+            const transaction = new TopicMessageSubmitTransaction()
+                .setTopicId(topicId)
+                .setMessage(message)
+                .setMaxTransactionFee(new Hbar(1));
+
+            const txResponse = await transaction.execute(this.client);
+            const receipt = await txResponse.getReceipt(this.client);
+            
+            console.log(`✅ Message submitted to HCS topic ${topicId}: ${receipt.topicSequenceNumber}`);
+            
+            return {
+                topicId: topicId,
+                sequenceNumber: receipt.topicSequenceNumber.toString(),
+                transactionId: txResponse.transactionId.toString(),
+                timestamp: Date.now()
+            };
+        } catch (error) {
+            console.error(`❌ Failed to submit message to HCS topic ${topicId}:`, error);
+            throw error;
+        }
+    }
+
+    /**
+     * Get HCS messages from topic (mock implementation)
+     */
+    async getHCSMessages(topicId, limit = 10) {
+        // Note: In production, this would use the Mirror Node API
+        // to retrieve messages from the HCS topic
+        console.log(`📥 Retrieving messages from HCS topic ${topicId} (limit: ${limit})`);
+        
+        return {
+            topicId: topicId,
+            messages: [], // Would contain actual messages in production
+            status: 'mock_implementation',
+            note: 'Use Mirror Node API for actual message retrieval'
+        };
+    }
+
+    /**
+     * Monitor bridge events from contract
+     */
+    async monitorBridgeEvents(contractAddress, web3Provider, eventHandler) {
+        console.log(`👀 Starting bridge event monitoring for: ${contractAddress}`);
+        
+        if (!web3Provider) {
+            console.warn('⚠️ No Web3 provider available for bridge event monitoring');
+            return {
+                status: 'monitoring_disabled',
+                reason: 'no_web3_provider',
+                contractAddress: contractAddress
+            };
+        }
+
+        try {
+            // Set up event monitoring for bridge-related events
+            const bridgeEventFilters = [
+                {
+                    name: 'BridgeDepositInitiated',
+                    signature: web3Provider.utils.keccak256('BridgeDepositInitiated(bytes32,address,uint256,uint256)')
+                },
+                {
+                    name: 'BridgeWithdrawInitiated', 
+                    signature: web3Provider.utils.keccak256('BridgeWithdrawInitiated(bytes32,address,uint256,uint256)')
+                },
+                {
+                    name: 'BridgeOperationCompleted',
+                    signature: web3Provider.utils.keccak256('BridgeOperationCompleted(bytes32,address,uint256,bool)')
+                },
+                {
+                    name: 'CrossChainSharesIssued',
+                    signature: web3Provider.utils.keccak256('CrossChainSharesIssued(address,uint256,uint256,bytes32)')
+                },
+                {
+                    name: 'CrossChainSharesRedeemed',
+                    signature: web3Provider.utils.keccak256('CrossChainSharesRedeemed(address,uint256,uint256,bytes32)')
+                }
+            ];
+
+            // Store bridge monitoring configuration
+            this.bridgeMonitoringConfig = {
+                contractAddress,
+                eventFilters: bridgeEventFilters,
+                eventHandler,
+                isActive: true,
+                lastProcessedBlock: await web3Provider.eth.getBlockNumber()
+            };
+
+            console.log(`✅ Bridge event monitoring configured for contract: ${contractAddress}`);
+            
+            return {
+                status: 'bridge_monitoring_active',
+                contractAddress: contractAddress,
+                eventTypes: bridgeEventFilters.map(f => f.name),
+                lastProcessedBlock: this.bridgeMonitoringConfig.lastProcessedBlock
+            };
+        } catch (error) {
+            console.error('❌ Failed to set up bridge event monitoring:', error);
+            return {
+                status: 'bridge_monitoring_failed',
+                error: error.message,
+                contractAddress: contractAddress
+            };
+        }
+    }
+
+    /**
+     * Process bridge events and submit to HCS
+     */
+    async processBridgeEvent(eventData, bridgeTopicId) {
+        if (!this.initialized) {
+            throw new Error('Hedera service not initialized');
+        }
+
+        try {
+            console.log('📝 Processing bridge event:', eventData);
+
+            // Extract event data
+            const {
+                transactionHash,
+                blockNumber,
+                logIndex,
+                returnValues,
+                event
+            } = eventData;
+
+            // Create bridge operation data from event
+            const bridgeOperationData = {
+                eventType: event,
+                txHash: transactionHash,
+                blockNumber: blockNumber,
+                logIndex: logIndex,
+                timestamp: Date.now(),
+                ...returnValues
+            };
+
+            // Submit to bridge HCS topic
+            const hcsResult = await this.submitMessageToHCS(
+                bridgeTopicId,
+                JSON.stringify(bridgeOperationData)
+            );
+            
+            console.log(`✅ Bridge event processed and submitted to HCS: ${hcsResult.sequenceNumber}`);
+            
+            return {
+                success: true,
+                hcsResult: hcsResult,
+                eventData: bridgeOperationData
+            };
+        } catch (error) {
+            console.error('❌ Failed to process bridge event:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Start continuous bridge event monitoring
+     */
+    async startBridgeEventMonitoring(web3Provider, bridgeTopicId, pollInterval = 5000) {
+        if (!this.bridgeMonitoringConfig || !this.bridgeMonitoringConfig.isActive) {
+            throw new Error('Bridge event monitoring not configured');
+        }
+
+        console.log(`🔄 Starting continuous bridge event monitoring (poll interval: ${pollInterval}ms)`);
+
+        this.bridgeMonitoringInterval = setInterval(async () => {
+            try {
+                await this.pollForBridgeEvents(web3Provider, bridgeTopicId);
+            } catch (error) {
+                console.error('❌ Error during bridge event polling:', error);
+            }
+        }, pollInterval);
+
+        return {
+            status: 'bridge_monitoring_started',
+            pollInterval: pollInterval,
+            contractAddress: this.bridgeMonitoringConfig.contractAddress,
+            bridgeTopicId: bridgeTopicId
+        };
+    }
+
+    /**
+     * Poll for new bridge events
+     */
+    async pollForBridgeEvents(web3Provider, bridgeTopicId) {
+        if (!this.bridgeMonitoringConfig) return;
+
+        try {
+            const currentBlock = await web3Provider.eth.getBlockNumber();
+            const fromBlock = this.bridgeMonitoringConfig.lastProcessedBlock + 1;
+
+            if (fromBlock > currentBlock) return; // No new blocks
+
+            // Get events for each bridge event type
+            for (const eventFilter of this.bridgeMonitoringConfig.eventFilters) {
+                const events = await web3Provider.eth.getPastLogs({
+                    address: this.bridgeMonitoringConfig.contractAddress,
+                    topics: [eventFilter.signature],
+                    fromBlock: fromBlock,
+                    toBlock: currentBlock
+                });
+
+                // Process each event
+                for (const event of events) {
+                    try {
+                        // Add event name to event data
+                        event.event = eventFilter.name;
+                        
+                        await this.processBridgeEvent(event, bridgeTopicId);
+                        
+                        // Call external event handler if provided
+                        if (this.bridgeMonitoringConfig.eventHandler) {
+                            await this.bridgeMonitoringConfig.eventHandler(event);
+                        }
+                    } catch (error) {
+                        console.error('❌ Failed to process individual bridge event:', error);
+                    }
+                }
+            }
+
+            // Update last processed block
+            this.bridgeMonitoringConfig.lastProcessedBlock = currentBlock;
+            
+        } catch (error) {
+            console.error('❌ Error polling for bridge events:', error);
+        }
+    }
+
+    /**
+     * Stop bridge event monitoring
+     */
+    stopBridgeEventMonitoring() {
+        if (this.bridgeMonitoringInterval) {
+            clearInterval(this.bridgeMonitoringInterval);
+            this.bridgeMonitoringInterval = null;
+            
+            if (this.bridgeMonitoringConfig) {
+                this.bridgeMonitoringConfig.isActive = false;
+            }
+            
+            console.log('⏹️ Bridge event monitoring stopped');
+            return { status: 'bridge_monitoring_stopped' };
+        }
+        
+        return { status: 'bridge_monitoring_not_active' };
+    }
+
+    /**
+     * Verify cross-chain message integrity
+     */
+    async verifyCrossChainMessage(messageData, expectedHash) {
+        try {
+            const crypto = require('crypto');
+            const messageString = JSON.stringify(messageData, Object.keys(messageData).sort());
+            const actualHash = crypto.createHash('sha256').update(messageString).digest('hex');
+            
+            const isValid = actualHash === expectedHash;
+            
+            console.log(`🔍 Cross-chain message verification: ${isValid ? 'VALID' : 'INVALID'}`);
+            
+            return {
+                valid: isValid,
+                expectedHash: expectedHash,
+                actualHash: actualHash,
+                messageData: messageData
+            };
+        } catch (error) {
+            console.error('❌ Failed to verify cross-chain message:', error);
+            return {
+                valid: false,
+                error: error.message
+            };
+        }
+    }
+
+    /**
+     * Get bridge monitoring statistics
+     */
+    getBridgeMonitoringStats() {
+        return {
+            active: this.bridgeMonitoringConfig?.isActive || false,
+            contractAddress: this.bridgeMonitoringConfig?.contractAddress || null,
+            lastProcessedBlock: this.bridgeMonitoringConfig?.lastProcessedBlock || null,
+            eventTypes: this.bridgeMonitoringConfig?.eventFilters?.map(f => f.name) || [],
+            monitoringInterval: this.bridgeMonitoringInterval ? 'active' : 'inactive'
+        };
+    }
+
+    /**
      * Close client connection and cleanup
      */
     async close() {
         try {
             // Stop event monitoring
             this.stopEventMonitoring();
+            this.stopBridgeEventMonitoring();
             
             // Close error handler
             if (this.errorHandler) {
@@ -731,6 +1054,7 @@ class HederaService {
             
             // Clear monitoring configuration
             this.monitoringConfig = null;
+            this.bridgeMonitoringConfig = null;
             this.topicId = null;
             this.fileId = null;
             
