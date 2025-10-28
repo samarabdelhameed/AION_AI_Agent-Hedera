@@ -79,7 +79,7 @@ class HFSMetadataStorage {
 
             const files = fs.readdirSync(reportsDir);
             const metadataFiles = files.filter(file => 
-                file.includes('ai-model-metadata') && file.endsWith('.json')
+                file.includes('ai-model-metadata') && file.endsWith('.json') && !file.includes('summary')
             ).sort().reverse(); // Get the most recent first
 
             if (metadataFiles.length === 0) {
@@ -207,11 +207,28 @@ class HFSMetadataStorage {
             // Find metadata files
             const metadataFile = await this.findMetadataFiles();
             
-            // Store main metadata file
+            // Create a smaller summary for HFS (due to size limits)
+            const compactMetadata = {
+                timestamp: metadataFile.metadata.timestamp,
+                network: metadataFile.metadata.network,
+                modelCount: metadataFile.metadata.models.length,
+                models: metadataFile.metadata.models.map(model => ({
+                    modelId: model.modelId,
+                    name: model.name,
+                    version: model.version,
+                    type: model.type,
+                    performance: model.performance
+                })),
+                summary: metadataFile.metadata.summary
+            };
+            
+            const compactContent = JSON.stringify(compactMetadata, null, 2);
+            
+            // Store compact metadata file
             const mainFileResult = await this.createHFSFile(
-                metadataFile.content,
-                'AION AI Model Metadata - Complete System Information',
-                'ai-model-metadata-complete.json'
+                compactContent,
+                'AION AI Model Metadata - Compact System Information',
+                'ai-model-metadata-compact.json'
             );
 
             this.hfsData.files.push(mainFileResult);

@@ -1,0 +1,53 @@
+{
+  "messageFormat": "AION_AI_DECISION_V1",
+  "requiredFields": {
+    "timestamp": "ISO 8601 timestamp",
+    "sequenceNumber": "Message sequence number",
+    "decisionType": "REBALANCE | OPTIMIZE | EMERGENCY | DIVERSIFY",
+    "fromStrategy": "Source strategy name",
+    "toStrategy": "Target strategy name",
+    "amount": "Amount in wei (string)",
+    "amountFormatted": "Human readable amount",
+    "reason": "Decision rationale",
+    "confidence": "Confidence score (0-1)",
+    "expectedGain": "Expected benefit description",
+    "riskScore": "Risk assessment (0-1)",
+    "modelVersion": "AI model version",
+    "networkId": "hedera-testnet",
+    "vaultAddress": "Vault contract address"
+  },
+  "optionalFields": {
+    "gasEstimate": "Estimated gas cost",
+    "marketConditions": "Current market analysis",
+    "historicalPerformance": "Past strategy performance",
+    "userImpact": "Impact on user positions",
+    "protocolHealth": "Protocol health scores"
+  },
+  "exampleMessage": {
+    "messageFormat": "AION_AI_DECISION_V1",
+    "timestamp": "2025-10-28T15:34:53.252Z",
+    "sequenceNumber": 1,
+    "decisionType": "REBALANCE",
+    "fromStrategy": "Venus BNB Lending",
+    "toStrategy": "PancakeSwap BNB-BUSD LP",
+    "amount": "75000000000000000000",
+    "amountFormatted": "75 BNB",
+    "reason": "Higher APY detected: 12.3% vs 8.5%",
+    "confidence": 0.94,
+    "expectedGain": "3.8% additional yield annually",
+    "riskScore": 0.25,
+    "modelVersion": "v2.3.2",
+    "networkId": "hedera-testnet",
+    "vaultAddress": "0.0.7149926",
+    "marketConditions": {
+      "bnbPrice": "$580.45",
+      "volatility": "Medium",
+      "liquidityDepth": "High"
+    },
+    "historicalPerformance": {
+      "venusAPY": "8.5%",
+      "pancakeAPY": "12.3%",
+      "riskAdjustedReturn": "10.8%"
+    }
+  }
+}

@@ -438,8 +438,8 @@ class VerificationLinksCollector {
             ]
         };
     }
-}  
-  generateMarkdownReport(report) {
+
+    generateMarkdownReport(report) {
         let md = `# AION Vault - Hedera Verification Links\n\n`;
         md += `**Generated:** ${report.timestamp}\n`;
         md += `**Network:** ${report.network}\n`;

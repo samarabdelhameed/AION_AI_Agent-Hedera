@@ -1,0 +1,367 @@
+{
+  "timestamp": "2025-10-28T15:35:41.248Z",
+  "network": "hedera-testnet",
+  "topicId": "0.0.7152105",
+  "submittedMessages": [
+    {
+      "sequenceNumber": 1,
+      "decisionType": "REBALANCE",
+      "messageId": "33fdb97f7283c802144deba72f1c472e",
+      "hcsSequenceNumber": {
+        "low": 1,
+        "high": 0,
+        "unsigned": false
+      },
+      "transactionHash": "0.0.7149926@1761665688.127402959",
+      "explorerLink": "https://hashscan.io/testnet/transaction/0.0.7149926@1761665688.127402959",
+      "messageSize": 1311,
+      "submissionTime": 2054,
+      "timestamp": "2025-10-28T15:34:57.808Z",
+      "status": "SUCCESS"
+    },
+    {
+      "sequenceNumber": 2,
+      "decisionType": "OPTIMIZE",
+      "messageId": "13e70fdc18adf81a7c8b40d0e0ef5a33",
+      "hcsSequenceNumber": {
+        "low": 3,
+        "high": 0,
+        "unsigned": false
+      },
+      "transactionHash": "0.0.7149926@1761665693.966544314",
+      "explorerLink": "https://hashscan.io/testnet/transaction/0.0.7149926@1761665693.966544314",
+      "messageSize": 1320,
+      "submissionTime": 2941,
+      "timestamp": "2025-10-28T15:35:04.757Z",
+      "status": "SUCCESS"
+    },
+    {
+      "sequenceNumber": 3,
+      "decisionType": "EMERGENCY",
+      "messageId": "a96a128429605959ea86fbbd7593e7c9",
+      "hcsSequenceNumber": {
+        "low": 5,
+        "high": 0,
+        "unsigned": false
+      },
+      "transactionHash": "0.0.7149926@1761665704.752456879",
+      "explorerLink": "https://hashscan.io/testnet/transaction/0.0.7149926@1761665704.752456879",
+      "messageSize": 1380,
+      "submissionTime": 1958,
+      "timestamp": "2025-10-28T15:35:10.717Z",
+      "status": "SUCCESS"
+    },
+    {
+      "sequenceNumber": 4,
+      "decisionType": "DIVERSIFY",
+      "messageId": "ce9e865712bb62b8c8684c95ca914417",
+      "hcsSequenceNumber": {
+        "low": 7,
+        "high": 0,
+        "unsigned": false
+      },
+      "transactionHash": "0.0.7149926@1761665706.763434036",
+      "explorerLink": "https://hashscan.io/testnet/transaction/0.0.7149926@1761665706.763434036",
+      "messageSize": 1530,
+      "submissionTime": 2116,
+      "timestamp": "2025-10-28T15:35:16.835Z",
+      "status": "SUCCESS"
+    },
+    {
+      "sequenceNumber": 5,
+      "decisionType": "REBALANCE",
+      "messageId": "3cd85786cb089aa453ae92f07627aa32",
+      "hcsSequenceNumber": {
+        "low": 9,
+        "high": 0,
+        "unsigned": false
+      },
+      "transactionHash": "0.0.7149926@1761665715.408717217",
+      "explorerLink": "https://hashscan.io/testnet/transaction/0.0.7149926@1761665715.408717217",
+      "messageSize": 1440,
+      "submissionTime": 1902,
+      "timestamp": "2025-10-28T15:35:22.739Z",
+      "status": "SUCCESS"
+    },
+    {
+      "sequenceNumber": 6,
+      "decisionType": "OPTIMIZE",
+      "messageId": "02a4bec46b4f46cc36a0c589d09a6aa6",
+      "hcsSequenceNumber": {
+        "low": 11,
+        "high": 0,
+        "unsigned": false
+      },
+      "transactionHash": "0.0.7149926@1761665718.936120300",
+      "explorerLink": "https://hashscan.io/testnet/transaction/0.0.7149926@1761665718.936120300",
+      "messageSize": 1385,
+      "submissionTime": 1690,
+      "timestamp": "2025-10-28T15:35:28.432Z",
+      "status": "SUCCESS"
+    },
+    {
+      "sequenceNumber": 7,
+      "decisionType": "EMERGENCY",
+      "messageId": "b9452a0f322461ea19db8eda462f2ed5",
+      "hcsSequenceNumber": {
+        "low": 13,
+        "high": 0,
+        "unsigned": false
+      },
+      "transactionHash": "0.0.7149926@1761665726.407485311",
+      "explorerLink": "https://hashscan.io/testnet/transaction/0.0.7149926@1761665726.407485311",
+      "messageSize": 1389,
+      "submissionTime": 1537,
+      "timestamp": "2025-10-28T15:35:33.970Z",
+      "status": "SUCCESS"
+    }
+  ],
+  "validationResults": [],
+  "integrityChecks": {},
+  "summary": {
+    "totalMessages": 7,
+    "validMessages": 7,
+    "invalidMessages": 0,
+    "errorMessages": 0,
+    "validationSuccessRate": "100.0%",
+    "sequenceIntegrity": false,
+    "topicAccessible": true,
+    "comprehensiveScore": "80.0",
+    "reportGenerated": "2025-10-28T15:35:42.297Z"
+  },
+  "topicState": {
+    "topicId": "0.0.7152105",
+    "memo": "AION AI Decision Logging - Autonomous Yield Optimization Consensus",
+    "currentSequenceNumber": 14,
+    "runningHash": "�\u0001\u0019]\u0016�ߌ\u0003�l�o�&w�r��qqej�4�B�S\u000e��\rb((�Oz7\u0005t�\u0013L",
+    "adminKey": "Present",
+    "submitKey": "Present",
+    "autoRenewAccount": "0.0.7149926",
+    "autoRenewPeriod": "7776000",
+    "expirationTime": "1769441690.000000000",
+    "queryTime": 1017,
+    "validatedAt": "2025-10-28T15:35:42.296Z"
+  },
+  "sequenceValidation": {
+    "expectedSequences": [],
+    "actualSequences": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "missingSequences": [],
+    "duplicateSequences": [
+      null
+    ],
+    "sequenceGaps": [],
+    "isSequential": false,
+    "validationPassed": false
+  },
+  "integrityResults": [
+    {
+      "sequenceNumber": 1,
+      "hcsSequenceNumber": {
+        "low": 1,
+        "high": 0,
+        "unsigned": false
+      },
+      "decisionType": "REBALANCE",
+      "messageId": "33fdb97f7283c802144deba72f1c472e",
+      "transactionHash": "0.0.7149926@1761665688.127402959",
+      "messageSize": 1311,
+      "checks": {
+        "hasTransactionHash": true,
+        "hasHCSSequence": true,
+        "hasMessageId": true,
+        "hasExplorerLink": true,
+        "messageSizeValid": true,
+        "transactionHashFormat": true,
+        "explorerLinkValid": true
+      },
+      "timestamp": "2025-10-28T15:34:57.808Z",
+      "status": "VALID",
+      "validationScore": "100.0%",
+      "allChecksPassed": true
+    },
+    {
+      "sequenceNumber": 2,
+      "hcsSequenceNumber": {
+        "low": 3,
+        "high": 0,
+        "unsigned": false
+      },
+      "decisionType": "OPTIMIZE",
+      "messageId": "13e70fdc18adf81a7c8b40d0e0ef5a33",
+      "transactionHash": "0.0.7149926@1761665693.966544314",
+      "messageSize": 1320,
+      "checks": {
+        "hasTransactionHash": true,
+        "hasHCSSequence": true,
+        "hasMessageId": true,
+        "hasExplorerLink": true,
+        "messageSizeValid": true,
+        "transactionHashFormat": true,
+        "explorerLinkValid": true
+      },
+      "timestamp": "2025-10-28T15:35:04.757Z",
+      "status": "VALID",
+      "validationScore": "100.0%",
+      "allChecksPassed": true
+    },
+    {
+      "sequenceNumber": 3,
+      "hcsSequenceNumber": {
+        "low": 5,
+        "high": 0,
+        "unsigned": false
+      },
+      "decisionType": "EMERGENCY",
+      "messageId": "a96a128429605959ea86fbbd7593e7c9",
+      "transactionHash": "0.0.7149926@1761665704.752456879",
+      "messageSize": 1380,
+      "checks": {
+        "hasTransactionHash": true,
+        "hasHCSSequence": true,
+        "hasMessageId": true,
+        "hasExplorerLink": true,
+        "messageSizeValid": true,
+        "transactionHashFormat": true,
+        "explorerLinkValid": true
+      },
+      "timestamp": "2025-10-28T15:35:10.717Z",
+      "status": "VALID",
+      "validationScore": "100.0%",
+      "allChecksPassed": true
+    },
+    {
+      "sequenceNumber": 4,
+      "hcsSequenceNumber": {
+        "low": 7,
+        "high": 0,
+        "unsigned": false
+      },
+      "decisionType": "DIVERSIFY",
+      "messageId": "ce9e865712bb62b8c8684c95ca914417",
+      "transactionHash": "0.0.7149926@1761665706.763434036",
+      "messageSize": 1530,
+      "checks": {
+        "hasTransactionHash": true,
+        "hasHCSSequence": true,
+        "hasMessageId": true,
+        "hasExplorerLink": true,
+        "messageSizeValid": true,
+        "transactionHashFormat": true,
+        "explorerLinkValid": true
+      },
+      "timestamp": "2025-10-28T15:35:16.835Z",
+      "status": "VALID",
+      "validationScore": "100.0%",
+      "allChecksPassed": true
+    },
+    {
+      "sequenceNumber": 5,
+      "hcsSequenceNumber": {
+        "low": 9,
+        "high": 0,
+        "unsigned": false
+      },
+      "decisionType": "REBALANCE",
+      "messageId": "3cd85786cb089aa453ae92f07627aa32",
+      "transactionHash": "0.0.7149926@1761665715.408717217",
+      "messageSize": 1440,
+      "checks": {
+        "hasTransactionHash": true,
+        "hasHCSSequence": true,
+        "hasMessageId": true,
+        "hasExplorerLink": true,
+        "messageSizeValid": true,
+        "transactionHashFormat": true,
+        "explorerLinkValid": true
+      },
+      "timestamp": "2025-10-28T15:35:22.739Z",
+      "status": "VALID",
+      "validationScore": "100.0%",
+      "allChecksPassed": true
+    },
+    {
+      "sequenceNumber": 6,
+      "hcsSequenceNumber": {
+        "low": 11,
+        "high": 0,
+        "unsigned": false
+      },
+      "decisionType": "OPTIMIZE",
+      "messageId": "02a4bec46b4f46cc36a0c589d09a6aa6",
+      "transactionHash": "0.0.7149926@1761665718.936120300",
+      "messageSize": 1385,
+      "checks": {
+        "hasTransactionHash": true,
+        "hasHCSSequence": true,
+        "hasMessageId": true,
+        "hasExplorerLink": true,
+        "messageSizeValid": true,
+        "transactionHashFormat": true,
+        "explorerLinkValid": true
+      },
+      "timestamp": "2025-10-28T15:35:28.432Z",
+      "status": "VALID",
+      "validationScore": "100.0%",
+      "allChecksPassed": true
+    },
+    {
+      "sequenceNumber": 7,
+      "hcsSequenceNumber": {
+        "low": 13,
+        "high": 0,
+        "unsigned": false
+      },
+      "decisionType": "EMERGENCY",
+      "messageId": "b9452a0f322461ea19db8eda462f2ed5",
+      "transactionHash": "0.0.7149926@1761665726.407485311",
+      "messageSize": 1389,
+      "checks": {
+        "hasTransactionHash": true,
+        "hasHCSSequence": true,
+        "hasMessageId": true,
+        "hasExplorerLink": true,
+        "messageSizeValid": true,
+        "transactionHashFormat": true,
+        "explorerLinkValid": true
+      },
+      "timestamp": "2025-10-28T15:35:33.970Z",
+      "status": "VALID",
+      "validationScore": "100.0%",
+      "allChecksPassed": true
+    }
+  ],
+  "comprehensiveChecks": {
+    "topicAccessibility": true,
+    "sequenceIntegrity": false,
+    "messageIntegrity": true,
+    "dataConsistency": true,
+    "explorerAccessibility": true
+  },
+  "comprehensiveValidation": {
+    "checks": {
+      "topicAccessibility": true,
+      "sequenceIntegrity": false,
+      "messageIntegrity": true,
+      "dataConsistency": true,
+      "explorerAccessibility": true
+    },
+    "score": "80.0",
+    "passed": 4,
+    "total": 5
+  },
+  "judgeInstructions": {
+    "step1": "Review topic state to confirm HCS topic is accessible",
+    "step2": "Check sequence validation to ensure no missing messages",
+    "step3": "Verify message integrity scores are 100% for all messages",
+    "step4": "Confirm explorer links are valid and accessible",
+    "step5": "Validate comprehensive checks all pass"
+  }
+}

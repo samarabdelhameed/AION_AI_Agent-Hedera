@@ -193,8 +193,8 @@ class PerformanceComparisonGenerator {
             throw error;
         }
     }
-} 
-   generateDetailedAnalysis() {
+
+    generateDetailedAnalysis() {
         const hedera = this.comparisonData.hederaData.summary;
         const bsc = this.comparisonData.bscData.summary;
         

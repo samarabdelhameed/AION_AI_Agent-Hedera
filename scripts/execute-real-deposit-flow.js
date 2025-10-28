@@ -90,7 +90,7 @@ class RealDepositFlowExecutor {
                 const htsReport = JSON.parse(
                     fs.readFileSync(`${reportsDir}/${htsReports[0]}`, 'utf8')
                 );
-                this.tokenId = htsReport.tokenId;
+                this.tokenId = htsReport.token.tokenId;
                 console.log(`✅ Found HTS token: ${this.tokenId}`);
             }
 
@@ -103,7 +103,7 @@ class RealDepositFlowExecutor {
                 const hcsReport = JSON.parse(
                     fs.readFileSync(`${reportsDir}/${hcsReports[0]}`, 'utf8')
                 );
-                this.hcsTopicId = hcsReport.topicId;
+                this.hcsTopicId = hcsReport.topic.topicId;
                 console.log(`✅ Found HCS topic: ${this.hcsTopicId}`);
             }
 

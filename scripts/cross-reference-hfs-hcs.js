@@ -118,8 +118,8 @@ class HFSHCSCrossReference {
                 fs.readFileSync(`${reportsDir}/${hcsReports[0]}`, 'utf8')
             );
 
-            this.crossRefData.hcsTopicId = topicReport.topicId;
-            console.log(`✅ Loaded HCS topic: ${topicReport.topicId}`);
+            this.crossRefData.hcsTopicId = topicReport.topic.topicId;
+            console.log(`✅ Loaded HCS topic: ${topicReport.topic.topicId}`);
 
             return topicReport;
 

@@ -104,14 +104,15 @@ class RealDataVerifier {
                 try {
                     const htsData = JSON.parse(fs.readFileSync(`${reportsDir}/${htsReports[0]}`, 'utf8'));
                     
-                    if (htsData.tokenId && htsData.tokenId !== '0.0.XXXXXX' && htsData.tokenId.match(/^\d+\.\d+\.\d+$/)) {
+                    const tokenId = htsData.token ? htsData.token.tokenId : htsData.tokenId;
+                    if (tokenId && tokenId !== '0.0.XXXXXX' && tokenId.match(/^\d+\.\d+\.\d+$/)) {
                         checks.push({
                             check: 'HTS Token ID',
                             status: 'REAL',
-                            value: htsData.tokenId,
-                            explorerUrl: `https://hashscan.io/testnet/token/${htsData.tokenId}`
+                            value: tokenId,
+                            explorerUrl: `https://hashscan.io/testnet/token/${tokenId}`
                         });
-                        this.verificationResults.realData.tokenId = htsData.tokenId;
+                        this.verificationResults.realData.tokenId = tokenId;
                     } else {
                         checks.push({
                             check: 'HTS Token ID',
@@ -143,14 +144,15 @@ class RealDataVerifier {
                 try {
                     const hcsData = JSON.parse(fs.readFileSync(`${reportsDir}/${hcsReports[0]}`, 'utf8'));
                     
-                    if (hcsData.topicId && hcsData.topicId !== '0.0.XXXXXX' && hcsData.topicId.match(/^\d+\.\d+\.\d+$/)) {
+                    const topicId = hcsData.topic ? hcsData.topic.topicId : hcsData.topicId;
+                    if (topicId && topicId !== '0.0.XXXXXX' && topicId.match(/^\d+\.\d+\.\d+$/)) {
                         checks.push({
                             check: 'HCS Topic ID',
                             status: 'REAL',
-                            value: hcsData.topicId,
-                            explorerUrl: `https://hashscan.io/testnet/topic/${hcsData.topicId}`
+                            value: topicId,
+                            explorerUrl: `https://hashscan.io/testnet/topic/${topicId}`
                         });
-                        this.verificationResults.realData.topicId = hcsData.topicId;
+                        this.verificationResults.realData.topicId = topicId;
                     } else {
                         checks.push({
                             check: 'HCS Topic ID',
