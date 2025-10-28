@@ -133,3 +133,9 @@ coverage.json
 # Kiro IDE files
 .kiro/
 kiro-integration/
+
+# Reports and temporary files
+reports/
+frontend/playwright-report/
+frontend/test-results/
+contracts/hedera-smart-contracts-*/
