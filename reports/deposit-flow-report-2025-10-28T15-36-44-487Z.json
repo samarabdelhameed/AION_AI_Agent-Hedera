@@ -1,0 +1,237 @@
+{
+  "timestamp": "2025-10-28T15:36:44.487Z",
+  "network": "hedera-testnet",
+  "operation": "Real Deposit Flow Execution",
+  "operator": "0.0.7149926",
+  "tokenId": "0.0.7150671",
+  "hcsTopicId": "0.0.7150678",
+  "summary": {
+    "totalDeposits": 3,
+    "successfulDeposits": 3,
+    "failedDeposits": 0,
+    "totalAmountDeposited": 1650,
+    "totalSharesMinted": 1650000000,
+    "averageExecutionTime": 3708,
+    "successRate": "100.0%",
+    "averageDepositSize": "550.00",
+    "tokenUtilization": "100%"
+  },
+  "deposits": [
+    {
+      "scenario": {
+        "userId": "user1",
+        "userType": "RETAIL_INVESTOR",
+        "depositAmount": 150,
+        "expectedShares": 150000000,
+        "strategy": "CONSERVATIVE",
+        "riskTolerance": "LOW",
+        "expectedAPY": 8.5,
+        "reason": "First-time DeFi user seeking stable yields",
+        "marketConditions": {
+          "bnbPrice": 580.45,
+          "volatility": "MODERATE",
+          "marketSentiment": "BULLISH",
+          "tvlGrowth": "+12.3%"
+        }
+      },
+      "depositDecision": {
+        "messageFormat": "AION_DEPOSIT_V1",
+        "timestamp": "2025-10-28T15:36:28.826Z",
+        "sequenceNumber": 1,
+        "eventType": "USER_DEPOSIT",
+        "userId": "user1",
+        "userType": "RETAIL_INVESTOR",
+        "depositAmount": 150,
+        "depositCurrency": "USDT",
+        "sharesMinted": 150000000,
+        "sharePrice": 1,
+        "strategy": "CONSERVATIVE",
+        "riskTolerance": "LOW",
+        "expectedAPY": 8.5,
+        "reason": "First-time DeFi user seeking stable yields",
+        "marketConditions": {
+          "bnbPrice": 580.45,
+          "volatility": "MODERATE",
+          "marketSentiment": "BULLISH",
+          "tvlGrowth": "+12.3%"
+        },
+        "transactionDetails": {
+          "mintTransactionHash": ">�\t�-�\t\u0001�͜0�3_\u001eژ\n�u��O,�����+�\u001c�����\u001d)(�Ԧ\u0004�:\u0007",
+          "tokenId": "0.0.7150671",
+          "newTotalSupply": "1326480000",
+          "executionTime": 1469,
+          "gasUsed": "Estimated 0.001 HBAR"
+        },
+        "aiAnalysis": {
+          "riskScore": 0.15000000000000002,
+          "expectedReturn": 8.5,
+          "recommendedStrategy": "Venus BNB Lending + PancakeSwap LP (70/30)",
+          "confidence": 0.9779171002823941
+        },
+        "hcsDetails": {
+          "transactionHash": "�ERջ�\\ã\u0005����\u001d+\t��^����㉯�1iնR��R�.�g<�\r\u0017۰�",
+          "topicSequenceNumber": "42",
+          "explorerUrl": "https://hashscan.io/testnet/transaction/�ERջ�\\ã\u0005����\u001d+\t��^����㉯�1iնR��R�.�g<�\r\u0017۰�"
+        }
+      },
+      "executionTime": 3163,
+      "success": true,
+      "mintTransactionHash": ">�\t�-�\t\u0001�͜0�3_\u001eژ\n�u��O,�����+�\u001c�����\u001d)(�Ԧ\u0004�:\u0007",
+      "mintExplorerUrl": "https://hashscan.io/testnet/transaction/>�\t�-�\t\u0001�͜0�3_\u001eژ\n�u��O,�����+�\u001c�����\u001d)(�Ԧ\u0004�:\u0007",
+      "newTotalSupply": "1326480000"
+    },
+    {
+      "scenario": {
+        "userId": "user2",
+        "userType": "EXPERIENCED_TRADER",
+        "depositAmount": 500,
+        "expectedShares": 500000000,
+        "strategy": "AGGRESSIVE",
+        "riskTolerance": "HIGH",
+        "expectedAPY": 15.2,
+        "reason": "Seeking maximum yield with automated rebalancing",
+        "marketConditions": {
+          "bnbPrice": 582.1,
+          "volatility": "HIGH",
+          "marketSentiment": "VERY_BULLISH",
+          "tvlGrowth": "+18.7%"
+        }
+      },
+      "depositDecision": {
+        "messageFormat": "AION_DEPOSIT_V1",
+        "timestamp": "2025-10-28T15:36:34.888Z",
+        "sequenceNumber": 2,
+        "eventType": "USER_DEPOSIT",
+        "userId": "user2",
+        "userType": "EXPERIENCED_TRADER",
+        "depositAmount": 500,
+        "depositCurrency": "USDT",
+        "sharesMinted": 500000000,
+        "sharePrice": 1,
+        "strategy": "AGGRESSIVE",
+        "riskTolerance": "HIGH",
+        "expectedAPY": 15.2,
+        "reason": "Seeking maximum yield with automated rebalancing",
+        "marketConditions": {
+          "bnbPrice": 582.1,
+          "volatility": "HIGH",
+          "marketSentiment": "VERY_BULLISH",
+          "tvlGrowth": "+18.7%"
+        },
+        "transactionDetails": {
+          "mintTransactionHash": "��<b�Λ�M\"\u001c�U\u001bQ��]���\u0016h.��\r�<��N\u000b��\u0013�O�\u0000\u000f\"8�.\u00161�",
+          "tokenId": "0.0.7150671",
+          "newTotalSupply": "1826480000",
+          "executionTime": 2365,
+          "gasUsed": "Estimated 0.001 HBAR"
+        },
+        "aiAnalysis": {
+          "riskScore": 0.44999999999999996,
+          "expectedReturn": 15.2,
+          "recommendedStrategy": "Multi-protocol optimization with auto-rebalancing",
+          "confidence": 0.9488228147591711
+        },
+        "hcsDetails": {
+          "transactionHash": "k���f�\u0019̰��Z�D]\u0005a�\u0019K����%�Gqܣb#�\f\u0007G�\u0007�ht:өIu�",
+          "topicSequenceNumber": "43",
+          "explorerUrl": "https://hashscan.io/testnet/transaction/k���f�\u0019̰��Z�D]\u0005a�\u0019K����%�Gqܣb#�\f\u0007G�\u0007�ht:өIu�"
+        }
+      },
+      "executionTime": 4653,
+      "success": true,
+      "mintTransactionHash": "��<b�Λ�M\"\u001c�U\u001bQ��]���\u0016h.��\r�<��N\u000b��\u0013�O�\u0000\u000f\"8�.\u00161�",
+      "mintExplorerUrl": "https://hashscan.io/testnet/transaction/��<b�Λ�M\"\u001c�U\u001bQ��]���\u0016h.��\r�<��N\u000b��\u0013�O�\u0000\u000f\"8�.\u00161�",
+      "newTotalSupply": "1826480000"
+    },
+    {
+      "scenario": {
+        "userId": "aiAgent",
+        "userType": "INSTITUTIONAL",
+        "depositAmount": 1000,
+        "expectedShares": 1000000000,
+        "strategy": "BALANCED",
+        "riskTolerance": "MEDIUM",
+        "expectedAPY": 12.8,
+        "reason": "Large deposit for diversified yield optimization",
+        "marketConditions": {
+          "bnbPrice": 579.85,
+          "volatility": "MODERATE",
+          "marketSentiment": "BULLISH",
+          "tvlGrowth": "+15.4%"
+        }
+      },
+      "depositDecision": {
+        "messageFormat": "AION_DEPOSIT_V1",
+        "timestamp": "2025-10-28T15:36:40.786Z",
+        "sequenceNumber": 3,
+        "eventType": "USER_DEPOSIT",
+        "userId": "aiAgent",
+        "userType": "INSTITUTIONAL",
+        "depositAmount": 1000,
+        "depositCurrency": "USDT",
+        "sharesMinted": 1000000000,
+        "sharePrice": 1,
+        "strategy": "BALANCED",
+        "riskTolerance": "MEDIUM",
+        "expectedAPY": 12.8,
+        "reason": "Large deposit for diversified yield optimization",
+        "marketConditions": {
+          "bnbPrice": 579.85,
+          "volatility": "MODERATE",
+          "marketSentiment": "BULLISH",
+          "tvlGrowth": "+15.4%"
+        },
+        "transactionDetails": {
+          "mintTransactionHash": "�y)\u0011!�*,���XE�\u001bGu>0�FK�Ц�r\u000e�B?\u0017z�\\e?`��_,\u0001�\u0013/\u001a�",
+          "tokenId": "0.0.7150671",
+          "newTotalSupply": "2826480000",
+          "executionTime": 1609,
+          "gasUsed": "Estimated 0.001 HBAR"
+        },
+        "aiAnalysis": {
+          "riskScore": 0.35,
+          "expectedReturn": 12.8,
+          "recommendedStrategy": "Diversified yield farming across 4+ protocols",
+          "confidence": 0.9587651249380243
+        },
+        "hcsDetails": {
+          "transactionHash": "-��i�\u0003\u0016�\u0001������/�In7�~t��~₣S��aĦ����\rҢ���e",
+          "topicSequenceNumber": "44",
+          "explorerUrl": "https://hashscan.io/testnet/transaction/-��i�\u0003\u0016�\u0001������/�In7�~t��~₣S��aĦ����\rҢ���e"
+        }
+      },
+      "executionTime": 3309,
+      "success": true,
+      "mintTransactionHash": "�y)\u0011!�*,���XE�\u001bGu>0�FK�Ц�r\u000e�B?\u0017z�\\e?`��_,\u0001�\u0013/\u001a�",
+      "mintExplorerUrl": "https://hashscan.io/testnet/transaction/�y)\u0011!�*,���XE�\u001bGu>0�FK�Ц�r\u000e�B?\u0017z�\\e?`��_,\u0001�\u0013/\u001a�",
+      "newTotalSupply": "2826480000"
+    }
+  ],
+  "verification": {
+    "allDepositsProcessed": true,
+    "htsIntegrationWorking": true,
+    "hcsLoggingWorking": true,
+    "realUserScenarios": true
+  },
+  "explorerLinks": {
+    "token": "https://hashscan.io/testnet/token/0.0.7150671",
+    "topic": "https://hashscan.io/testnet/topic/0.0.7150678",
+    "transactions": [
+      {
+        "userId": "user1",
+        "mintTransaction": "https://hashscan.io/testnet/transaction/>�\t�-�\t\u0001�͜0�3_\u001eژ\n�u��O,�����+�\u001c�����\u001d)(�Ԧ\u0004�:\u0007",
+        "hcsTransaction": "https://hashscan.io/testnet/transaction/�ERջ�\\ã\u0005����\u001d+\t��^����㉯�1iնR��R�.�g<�\r\u0017۰�"
+      },
+      {
+        "userId": "user2",
+        "mintTransaction": "https://hashscan.io/testnet/transaction/��<b�Λ�M\"\u001c�U\u001bQ��]���\u0016h.��\r�<��N\u000b��\u0013�O�\u0000\u000f\"8�.\u00161�",
+        "hcsTransaction": "https://hashscan.io/testnet/transaction/k���f�\u0019̰��Z�D]\u0005a�\u0019K����%�Gqܣb#�\f\u0007G�\u0007�ht:өIu�"
+      },
+      {
+        "userId": "aiAgent",
+        "mintTransaction": "https://hashscan.io/testnet/transaction/�y)\u0011!�*,���XE�\u001bGu>0�FK�Ц�r\u000e�B?\u0017z�\\e?`��_,\u0001�\u0013/\u001a�",
+        "hcsTransaction": "https://hashscan.io/testnet/transaction/-��i�\u0003\u0016�\u0001������/�In7�~t��~₣S��aĦ����\rҢ���e"
+      }
+    ]
+  }
+}

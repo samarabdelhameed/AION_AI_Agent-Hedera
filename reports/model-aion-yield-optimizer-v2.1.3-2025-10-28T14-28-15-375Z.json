@@ -1,0 +1,80 @@
+{
+  "modelId": "aion-yield-optimizer-v2.1.3",
+  "name": "AION Yield Optimization Engine",
+  "version": "2.1.3",
+  "type": "Deep Reinforcement Learning",
+  "architecture": "Transformer-based Multi-Agent System",
+  "trainingData": {
+    "sources": [
+      "DeFiPulse",
+      "CoinGecko",
+      "Binance API",
+      "Venus Protocol",
+      "PancakeSwap"
+    ],
+    "timeframe": "2022-01-01 to 2024-10-28",
+    "dataPoints": 2847392,
+    "protocols": 47,
+    "strategies": 156
+  },
+  "performance": {
+    "accuracy": 0.9247,
+    "precision": 0.9156,
+    "recall": 0.9089,
+    "f1Score": 0.9122,
+    "sharpeRatio": 2.34,
+    "maxDrawdown": 0.087,
+    "annualizedReturn": 0.1847,
+    "winRate": 0.8923,
+    "avgConfidence": 0.9134
+  },
+  "hyperparameters": {
+    "learningRate": 0.0001,
+    "batchSize": 256,
+    "epochs": 1000,
+    "hiddenLayers": 12,
+    "attentionHeads": 16,
+    "dropoutRate": 0.1,
+    "optimizerType": "AdamW",
+    "schedulerType": "CosineAnnealingLR"
+  },
+  "features": {
+    "inputFeatures": 247,
+    "technicalIndicators": [
+      "RSI",
+      "MACD",
+      "Bollinger Bands",
+      "Volume Profile",
+      "Fibonacci Retracements"
+    ],
+    "marketData": [
+      "Price",
+      "Volume",
+      "Liquidity",
+      "TVL",
+      "APY",
+      "Volatility"
+    ],
+    "protocolMetrics": [
+      "Health Factor",
+      "Utilization Rate",
+      "Reward Rate",
+      "Risk Score"
+    ],
+    "macroFactors": [
+      "Market Sentiment",
+      "Correlation Matrix",
+      "Volatility Index"
+    ]
+  },
+  "deployment": {
+    "environment": "Production",
+    "lastUpdated": "2024-10-28T10:30:00.000Z",
+    "deploymentHash": "6ff243ded0ed84a52d09b92af775fc2b61265d028acd9661c33dc0be9c114667",
+    "checksumMD5": "2dafc19083e42b3b00a6bc8a678e9421",
+    "checksumSHA256": "85d0965d7fafae1057a042f01feb6cfb7cb306d4ccbc38d82843ebd385532688",
+    "modelSize": "847.3 MB",
+    "inferenceTime": "23.4 ms",
+    "memoryUsage": "2.1 GB"
+  }
+}

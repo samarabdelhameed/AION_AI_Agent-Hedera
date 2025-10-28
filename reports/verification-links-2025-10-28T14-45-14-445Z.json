@@ -1,0 +1,460 @@
+{
+  "timestamp": "2025-10-28T14:45:14.446Z",
+  "operation": "Verification Links Collection",
+  "network": "hedera-testnet",
+  "summary": {
+    "totalLinks": 21,
+    "linksByCategory": {
+      "hts": 1,
+      "hcs": 1,
+      "hfs": 6,
+      "accounts": 6,
+      "transactions": 7
+    },
+    "timelineEvents": 7,
+    "validationResults": {
+      "total": 21,
+      "accessible": 0,
+      "inaccessible": 21,
+      "errors": [
+        {
+          "url": "https://hashscan.io/testnet/token/undefined"
+        },
+        {
+          "url": "https://hashscan.io/testnet/topic/undefined"
+        },
+        {
+          "url": "https://hashscan.io/testnet/file/0.0.7150714"
+        },
+        {
+          "url": "https://hashscan.io/testnet/file/0.0.7150716"
+        },
+        {
+          "url": "https://hashscan.io/testnet/file/0.0.7150717"
+        },
+        {
+          "url": "https://hashscan.io/testnet/file/0.0.7150718"
+        },
+        {
+          "url": "https://hashscan.io/testnet/file/0.0.7150719"
+        },
+        {
+          "url": "https://hashscan.io/testnet/file/0.0.7150721"
+        },
+        {
+          "url": "https://hashscan.io/testnet/account/undefined"
+        },
+        {
+          "url": "https://hashscan.io/testnet/account/undefined"
+        },
+        {
+          "url": "https://hashscan.io/testnet/account/undefined"
+        },
+        {
+          "url": "https://hashscan.io/testnet/account/undefined"
+        },
+        {
+          "url": "https://hashscan.io/testnet/account/undefined"
+        },
+        {
+          "url": "https://hashscan.io/testnet/account/undefined"
+        },
+        {
+          "url": "https://hashscan.io/testnet/transaction/M'W\u000f���\b��a��淫�c��\u0002c.k|��D�Q�f�#\u001aW�]�\u001d�M/H{e��"
+        },
+        {
+          "url": "https://hashscan.io/testnet/transaction/��3h����M�\u0000=i�A��b����\u001d\b�Ǔ|{�D\f\u000bzSvH�i�|Hr���"
+        },
+        {
+          "url": "https://hashscan.io/testnet/transaction/8O�=\u001fv.�@w�L�%mK��r�\u0007\u00009燢��G#���3���և\u0005k�\\�9���"
+        },
+        {
+          "url": "https://hashscan.io/testnet/transaction/b��LǕpu\u0018v�9��U\u001d�Ghu�'c��\u0004�R*w��l��8\\+h>��\u000f\u001e�"
+        },
+        {
+          "url": "https://hashscan.io/testnet/transaction/̮��\u0016�'�i\u0005��]!�穕\r\u0013,�m��6΋D���i�G���)x\u0007�˺M�\u0012"
+        },
+        {
+          "url": "https://hashscan.io/testnet/transaction/x\fz�6+�\u0000g~\u0000h%��4���e��h�ǃ?w���p�ޛf\u001az!\u0003\u001e�\u001d�aѼ/"
+        },
+        {
+          "url": "https://hashscan.io/testnet/transaction/\u0001P\u0004M�ȃ�o���s�d!�|eϟ&����\u0015�]��\u0007\u001c2U��%ۂ\f���\u0015"
+        }
+      ]
+    },
+    "systemStatus": {
+      "htsIntegration": "OPERATIONAL",
+      "hcsIntegration": "OPERATIONAL",
+      "hfsIntegration": "OPERATIONAL",
+      "overallStatus": "FULLY_OPERATIONAL"
+    }
+  },
+  "links": {
+    "hts": [
+      {
+        "type": "TOKEN",
+        "name": "AION Vault Shares Token",
+        "symbol": "AION",
+        "explorerUrl": "https://hashscan.io/testnet/token/undefined",
+        "description": "Main vault shares token for AION platform",
+        "operations": [
+          {
+            "type": "TOKEN_CREATE",
+            "hash": "0.0.7149926@1761661588.941178042",
+            "tokenId": "0.0.7150671",
+            "timestamp": "2025-10-28T14:26:35.885Z",
+            "duration": 1951,
+            "status": "SUCCESS"
+          }
+        ]
+      }
+    ],
+    "hcs": [
+      {
+        "type": "TOPIC",
+        "name": "AI Decision Logging Topic",
+        "explorerUrl": "https://hashscan.io/testnet/topic/undefined",
+        "description": "Topic for logging all AI rebalancing decisions",
+        "messageCount": 0
+      }
+    ],
+    "hfs": [
+      {
+        "type": "FILE",
+        "id": "0.0.7150714",
+        "name": "ai-model-metadata-compact.json",
+        "explorerUrl": "https://hashscan.io/testnet/file/0.0.7150714",
+        "description": "AION AI Model Metadata - Compact System Information",
+        "size": 1826
+      },
+      {
+        "type": "FILE",
+        "id": "0.0.7150716",
+        "name": "model-aion-yield-optimizer-v2.1.3.json",
+        "explorerUrl": "https://hashscan.io/testnet/file/0.0.7150716",
+        "description": "AION AI Model: AION Yield Optimization Engine v2.1.3",
+        "size": 1940
+      },
+      {
+        "type": "FILE",
+        "id": "0.0.7150717",
+        "name": "model-aion-risk-assessor-v1.8.2.json",
+        "explorerUrl": "https://hashscan.io/testnet/file/0.0.7150717",
+        "description": "AION AI Model: AION Risk Assessment Model v1.8.2",
+        "size": 1826
+      },
+      {
+        "type": "FILE",
+        "id": "0.0.7150718",
+        "name": "model-aion-market-predictor-v3.0.1.json",
+        "explorerUrl": "https://hashscan.io/testnet/file/0.0.7150718",
+        "description": "AION AI Model: AION Market Prediction Engine v3.0.1",
+        "size": 1837
+      },
+      {
+        "type": "FILE",
+        "id": "0.0.7150719",
+        "name": "ai-models-summary.json",
+        "explorerUrl": "https://hashscan.io/testnet/file/0.0.7150719",
+        "description": "AION AI Models Summary - Performance Overview",
+        "size": 292
+      },
+      {
+        "type": "FILE",
+        "id": "0.0.7150721",
+        "name": "hfs-file-index.json",
+        "explorerUrl": "https://hashscan.io/testnet/file/0.0.7150721",
+        "description": "AION HFS File Index - Complete File Registry",
+        "size": 1549
+      }
+    ],
+    "accounts": [
+      {
+        "type": "OPERATOR",
+        "id": "0.0.UNKNOWN",
+        "explorerUrl": "https://hashscan.io/testnet/account/undefined",
+        "description": "Main operator account for AION Vault",
+        "role": "System Administrator"
+      },
+      {
+        "type": "TEST_ACCOUNT",
+        "name": "createdAt",
+        "explorerUrl": "https://hashscan.io/testnet/account/undefined",
+        "description": "Test account for createdAt operations",
+        "role": "Test User"
+      },
+      {
+        "type": "TEST_ACCOUNT",
+        "name": "operatorAccount",
+        "explorerUrl": "https://hashscan.io/testnet/account/undefined",
+        "description": "Test account for operatorAccount operations",
+        "role": "Test User"
+      },
+      {
+        "type": "TEST_ACCOUNT",
+        "name": "network",
+        "explorerUrl": "https://hashscan.io/testnet/account/undefined",
+        "description": "Test account for network operations",
+        "role": "Test User"
+      },
+      {
+        "type": "TEST_ACCOUNT",
+        "name": "accounts",
+        "explorerUrl": "https://hashscan.io/testnet/account/undefined",
+        "description": "Test account for accounts operations",
+        "role": "Test User"
+      },
+      {
+        "type": "TEST_ACCOUNT",
+        "name": "summary",
+        "explorerUrl": "https://hashscan.io/testnet/account/undefined",
+        "description": "Test account for summary operations",
+        "role": "Test User"
+      }
+    ],
+    "transactions": [
+      {
+        "type": "HTS_MINT",
+        "hash": "M'W\u000f���\b��a��淫�c��\u0002c.k|��D�Q�f�#\u001aW�]�\u001d�M/H{e��",
+        "explorerUrl": "https://hashscan.io/testnet/transaction/M'W\u000f���\b��a��淫�c��\u0002c.k|��D�Q�f�#\u001aW�]�\u001d�M/H{e��",
+        "description": "Token mint for user1",
+        "amount": 150000000,
+        "timestamp": "2025-10-28T14:35:13.575Z"
+      },
+      {
+        "type": "HTS_MINT",
+        "hash": "��3h����M�\u0000=i�A��b����\u001d\b�Ǔ|{�D\f\u000bzSvH�i�|Hr���",
+        "explorerUrl": "https://hashscan.io/testnet/transaction/��3h����M�\u0000=i�A��b����\u001d\b�Ǔ|{�D\f\u000bzSvH�i�|Hr���",
+        "description": "Token mint for user2",
+        "amount": 500000000,
+        "timestamp": "2025-10-28T14:35:20.582Z"
+      },
+      {
+        "type": "HTS_MINT",
+        "hash": "8O�=\u001fv.�@w�L�%mK��r�\u0007\u00009燢��G#���3���և\u0005k�\\�9���",
+        "explorerUrl": "https://hashscan.io/testnet/transaction/8O�=\u001fv.�@w�L�%mK��r�\u0007\u00009燢��G#���3���և\u0005k�\\�9���",
+        "description": "Token mint for aiAgent",
+        "amount": 1000000000,
+        "timestamp": "2025-10-28T14:35:27.740Z"
+      },
+      {
+        "type": "HTS_BURN",
+        "hash": "b��LǕpu\u0018v�9��U\u001d�Ghu�'c��\u0004�R*w��l��8\\+h>��\u000f\u001e�",
+        "explorerUrl": "https://hashscan.io/testnet/transaction/b��LǕpu\u0018v�9��U\u001d�Ghu�'c��\u0004�R*w��l��8\\+h>��\u000f\u001e�",
+        "description": "Token burn for user1",
+        "amount": 75000000,
+        "timestamp": "2025-10-28T14:35:55.618Z"
+      },
+      {
+        "type": "HTS_BURN",
+        "hash": "̮��\u0016�'�i\u0005��]!�穕\r\u0013,�m��6΋D���i�G���)x\u0007�˺M�\u0012",
+        "explorerUrl": "https://hashscan.io/testnet/transaction/̮��\u0016�'�i\u0005��]!�穕\r\u0013,�m��6΋D���i�G���)x\u0007�˺M�\u0012",
+        "description": "Token burn for user2",
+        "amount": 200000000,
+        "timestamp": "2025-10-28T14:36:02.030Z"
+      },
+      {
+        "type": "HTS_BURN",
+        "hash": "x\fz�6+�\u0000g~\u0000h%��4���e��h�ǃ?w���p�ޛf\u001az!\u0003\u001e�\u001d�aѼ/",
+        "explorerUrl": "https://hashscan.io/testnet/transaction/x\fz�6+�\u0000g~\u0000h%��4���e��h�ǃ?w���p�ޛf\u001az!\u0003\u001e�\u001d�aѼ/",
+        "description": "Token burn for aiAgent",
+        "amount": 150000000,
+        "timestamp": "2025-10-28T14:36:08.041Z"
+      },
+      {
+        "type": "HTS_BURN",
+        "hash": "\u0001P\u0004M�ȃ�o���s�d!�|eϟ&����\u0015�]��\u0007\u001c2U��%ۂ\f���\u0015",
+        "explorerUrl": "https://hashscan.io/testnet/transaction/\u0001P\u0004M�ȃ�o���s�d!�|eϟ&����\u0015�]��\u0007\u001c2U��%ۂ\f���\u0015",
+        "description": "Token burn for treasury",
+        "amount": 50000000,
+        "timestamp": "2025-10-28T14:36:14.505Z"
+      }
+    ]
+  },
+  "timeline": [
+    {
+      "sequence": 1,
+      "timestamp": "2025-10-28T14:35:13.575Z",
+      "type": "HTS_MINT",
+      "description": "Token mint for user1",
+      "explorerUrl": "https://hashscan.io/testnet/transaction/M'W\u000f���\b��a��淫�c��\u0002c.k|��D�Q�f�#\u001aW�]�\u001d�M/H{e��",
+      "hash": "M'W\u000f���\b��a��淫�c��\u0002c.k|��D�Q�f�#\u001aW�]�\u001d�M/H{e��"
+    },
+    {
+      "sequence": 2,
+      "timestamp": "2025-10-28T14:35:20.582Z",
+      "type": "HTS_MINT",
+      "description": "Token mint for user2",
+      "explorerUrl": "https://hashscan.io/testnet/transaction/��3h����M�\u0000=i�A��b����\u001d\b�Ǔ|{�D\f\u000bzSvH�i�|Hr���",
+      "hash": "��3h����M�\u0000=i�A��b����\u001d\b�Ǔ|{�D\f\u000bzSvH�i�|Hr���"
+    },
+    {
+      "sequence": 3,
+      "timestamp": "2025-10-28T14:35:27.740Z",
+      "type": "HTS_MINT",
+      "description": "Token mint for aiAgent",
+      "explorerUrl": "https://hashscan.io/testnet/transaction/8O�=\u001fv.�@w�L�%mK��r�\u0007\u00009燢��G#���3���և\u0005k�\\�9���",
+      "hash": "8O�=\u001fv.�@w�L�%mK��r�\u0007\u00009燢��G#���3���և\u0005k�\\�9���"
+    },
+    {
+      "sequence": 4,
+      "timestamp": "2025-10-28T14:35:55.618Z",
+      "type": "HTS_BURN",
+      "description": "Token burn for user1",
+      "explorerUrl": "https://hashscan.io/testnet/transaction/b��LǕpu\u0018v�9��U\u001d�Ghu�'c��\u0004�R*w��l��8\\+h>��\u000f\u001e�",
+      "hash": "b��LǕpu\u0018v�9��U\u001d�Ghu�'c��\u0004�R*w��l��8\\+h>��\u000f\u001e�"
+    },
+    {
+      "sequence": 5,
+      "timestamp": "2025-10-28T14:36:02.030Z",
+      "type": "HTS_BURN",
+      "description": "Token burn for user2",
+      "explorerUrl": "https://hashscan.io/testnet/transaction/̮��\u0016�'�i\u0005��]!�穕\r\u0013,�m��6΋D���i�G���)x\u0007�˺M�\u0012",
+      "hash": "̮��\u0016�'�i\u0005��]!�穕\r\u0013,�m��6΋D���i�G���)x\u0007�˺M�\u0012"
+    },
+    {
+      "sequence": 6,
+      "timestamp": "2025-10-28T14:36:08.041Z",
+      "type": "HTS_BURN",
+      "description": "Token burn for aiAgent",
+      "explorerUrl": "https://hashscan.io/testnet/transaction/x\fz�6+�\u0000g~\u0000h%��4���e��h�ǃ?w���p�ޛf\u001az!\u0003\u001e�\u001d�aѼ/",
+      "hash": "x\fz�6+�\u0000g~\u0000h%��4���e��h�ǃ?w���p�ޛf\u001az!\u0003\u001e�\u001d�aѼ/"
+    },
+    {
+      "sequence": 7,
+      "timestamp": "2025-10-28T14:36:14.505Z",
+      "type": "HTS_BURN",
+      "description": "Token burn for treasury",
+      "explorerUrl": "https://hashscan.io/testnet/transaction/\u0001P\u0004M�ȃ�o���s�d!�|eϟ&����\u0015�]��\u0007\u001c2U��%ۂ\f���\u0015",
+      "hash": "\u0001P\u0004M�ȃ�o���s�d!�|eϟ&����\u0015�]��\u0007\u001c2U��%ۂ\f���\u0015"
+    }
+  ],
+  "validation": {
+    "total": 21,
+    "accessible": 0,
+    "inaccessible": 21,
+    "errors": [
+      {
+        "url": "https://hashscan.io/testnet/token/undefined"
+      },
+      {
+        "url": "https://hashscan.io/testnet/topic/undefined"
+      },
+      {
+        "url": "https://hashscan.io/testnet/file/0.0.7150714"
+      },
+      {
+        "url": "https://hashscan.io/testnet/file/0.0.7150716"
+      },
+      {
+        "url": "https://hashscan.io/testnet/file/0.0.7150717"
+      },
+      {
+        "url": "https://hashscan.io/testnet/file/0.0.7150718"
+      },
+      {
+        "url": "https://hashscan.io/testnet/file/0.0.7150719"
+      },
+      {
+        "url": "https://hashscan.io/testnet/file/0.0.7150721"
+      },
+      {
+        "url": "https://hashscan.io/testnet/account/undefined"
+      },
+      {
+        "url": "https://hashscan.io/testnet/account/undefined"
+      },
+      {
+        "url": "https://hashscan.io/testnet/account/undefined"
+      },
+      {
+        "url": "https://hashscan.io/testnet/account/undefined"
+      },
+      {
+        "url": "https://hashscan.io/testnet/account/undefined"
+      },
+      {
+        "url": "https://hashscan.io/testnet/account/undefined"
+      },
+      {
+        "url": "https://hashscan.io/testnet/transaction/M'W\u000f���\b��a��淫�c��\u0002c.k|��D�Q�f�#\u001aW�]�\u001d�M/H{e��"
+      },
+      {
+        "url": "https://hashscan.io/testnet/transaction/��3h����M�\u0000=i�A��b����\u001d\b�Ǔ|{�D\f\u000bzSvH�i�|Hr���"
+      },
+      {
+        "url": "https://hashscan.io/testnet/transaction/8O�=\u001fv.�@w�L�%mK��r�\u0007\u00009燢��G#���3���և\u0005k�\\�9���"
+      },
+      {
+        "url": "https://hashscan.io/testnet/transaction/b��LǕpu\u0018v�9��U\u001d�Ghu�'c��\u0004�R*w��l��8\\+h>��\u000f\u001e�"
+      },
+      {
+        "url": "https://hashscan.io/testnet/transaction/̮��\u0016�'�i\u0005��]!�穕\r\u0013,�m��6΋D���i�G���)x\u0007�˺M�\u0012"
+      },
+      {
+        "url": "https://hashscan.io/testnet/transaction/x\fz�6+�\u0000g~\u0000h%��4���e��h�ǃ?w���p�ޛf\u001az!\u0003\u001e�\u001d�aѼ/"
+      },
+      {
+        "url": "https://hashscan.io/testnet/transaction/\u0001P\u0004M�ȃ�o���s�d!�|eϟ&����\u0015�]��\u0007\u001c2U��%ۂ\f���\u0015"
+      }
+    ]
+  },
+  "instructions": {
+    "overview": "Complete verification guide for hackathon judges",
+    "steps": [
+      {
+        "step": 1,
+        "title": "Verify HTS Token Integration",
+        "description": "Check AION token creation and operations",
+        "links": [
+          "https://hashscan.io/testnet/token/undefined"
+        ],
+        "expectedData": "Token details, mint/burn transactions, supply changes"
+      },
+      {
+        "step": 2,
+        "title": "Verify HCS Decision Logging",
+        "description": "Review AI decision messages on consensus service",
+        "links": [
+          "https://hashscan.io/testnet/topic/undefined"
+        ],
+        "expectedData": "AI decision messages, timestamps, sequence numbers"
+      },
+      {
+        "step": 3,
+        "title": "Verify HFS Model Metadata",
+        "description": "Examine AI model metadata storage",
+        "links": [
+          "https://hashscan.io/testnet/file/0.0.7150714",
+          "https://hashscan.io/testnet/file/0.0.7150716",
+          "https://hashscan.io/testnet/file/0.0.7150717",
+          "https://hashscan.io/testnet/file/0.0.7150718",
+          "https://hashscan.io/testnet/file/0.0.7150719",
+          "https://hashscan.io/testnet/file/0.0.7150721"
+        ],
+        "expectedData": "Model files, metadata, checksums"
+      },
+      {
+        "step": 4,
+        "title": "Review Transaction Timeline",
+        "description": "Follow chronological transaction sequence",
+        "links": [
+          "https://hashscan.io/testnet/transaction/M'W\u000f���\b��a��淫�c��\u0002c.k|��D�Q�f�#\u001aW�]�\u001d�M/H{e��",
+          "https://hashscan.io/testnet/transaction/��3h����M�\u0000=i�A��b����\u001d\b�Ǔ|{�D\f\u000bzSvH�i�|Hr���",
+          "https://hashscan.io/testnet/transaction/8O�=\u001fv.�@w�L�%mK��r�\u0007\u00009燢��G#���3���և\u0005k�\\�9���",
+          "https://hashscan.io/testnet/transaction/b��LǕpu\u0018v�9��U\u001d�Ghu�'c��\u0004�R*w��l��8\\+h>��\u000f\u001e�",
+          "https://hashscan.io/testnet/transaction/̮��\u0016�'�i\u0005��]!�穕\r\u0013,�m��6΋D���i�G���)x\u0007�˺M�\u0012",
+          "https://hashscan.io/testnet/transaction/x\fz�6+�\u0000g~\u0000h%��4���e��h�ǃ?w���p�ޛf\u001az!\u0003\u001e�\u001d�aѼ/",
+          "https://hashscan.io/testnet/transaction/\u0001P\u0004M�ȃ�o���s�d!�|eϟ&����\u0015�]��\u0007\u001c2U��%ۂ\f���\u0015"
+        ],
+        "expectedData": "Complete user journey from deposit to withdrawal"
+      }
+    ],
+    "troubleshooting": [
+      "If links are not accessible, wait a few minutes for Hedera network propagation",
+      "Use Hashscan.io testnet explorer for all verification",
+      "Check transaction details for gas usage and success status",
+      "Verify message content in HCS topic for AI decision details"
+    ]
+  }
+}

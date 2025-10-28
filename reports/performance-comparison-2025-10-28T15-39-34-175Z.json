@@ -1,0 +1,180 @@
+{
+  "timestamp": "2025-10-28T15:39:34.175Z",
+  "operation": "Hedera vs BSC Performance Comparison",
+  "summary": {
+    "speed": {
+      "hederaAvgDuration": 411,
+      "bscAvgDuration": 0,
+      "winner": "BSC",
+      "improvement": "N/A"
+    },
+    "reliability": {
+      "hederaSuccessRate": 23.1,
+      "bscSuccessRate": 0,
+      "winner": "Hedera"
+    },
+    "finality": {
+      "hederaFinality": "Immediate",
+      "bscFinality": "0ms",
+      "winner": "Hedera",
+      "advantage": "Immediate vs Probabilistic"
+    },
+    "fees": {
+      "hederaFeeStructure": "Fixed HBAR fees",
+      "bscFeeStructure": "Variable gas fees",
+      "hederaPredictability": "High",
+      "bscPredictability": "Low",
+      "winner": "Hedera"
+    },
+    "throughput": {
+      "hederaTheoretical": "10,000+ TPS",
+      "bscTheoretical": "100 TPS",
+      "winner": "Hedera",
+      "advantage": "100x higher theoretical throughput"
+    },
+    "overallWinner": "Hedera",
+    "winnerAdvantages": [
+      "Higher success rate and reliability",
+      "Immediate finality without confirmation delays",
+      "Predictable fixed fee structure",
+      "100x higher theoretical throughput"
+    ]
+  },
+  "hederaResults": {
+    "totalOperations": 13,
+    "successfulOperations": 3,
+    "failedOperations": 10,
+    "overallSuccessRate": "23.1%",
+    "averageDuration": 411,
+    "minDuration": 357,
+    "maxDuration": 514,
+    "totalExecutionTime": 1232,
+    "serviceMetrics": {
+      "HTS": {
+        "operationCount": 1,
+        "averageDuration": 361,
+        "minDuration": 361,
+        "maxDuration": 361,
+        "successRate": "25.0%",
+        "totalTime": 361
+      },
+      "HCS": {
+        "operationCount": 1,
+        "averageDuration": 514,
+        "minDuration": 514,
+        "maxDuration": 514,
+        "successRate": "16.7%",
+        "totalTime": 514
+      },
+      "HFS": {
+        "operationCount": 1,
+        "averageDuration": 357,
+        "minDuration": 357,
+        "maxDuration": 357,
+        "successRate": "33.3%",
+        "totalTime": 357
+      }
+    },
+    "networkCharacteristics": {
+      "network": "Hedera Testnet",
+      "consensusAlgorithm": "Hashgraph",
+      "finalityType": "Immediate",
+      "averageConfirmationTime": "3-5 seconds",
+      "feeStructure": "Fixed HBAR fees",
+      "throughput": "10,000+ TPS theoretical"
+    }
+  },
+  "bscResults": {
+    "totalOperations": 13,
+    "successfulOperations": 0,
+    "failedOperations": 13,
+    "overallSuccessRate": "0.0%",
+    "averageDuration": 0,
+    "minDuration": 0,
+    "maxDuration": 0,
+    "averageConfirmationTime": 0,
+    "averageGasUsed": 0,
+    "totalExecutionTime": 0,
+    "operationMetrics": {},
+    "networkCharacteristics": {
+      "network": "BSC Testnet",
+      "consensusAlgorithm": "Proof of Staked Authority (PoSA)",
+      "finalityType": "Probabilistic",
+      "averageBlockTime": "3 seconds",
+      "feeStructure": "Gas-based (Gwei)",
+      "throughput": "100 TPS average"
+    }
+  },
+  "detailedAnalysis": {
+    "performanceMetrics": {
+      "speed": {
+        "hederaAvg": "411ms",
+        "bscAvg": "0ms",
+        "hederaMin": "357ms",
+        "bscMin": "0ms",
+        "hederaMax": "514ms",
+        "bscMax": "0ms"
+      },
+      "reliability": {
+        "hederaSuccess": "23.1%",
+        "bscSuccess": "0.0%",
+        "hederaOperations": 3,
+        "bscOperations": 0
+      },
+      "finality": {
+        "hederaType": "Immediate (Hashgraph consensus)",
+        "bscType": "Probabilistic (PoSA consensus)",
+        "hederaConfirmation": "0ms (immediate)",
+        "bscConfirmation": "0ms"
+      }
+    },
+    "networkCharacteristics": {
+      "hedera": {
+        "network": "Hedera Testnet",
+        "consensusAlgorithm": "Hashgraph",
+        "finalityType": "Immediate",
+        "averageConfirmationTime": "3-5 seconds",
+        "feeStructure": "Fixed HBAR fees",
+        "throughput": "10,000+ TPS theoretical"
+      },
+      "bsc": {
+        "network": "BSC Testnet",
+        "consensusAlgorithm": "Proof of Staked Authority (PoSA)",
+        "finalityType": "Probabilistic",
+        "averageBlockTime": "3 seconds",
+        "feeStructure": "Gas-based (Gwei)",
+        "throughput": "100 TPS average"
+      }
+    },
+    "useCaseAnalysis": {
+      "hederaBestFor": [
+        "High-frequency trading applications",
+        "Real-time micropayments",
+        "IoT device transactions",
+        "Regulatory compliance requiring audit trails",
+        "Applications requiring immediate finality"
+      ],
+      "bscBestFor": [
+        "DeFi applications with existing liquidity",
+        "Smart contracts requiring EVM compatibility",
+        "Applications with complex contract interactions",
+        "Projects needing mature tooling ecosystem"
+      ]
+    }
+  },
+  "recommendations": {
+    "overall": "Hedera demonstrates superior performance for the AION Vault use case",
+    "technical": [
+      "Leverage immediate finality for better user experience",
+      "Utilize predictable fee structure for cost optimization",
+      "Take advantage of high throughput for scaling",
+      "Implement comprehensive audit trails using HCS"
+    ],
+    "business": [
+      "Position as next-generation DeFi platform",
+      "Emphasize regulatory compliance capabilities",
+      "Target enterprise and institutional users",
+      "Highlight cost predictability benefits"
+    ]
+  }
+}

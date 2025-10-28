@@ -1,0 +1,390 @@
+{
+  "timestamp": "2025-10-28T14:36:18.501Z",
+  "network": "hedera-testnet",
+  "operation": "Real Withdrawal Flow Execution",
+  "operator": "0.0.7149926",
+  "tokenId": "0.0.7150671",
+  "hcsTopicId": "0.0.7150678",
+  "finalPortfolioState": {
+    "totalValue": 1175,
+    "totalShares": 1175000000,
+    "userCount": 3,
+    "lastUpdate": "2025-10-28T14:35:32.372Z"
+  },
+  "summary": {
+    "totalWithdrawals": 4,
+    "successfulWithdrawals": 4,
+    "failedWithdrawals": 0,
+    "totalAmountWithdrawn": 475,
+    "totalSharesBurned": 475000000,
+    "totalRealizedGains": 4.300000000000011,
+    "averageGainsPercentage": "0.91",
+    "averageExecutionTime": 4132,
+    "successRate": "100.0%",
+    "averageWithdrawalSize": "118.75",
+    "userSatisfactionAvg": "4.0"
+  },
+  "withdrawals": [
+    {
+      "scenario": {
+        "userId": "user1",
+        "userType": "RETAIL_INVESTOR",
+        "withdrawalReason": "PARTIAL_PROFIT_TAKING",
+        "withdrawalAmount": 75,
+        "sharesToBurn": 75000000,
+        "percentageOfHolding": "50%",
+        "expectedFinalValue": 75,
+        "withdrawalStrategy": "IMMEDIATE",
+        "taxOptimization": false,
+        "reason": "Taking profits after successful yield farming period",
+        "marketConditions": {
+          "portfolioGrowth": "+8.5%",
+          "currentAPY": 12.3,
+          "marketSentiment": "POSITIVE",
+          "liquidityStatus": "HIGH"
+        },
+        "userSatisfaction": "HIGH",
+        "reinvestmentPlan": "PARTIAL"
+      },
+      "withdrawalDecision": {
+        "messageFormat": "AION_WITHDRAWAL_V1",
+        "timestamp": "2025-10-28T14:35:55.618Z",
+        "sequenceNumber": 1,
+        "eventType": "USER_WITHDRAWAL",
+        "userId": "user1",
+        "userType": "RETAIL_INVESTOR",
+        "withdrawalReason": "PARTIAL_PROFIT_TAKING",
+        "withdrawalAmount": 75,
+        "withdrawalCurrency": "USDT",
+        "sharesBurned": 75000000,
+        "finalSettlementValue": 75,
+        "realizedGains": 0,
+        "gainsPercentage": "0.00",
+        "withdrawalStrategy": "IMMEDIATE",
+        "taxOptimization": false,
+        "reason": "Taking profits after successful yield farming period",
+        "marketConditions": {
+          "portfolioGrowth": "+8.5%",
+          "currentAPY": 12.3,
+          "marketSentiment": "POSITIVE",
+          "liquidityStatus": "HIGH"
+        },
+        "transactionDetails": {
+          "burnTransactionHash": "b��LǕpu\u0018v�9��U\u001d�Ghu�'c��\u0004�R*w��l��8\\+h>��\u000f\u001e�",
+          "tokenId": "0.0.7150671",
+          "newTotalSupply": "1576480000",
+          "executionTime": 1657,
+          "gasUsed": "Estimated 0.001 HBAR"
+        },
+        "userExperience": {
+          "satisfactionLevel": "HIGH",
+          "reinvestmentPlan": "PARTIAL",
+          "withdrawalSpeed": "Instant",
+          "processRating": "4.5"
+        },
+        "portfolioImpact": {
+          "beforeWithdrawal": {
+            "totalValue": 1650,
+            "totalShares": 1650000000
+          },
+          "afterWithdrawal": {
+            "totalValue": 1575,
+            "totalShares": 1575000000
+          },
+          "impactPercentage": "4.55"
+        },
+        "hcsDetails": {
+          "transactionHash": "\\\u0007B����e����O�r�^�H�j\u000e`�'욙�\tu�^����\u0002�\u000e?D�M>�J",
+          "topicSequenceNumber": "26",
+          "explorerUrl": "https://hashscan.io/testnet/transaction/\\\u0007B����e����O�r�^�H�j\u000e`�'욙�\tu�^����\u0002�\u000e?D�M>�J"
+        }
+      },
+      "executionTime": 4817,
+      "success": true,
+      "burnTransactionHash": "b��LǕpu\u0018v�9��U\u001d�Ghu�'c��\u0004�R*w��l��8\\+h>��\u000f\u001e�",
+      "burnExplorerUrl": "https://hashscan.io/testnet/transaction/b��LǕpu\u0018v�9��U\u001d�Ghu�'c��\u0004�R*w��l��8\\+h>��\u000f\u001e�",
+      "newTotalSupply": "1576480000",
+      "realizedGains": 0,
+      "finalValue": 75
+    },
+    {
+      "scenario": {
+        "userId": "user2",
+        "userType": "EXPERIENCED_TRADER",
+        "withdrawalReason": "REALLOCATION",
+        "withdrawalAmount": 200,
+        "sharesToBurn": 200000000,
+        "percentageOfHolding": "40%",
+        "expectedFinalValue": 202.5,
+        "withdrawalStrategy": "OPTIMIZED",
+        "taxOptimization": true,
+        "reason": "Reallocating to new DeFi opportunity with higher yields",
+        "marketConditions": {
+          "portfolioGrowth": "+15.2%",
+          "currentAPY": 15.8,
+          "marketSentiment": "BULLISH",
+          "liquidityStatus": "EXCELLENT"
+        },
+        "userSatisfaction": "VERY_HIGH",
+        "reinvestmentPlan": "EXTERNAL"
+      },
+      "withdrawalDecision": {
+        "messageFormat": "AION_WITHDRAWAL_V1",
+        "timestamp": "2025-10-28T14:36:02.030Z",
+        "sequenceNumber": 2,
+        "eventType": "USER_WITHDRAWAL",
+        "userId": "user2",
+        "userType": "EXPERIENCED_TRADER",
+        "withdrawalReason": "REALLOCATION",
+        "withdrawalAmount": 200,
+        "withdrawalCurrency": "USDT",
+        "sharesBurned": 200000000,
+        "finalSettlementValue": 202.5,
+        "realizedGains": 2.5,
+        "gainsPercentage": "1.25",
+        "withdrawalStrategy": "OPTIMIZED",
+        "taxOptimization": true,
+        "reason": "Reallocating to new DeFi opportunity with higher yields",
+        "marketConditions": {
+          "portfolioGrowth": "+15.2%",
+          "currentAPY": 15.8,
+          "marketSentiment": "BULLISH",
+          "liquidityStatus": "EXCELLENT"
+        },
+        "transactionDetails": {
+          "burnTransactionHash": "̮��\u0016�'�i\u0005��]!�穕\r\u0013,�m��6΋D���i�G���)x\u0007�˺M�\u0012",
+          "tokenId": "0.0.7150671",
+          "newTotalSupply": "1376480000",
+          "executionTime": 1250,
+          "gasUsed": "Estimated 0.001 HBAR"
+        },
+        "userExperience": {
+          "satisfactionLevel": "VERY_HIGH",
+          "reinvestmentPlan": "EXTERNAL",
+          "withdrawalSpeed": "< 5 minutes",
+          "processRating": "5.0"
+        },
+        "portfolioImpact": {
+          "beforeWithdrawal": {
+            "totalValue": 1575,
+            "totalShares": 1575000000
+          },
+          "afterWithdrawal": {
+            "totalValue": 1375,
+            "totalShares": 1375000000
+          },
+          "impactPercentage": "12.70"
+        },
+        "hcsDetails": {
+          "transactionHash": "\u0001 �L���ߪ�\u0011HW'[�򖷯\u000eI\u001bl`(�=nİC($����>\r��B�\ts�",
+          "topicSequenceNumber": "28",
+          "explorerUrl": "https://hashscan.io/testnet/transaction/\u0001 �L���ߪ�\u0011HW'[�򖷯\u000eI\u001bl`(�=nİC($����>\r��B�\ts�"
+        }
+      },
+      "executionTime": 3810,
+      "success": true,
+      "burnTransactionHash": "̮��\u0016�'�i\u0005��]!�穕\r\u0013,�m��6΋D���i�G���)x\u0007�˺M�\u0012",
+      "burnExplorerUrl": "https://hashscan.io/testnet/transaction/̮��\u0016�'�i\u0005��]!�穕\r\u0013,�m��6΋D���i�G���)x\u0007�˺M�\u0012",
+      "newTotalSupply": "1376480000",
+      "realizedGains": 2.5,
+      "finalValue": 202.5
+    },
+    {
+      "scenario": {
+        "userId": "aiAgent",
+        "userType": "INSTITUTIONAL",
+        "withdrawalReason": "RISK_MANAGEMENT",
+        "withdrawalAmount": 150,
+        "sharesToBurn": 150000000,
+        "percentageOfHolding": "15%",
+        "expectedFinalValue": 151.8,
+        "withdrawalStrategy": "GRADUAL",
+        "taxOptimization": true,
+        "reason": "Risk management and portfolio rebalancing",
+        "marketConditions": {
+          "portfolioGrowth": "+12.1%",
+          "currentAPY": 13.4,
+          "marketSentiment": "NEUTRAL",
+          "liquidityStatus": "GOOD"
+        },
+        "userSatisfaction": "HIGH",
+        "reinvestmentPlan": "DIVERSIFIED"
+      },
+      "withdrawalDecision": {
+        "messageFormat": "AION_WITHDRAWAL_V1",
+        "timestamp": "2025-10-28T14:36:08.041Z",
+        "sequenceNumber": 3,
+        "eventType": "USER_WITHDRAWAL",
+        "userId": "aiAgent",
+        "userType": "INSTITUTIONAL",
+        "withdrawalReason": "RISK_MANAGEMENT",
+        "withdrawalAmount": 150,
+        "withdrawalCurrency": "USDT",
+        "sharesBurned": 150000000,
+        "finalSettlementValue": 151.8,
+        "realizedGains": 1.8000000000000114,
+        "gainsPercentage": "1.20",
+        "withdrawalStrategy": "GRADUAL",
+        "taxOptimization": true,
+        "reason": "Risk management and portfolio rebalancing",
+        "marketConditions": {
+          "portfolioGrowth": "+12.1%",
+          "currentAPY": 13.4,
+          "marketSentiment": "NEUTRAL",
+          "liquidityStatus": "GOOD"
+        },
+        "transactionDetails": {
+          "burnTransactionHash": "x\fz�6+�\u0000g~\u0000h%��4���e��h�ǃ?w���p�ޛf\u001az!\u0003\u001e�\u001d�aѼ/",
+          "tokenId": "0.0.7150671",
+          "newTotalSupply": "1226480000",
+          "executionTime": 1444,
+          "gasUsed": "Estimated 0.001 HBAR"
+        },
+        "userExperience": {
+          "satisfactionLevel": "HIGH",
+          "reinvestmentPlan": "DIVERSIFIED",
+          "withdrawalSpeed": "< 15 minutes",
+          "processRating": "4.7"
+        },
+        "portfolioImpact": {
+          "beforeWithdrawal": {
+            "totalValue": 1375,
+            "totalShares": 1375000000
+          },
+          "afterWithdrawal": {
+            "totalValue": 1225,
+            "totalShares": 1225000000
+          },
+          "impactPercentage": "10.91"
+        },
+        "hcsDetails": {
+          "transactionHash": "�K�ΰqr���4&�,pZ1FJ�7]��2\u00148r:�\r\n�4=�c���DL����",
+          "topicSequenceNumber": "30",
+          "explorerUrl": "https://hashscan.io/testnet/transaction/�K�ΰqr���4&�,pZ1FJ�7]��2\u00148r:�\r\n�4=�c���DL����"
+        }
+      },
+      "executionTime": 3805,
+      "success": true,
+      "burnTransactionHash": "x\fz�6+�\u0000g~\u0000h%��4���e��h�ǃ?w���p�ޛf\u001az!\u0003\u001e�\u001d�aѼ/",
+      "burnExplorerUrl": "https://hashscan.io/testnet/transaction/x\fz�6+�\u0000g~\u0000h%��4���e��h�ǃ?w���p�ޛf\u001az!\u0003\u001e�\u001d�aѼ/",
+      "newTotalSupply": "1226480000",
+      "realizedGains": 1.8000000000000114,
+      "finalValue": 151.8
+    },
+    {
+      "scenario": {
+        "userId": "treasury",
+        "userType": "PROTOCOL_TREASURY",
+        "withdrawalReason": "EMERGENCY_LIQUIDITY",
+        "withdrawalAmount": 50,
+        "sharesToBurn": 50000000,
+        "percentageOfHolding": "100%",
+        "expectedFinalValue": 50,
+        "withdrawalStrategy": "EMERGENCY",
+        "taxOptimization": false,
+        "reason": "Emergency liquidity provision for protocol operations",
+        "marketConditions": {
+          "portfolioGrowth": "+0.0%",
+          "currentAPY": 8.5,
+          "marketSentiment": "CAUTIOUS",
+          "liquidityStatus": "URGENT"
+        },
+        "userSatisfaction": "NEUTRAL",
+        "reinvestmentPlan": "NONE"
+      },
+      "withdrawalDecision": {
+        "messageFormat": "AION_WITHDRAWAL_V1",
+        "timestamp": "2025-10-28T14:36:14.505Z",
+        "sequenceNumber": 4,
+        "eventType": "USER_WITHDRAWAL",
+        "userId": "treasury",
+        "userType": "PROTOCOL_TREASURY",
+        "withdrawalReason": "EMERGENCY_LIQUIDITY",
+        "withdrawalAmount": 50,
+        "withdrawalCurrency": "USDT",
+        "sharesBurned": 50000000,
+        "finalSettlementValue": 50,
+        "realizedGains": 0,
+        "gainsPercentage": "0.00",
+        "withdrawalStrategy": "EMERGENCY",
+        "taxOptimization": false,
+        "reason": "Emergency liquidity provision for protocol operations",
+        "marketConditions": {
+          "portfolioGrowth": "+0.0%",
+          "currentAPY": 8.5,
+          "marketSentiment": "CAUTIOUS",
+          "liquidityStatus": "URGENT"
+        },
+        "transactionDetails": {
+          "burnTransactionHash": "\u0001P\u0004M�ȃ�o���s�d!�|eϟ&����\u0015�]��\u0007\u001c2U��%ۂ\f���\u0015",
+          "tokenId": "0.0.7150671",
+          "newTotalSupply": "1176480000",
+          "executionTime": 2102,
+          "gasUsed": "Estimated 0.001 HBAR"
+        },
+        "userExperience": {
+          "satisfactionLevel": "NEUTRAL",
+          "reinvestmentPlan": "NONE",
+          "withdrawalSpeed": "< 1 minute",
+          "processRating": "4.3"
+        },
+        "portfolioImpact": {
+          "beforeWithdrawal": {
+            "totalValue": 1225,
+            "totalShares": 1225000000
+          },
+          "afterWithdrawal": {
+            "totalValue": 1175,
+            "totalShares": 1175000000
+          },
+          "impactPercentage": "4.08"
+        },
+        "hcsDetails": {
+          "transactionHash": "�h\n-o�^���D�'���/S.~�j��_Qř\u0001Q�W��b\u00047a��\u0013�Fo",
+          "topicSequenceNumber": "32",
+          "explorerUrl": "https://hashscan.io/testnet/transaction/�h\n-o�^���D�'���/S.~�j��_Qř\u0001Q�W��b\u00047a��\u0013�Fo"
+        }
+      },
+      "executionTime": 4095,
+      "success": true,
+      "burnTransactionHash": "\u0001P\u0004M�ȃ�o���s�d!�|eϟ&����\u0015�]��\u0007\u001c2U��%ۂ\f���\u0015",
+      "burnExplorerUrl": "https://hashscan.io/testnet/transaction/\u0001P\u0004M�ȃ�o���s�d!�|eϟ&����\u0015�]��\u0007\u001c2U��%ۂ\f���\u0015",
+      "newTotalSupply": "1176480000",
+      "realizedGains": 0,
+      "finalValue": 50
+    }
+  ],
+  "verification": {
+    "allWithdrawalsProcessed": true,
+    "htsIntegrationWorking": true,
+    "hcsLoggingWorking": true,
+    "realUserScenarios": true,
+    "gainsRealized": true
+  },
+  "explorerLinks": {
+    "token": "https://hashscan.io/testnet/token/0.0.7150671",
+    "topic": "https://hashscan.io/testnet/topic/0.0.7150678",
+    "transactions": [
+      {
+        "userId": "user1",
+        "burnTransaction": "https://hashscan.io/testnet/transaction/b��LǕpu\u0018v�9��U\u001d�Ghu�'c��\u0004�R*w��l��8\\+h>��\u000f\u001e�",
+        "hcsTransaction": "https://hashscan.io/testnet/transaction/\\\u0007B����e����O�r�^�H�j\u000e`�'욙�\tu�^����\u0002�\u000e?D�M>�J"
+      },
+      {
+        "userId": "user2",
+        "burnTransaction": "https://hashscan.io/testnet/transaction/̮��\u0016�'�i\u0005��]!�穕\r\u0013,�m��6΋D���i�G���)x\u0007�˺M�\u0012",
+        "hcsTransaction": "https://hashscan.io/testnet/transaction/\u0001 �L���ߪ�\u0011HW'[�򖷯\u000eI\u001bl`(�=nİC($����>\r��B�\ts�"
+      },
+      {
+        "userId": "aiAgent",
+        "burnTransaction": "https://hashscan.io/testnet/transaction/x\fz�6+�\u0000g~\u0000h%��4���e��h�ǃ?w���p�ޛf\u001az!\u0003\u001e�\u001d�aѼ/",
+        "hcsTransaction": "https://hashscan.io/testnet/transaction/�K�ΰqr���4&�,pZ1FJ�7]��2\u00148r:�\r\n�4=�c���DL����"
+      },
+      {
+        "userId": "treasury",
+        "burnTransaction": "https://hashscan.io/testnet/transaction/\u0001P\u0004M�ȃ�o���s�d!�|eϟ&����\u0015�]��\u0007\u001c2U��%ۂ\f���\u0015",
+        "hcsTransaction": "https://hashscan.io/testnet/transaction/�h\n-o�^���D�'���/S.~�j��_Qř\u0001Q�W��b\u00047a��\u0013�Fo"
+      }
+    ]
+  }
+}
