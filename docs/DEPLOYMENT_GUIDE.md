@@ -579,3 +579,106 @@ npm run lighthouse
 **Deployment Complete! 🎉**
 
 Your AION Hedera integration is now live and ready for demonstration.
+# Gas
+ Configuration
+GAS_LIMIT=3000000
+GAS_PRICE=20000000000
+
+# Contract Verification
+VERIFY_CONTRACTS=true
+ETHERSCAN_API_KEY=YOUR_ETHERSCAN_API_KEY
+```
+
+#### 2.3 MCP Agent Environment (mcp_agent/.env)
+```env
+# MCP Agent Configuration
+PORT=3001
+NODE_ENV=development
+LOG_LEVEL=info
+
+# Blockchain RPC URLs
+RPC_URL_BSC_TESTNET=https://bsc-testnet.publicnode.com
+RPC_URL_BSC_MAINNET=https://bsc-dataseed1.binance.org
+RPC_URL_ETH_SEPOLIA=https://sepolia.infura.io/v3/YOUR_INFURA_KEY
+RPC_URL_ETH_MAINNET=https://mainnet.infura.io/v3/YOUR_INFURA_KEY
+RPC_URL_POLYGON_AMOY=https://rpc-amoy.polygon.technology
+RPC_URL_POLYGON_MAINNET=https://polygon-rpc.com
+
+# Smart Contract Addresses (will be populated after deployment)
+AIONVAULT_ADDRESS=0x1234567890123456789012345678901234567890
+STRATEGY_VENUS_ADDRESS=0x1234567890123456789012345678901234567890
+STRATEGY_PANCAKE_ADDRESS=0x1234567890123456789012345678901234567890
+STRATEGY_AAVE_ADDRESS=0x1234567890123456789012345678901234567890
+STRATEGY_BEEFY_ADDRESS=0x1234567890123456789012345678901234567890
+
+# Security & Authentication
+PRIVATE_KEY=0x1234567890123456789012345678901234567890123456789012345678901234
+AI_AGENT_ADDRESS=0x1234567890123456789012345678901234567890
+
+# External API Keys
+COINGECKO_API_KEY=your_coingecko_api_key_here
+INFURA_API_KEY=your_infura_api_key_here
+ALCHEMY_API_KEY=your_alchemy_api_key_here
+
+# Safety & Rate Limiting
+SAFE_MODE_GAS_THRESHOLD_GWEI=8
+MAX_TRANSACTION_AMOUNT_BNB=10
+RATE_LIMIT_GENERAL=60
+RATE_LIMIT_EXECUTE=10
+RATE_LIMIT_PROOF=30
+
+# Frontend & CORS
+FRONTEND_URL=http://localhost:3000
+CORS_ORIGINS=http://localhost:4173,http://localhost:5173
+
+# Monitoring & Observability
+PROMETHEUS_ENABLED=true
+ENABLE_STRUCTURED_LOGGING=true
+ENABLE_REQUEST_TRACING=true
+
+# Cache & Performance
+REDIS_URL=redis://localhost:6379
+CACHE_TTL_MARKET_DATA=30
+CACHE_TTL_PROOF_DATA=60
+
+# Development & Debug
+DEBUG_MODE=false
+MOCK_MODE=false
+SKIP_RPC_CHECKS=false
+PYTHON_BRIDGE_TIMEOUT=30
+
+# Docker & Production
+DOCKER_NETWORK=aion-ai-agent-network
+HEALTH_CHECK_INTERVAL=30
+SHUTDOWN_TIMEOUT=10
+```
+
+#### 2.4 Frontend Environment (frontend/.env.local)
+```env
+# Frontend Configuration
+NEXT_PUBLIC_APP_NAME=AION AI Agent
+NEXT_PUBLIC_APP_VERSION=1.0.0
+
+# API Endpoints
+NEXT_PUBLIC_API_URL=http://localhost:3001
+NEXT_PUBLIC_WS_URL=ws://localhost:3001
+
+# Blockchain Configuration
+NEXT_PUBLIC_CHAIN_ID=97
+NEXT_PUBLIC_RPC_URL=https://bsc-testnet.publicnode.com
+
+# Contract Addresses (populated after deployment)
+NEXT_PUBLIC_AIONVAULT_ADDRESS=0x1234567890123456789012345678901234567890
+
+# Feature Flags
+NEXT_PUBLIC_ENABLE_ANALYTICS=true
+NEXT_PUBLIC_ENABLE_DEBUG=false
+```
+
+### ⚠️ **Security Notes**
+
+- **NEVER** commit your actual `.env` files to version control
+- Use a **burner wallet** for `PRIVATE_KEY` in development
+- Generate your own API keys for production
+- Replace all placeholder addresses with real contract addresses after deployment
+- Use strong, unique keys for production environments
