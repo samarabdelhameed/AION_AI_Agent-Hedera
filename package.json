@@ -36,7 +36,10 @@
     "deploy:hedera": "node scripts/deploy-hedera-contracts.js",
     "create:hts": "node scripts/create-real-hts-token.js",
     "mint:hts": "node scripts/execute-hts-mint-operations.js",
-    "burn:hts": "node scripts/execute-hts-burn-operations.js"
+    "burn:hts": "node scripts/execute-hts-burn-operations.js",
+    "create:hcs": "node scripts/create-hcs-ai-topic.js",
+    "submit:ai": "node scripts/submit-real-ai-decisions.js",
+    "validate:hcs": "node scripts/validate-hcs-messages.js"
   },
   "keywords": [
     "defi",
