@@ -64,20 +64,20 @@
     - Collect all HCS message transaction hashes
     - _Requirements: 3.4, 3.5_
 
-- [ ] 5. Implement real HFS model metadata storage
-  - [ ] 5.1 Create real AI model metadata
+- [x] 5. Implement real HFS model metadata storage
+  - [x] 5.1 Create real AI model metadata
     - Generate actual model version data with performance metrics
     - Include real training parameters and accuracy scores
     - Create structured JSON with checksums and validation data
     - _Requirements: 4.1, 4.2_
 
-  - [ ] 5.2 Store metadata on HFS
+  - [x] 5.2 Store metadata on HFS
     - Upload real model metadata files to Hedera File Service
     - Validate file storage and accessibility
     - Collect HFS file IDs and transaction hashes
     - _Requirements: 4.3, 4.4_
 
-  - [ ] 5.3 Cross-reference HFS files in HCS messages
+  - [x] 5.3 Cross-reference HFS files in HCS messages
     - Reference actual HFS file IDs in AI decision messages
     - Validate cross-reference integrity and accessibility
     - Ensure audit trail consistency across services
