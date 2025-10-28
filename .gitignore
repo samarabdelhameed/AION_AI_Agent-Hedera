@@ -132,3 +132,4 @@ coverage.json
 
 # Kiro IDE files
 .kiro/
+kiro-integration/
