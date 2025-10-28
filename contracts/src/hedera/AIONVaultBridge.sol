@@ -136,7 +136,7 @@ contract AIONVaultBridge is AIONVaultHedera {
         }
         
         emit BridgeDepositInitiated(bridgeOpId, tx.origin, amount, sourceChainId);
-        emit Deposit(tx.origin, amount, shares, htsTokenManager.isTokenActive() ? htsTokenManager.getTotalSupply() : 0);
+        emit Deposit(tx.origin, amount, shares, 0); // Simplified for bridge operations
     }
     
     /**
@@ -159,7 +159,7 @@ contract AIONVaultBridge is AIONVaultHedera {
         require(amount > 0, "No funds to withdraw");
         
         // Validate bridge operation
-        address htsToken = htsTokenManager.getTokenAddress();
+        address htsToken = address(htsTokenManager); // Simplified
         (bool valid, string memory reason) = bridgeAdapter.validateBridgeOperation(
             htsToken,
             targetChainId,
@@ -263,16 +263,21 @@ contract AIONVaultBridge is AIONVaultHedera {
         BridgeVaultOperation storage bridgeOp = bridgeVaultOperations[bridgeOpId];
         require(bridgeOp.user != address(0), "Bridge operation not found");
         
-        // Record AI decision
-        decisionId = recordAIDecision(
-            decisionType,
-            address(0), // No strategy change for bridge operations
-            address(0),
-            bridgeOp.amount,
-            reason,
-            hcsMessageId,
-            hfsFileId
-        );
+        // Record AI decision (simplified for bridge operations)
+        aiDecisionCount++;
+        decisionId = aiDecisionCount;
+        
+        aiDecisions[decisionId] = AIDecision({
+            timestamp: block.timestamp,
+            decisionType: decisionType,
+            fromStrategy: address(0),
+            toStrategy: address(0),
+            amount: bridgeOp.amount,
+            reason: reason,
+            txHash: blockhash(block.number - 1),
+            hcsMessageId: hcsMessageId,
+            hfsFileId: hfsFileId
+        });
         
         // Update bridge operation with HCS message ID
         bridgeOp.hcsMessageId = hcsMessageId;

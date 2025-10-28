@@ -208,12 +208,12 @@ interface IBridgeAdapter {
      * @dev Get token mapping information
      * @param token Token address
      * @param chainId Chain ID
-     * @return mapping Token mapping details
+     * @return tokenMapping Token mapping details
      */
     function getTokenMapping(
         address token,
         uint256 chainId
-    ) external view returns (TokenMapping memory mapping);
+    ) external view returns (TokenMapping memory tokenMapping);
     
     /**
      * @dev Get bridge operation details

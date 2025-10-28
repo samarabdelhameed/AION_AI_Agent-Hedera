@@ -102,6 +102,12 @@ private_key.txt
 mnemonic.txt
 secrets.json
 
+# Hedera sensitive files
+.env.hedera
+scripts/test-accounts.json
+scripts/key-conversion-result.json
+scripts/key-fix-result.json
+
 # Foundry specific
 cache/
 out/

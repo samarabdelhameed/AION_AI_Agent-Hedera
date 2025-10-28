@@ -6,6 +6,26 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 import "../interfaces/IBridgeService.sol";
 
+// LayerZero-style endpoint interface (simplified)
+interface ILayerZeroEndpoint {
+    function send(
+        uint16 _dstChainId,
+        bytes calldata _destination,
+        bytes calldata _payload,
+        address payable _refundAddress,
+        address _zroPaymentAddress,
+        bytes calldata _adapterParams
+    ) external payable;
+    
+    function estimateFees(
+        uint16 _dstChainId,
+        address _userApplication,
+        bytes calldata _payload,
+        bool _payInZRO,
+        bytes calldata _adapterParam
+    ) external view returns (uint nativeFee, uint zroFee);
+}
+
 /**
  * @title LayerZeroBridgeService
  * @dev LayerZero-style bridge service implementation for cross-chain operations
@@ -16,26 +36,7 @@ contract LayerZeroBridgeService is IBridgeService, Ownable, ReentrancyGuard, Pau
     // LayerZero-style constants
     uint16 public constant LZ_VERSION = 1;
     uint256 public constant DEFAULT_PAYLOAD_SIZE_LIMIT = 10000;
-    
-    // LayerZero-style endpoint interface (simplified)
-    interface ILayerZeroEndpoint {
-        function send(
-            uint16 _dstChainId,
-            bytes calldata _destination,
-            bytes calldata _payload,
-            address payable _refundAddress,
-            address _zroPaymentAddress,
-            bytes calldata _adapterParams
-        ) external payable;
-        
-        function estimateFees(
-            uint16 _dstChainId,
-            address _userApplication,
-            bytes calldata _payload,
-            bool _payInZRO,
-            bytes calldata _adapterParam
-        ) external view returns (uint nativeFee, uint zroFee);
-    }
+
     
     // State variables
     mapping(uint256 => BridgeConfig) public bridgeConfigs;

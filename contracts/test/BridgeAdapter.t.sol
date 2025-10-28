@@ -60,12 +60,12 @@ contract BridgeAdapterTest is Test {
         bridgeAdapter.createTokenMapping(htsToken, erc20Token, BSC_CHAIN_ID);
         
         // Verify mapping was created
-        IBridgeAdapter.TokenMapping memory mapping = bridgeAdapter.getTokenMapping(htsToken, BSC_CHAIN_ID);
-        assertEq(mapping.htsToken, htsToken);
-        assertEq(mapping.erc20Token, erc20Token);
-        assertEq(mapping.chainId, BSC_CHAIN_ID);
-        assertTrue(mapping.active);
-        assertEq(mapping.totalBridged, 0);
+        IBridgeAdapter.TokenMapping memory tokenMapping = bridgeAdapter.getTokenMapping(htsToken, BSC_CHAIN_ID);
+        assertEq(tokenMapping.htsToken, htsToken);
+        assertEq(tokenMapping.erc20Token, erc20Token);
+        assertEq(tokenMapping.chainId, BSC_CHAIN_ID);
+        assertTrue(tokenMapping.active);
+        assertEq(tokenMapping.totalBridged, 0);
         
         vm.stopPrank();
     }
@@ -156,7 +156,7 @@ contract BridgeAdapterTest is Test {
         // Mock HTS token manager to return sufficient balance
         vm.mockCall(
             address(htsTokenManager),
-            abi.encodeWithSelector(HTSTokenManager.getTokenBalance.selector, user1),
+            abi.encodeWithSignature("balanceOf(address)", user1),
             abi.encode(amount * 2)
         );
         

@@ -131,14 +131,14 @@ contract AIONVaultHederaSimpleTest is Test {
         vm.stopPrank();
 
         // Test getting decisions in range
-        AIONVaultHedera.AIDecision[] memory decisions = vault.getAIDecisions(0, 2);
+        (AIONVaultHedera.AIDecision[] memory decisions,) = vault.getAIDecisions(1, 2);
         assertEq(decisions.length, 3);
         assertEq(decisions[0].decisionType, "rebalance");
         assertEq(decisions[1].decisionType, "deposit");
         assertEq(decisions[2].decisionType, "withdraw");
 
         // Test getting single decision
-        decisions = vault.getAIDecisions(1, 1);
+        (decisions,) = vault.getAIDecisions(1, 1);
         assertEq(decisions.length, 1);
         assertEq(decisions[0].decisionType, "deposit");
     }
@@ -159,7 +159,9 @@ contract AIONVaultHederaSimpleTest is Test {
 
     function testGetLatestModelSnapshot() public {
         // Initially no snapshot
-        (string memory fileId, uint256 timestamp) = vault.getLatestModelSnapshot();
+        (AIONVaultHedera.ModelSnapshot memory snapshot,,) = vault.getLatestModelSnapshot();
+        string memory fileId = snapshot.hfsFileId;
+        uint256 timestamp = snapshot.timestamp;
         assertEq(fileId, "");
         assertEq(timestamp, 0);
 
@@ -167,7 +169,9 @@ contract AIONVaultHederaSimpleTest is Test {
         vm.prank(aiAgent);
         vault.recordAIDecision("rebalance", address(0), address(0), 0, "test", "hcs_123", "hfs_model_v1");
 
-        (fileId, timestamp) = vault.getLatestModelSnapshot();
+        (snapshot,,) = vault.getLatestModelSnapshot();
+        fileId = snapshot.hfsFileId;
+        timestamp = snapshot.timestamp;
         assertEq(fileId, "hfs_model_v1");
         assertTrue(timestamp > 0);
     }

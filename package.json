@@ -25,7 +25,13 @@
     "restart": "./scripts/stop-dev.sh && ./scripts/start-dev.sh",
     "logs": "tail -f logs/*.log",
     "logs:mcp": "tail -f logs/mcp_agent.log",
-    "logs:frontend": "tail -f logs/frontend.log"
+    "logs:frontend": "tail -f logs/frontend.log",
+    "setup:hedera": "node scripts/setup-verification-environment.js",
+    "verify:hedera": "node scripts/generate-hedera-verification-links.js",
+    "validate:env": "node scripts/validate-environment.js",
+    "test:hedera": "node scripts/test-hedera-connection.js",
+    "create:accounts": "node scripts/create-test-accounts.js",
+    "setup:complete": "node scripts/setup-complete-infrastructure.js"
   },
   "keywords": [
     "defi",
@@ -60,6 +66,8 @@
     "npm": ">=8.0.0"
   },
   "dependencies": {
+    "@hashgraph/sdk": "^2.75.0",
+    "dotenv": "^17.2.3",
     "ethers": "^6.15.0"
   },
   "devDependencies": {
