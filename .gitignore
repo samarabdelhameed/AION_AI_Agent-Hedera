@@ -129,3 +129,6 @@ coverage.json
 *.tmp
 *.temp
 .vercel
+
+# Kiro IDE files
+.kiro/
