@@ -1,0 +1,60 @@
+{
+  "timestamp": "2025-10-28T12:54:45.978Z",
+  "totalErrors": 4,
+  "errorCounts": {
+    "TOKEN_NOT_ASSOCIATED_TO_ACCOUNT": 2,
+    "Token Transfer - user1 - Receipt Validation failed after 4 attempts: receipt for transaction 0.0.7149926@1761656019.657241112 contained error status TOKEN_NOT_ASSOCIATED_TO_ACCOUNT": 1,
+    "Token Transfer - user2 - Receipt Validation failed after 4 attempts: receipt for transaction 0.0.7149926@1761656021.433762373 contained error status TOKEN_NOT_ASSOCIATED_TO_ACCOUNT": 1
+  },
+  "retryHistory": [
+    {
+      "operation": "Token Transfer - user1 - Receipt Validation",
+      "attempt": 1,
+      "timestamp": "2025-10-28T12:53:45.063Z",
+      "error": {
+        "message": "receipt for transaction 0.0.7149926@1761656019.657241112 contained error status TOKEN_NOT_ASSOCIATED_TO_ACCOUNT",
+        "status": "TOKEN_NOT_ASSOCIATED_TO_ACCOUNT"
+      },
+      "context": {}
+    },
+    {
+      "operation": "Token Transfer - user1",
+      "attempt": 1,
+      "timestamp": "2025-10-28T12:53:45.063Z",
+      "error": {
+        "message": "Token Transfer - user1 - Receipt Validation failed after 4 attempts: receipt for transaction 0.0.7149926@1761656019.657241112 contained error status TOKEN_NOT_ASSOCIATED_TO_ACCOUNT"
+      },
+      "context": {
+        "amount": 100000,
+        "user": "user1"
+      }
+    },
+    {
+      "operation": "Token Transfer - user2 - Receipt Validation",
+      "attempt": 1,
+      "timestamp": "2025-10-28T12:53:49.107Z",
+      "error": {
+        "message": "receipt for transaction 0.0.7149926@1761656021.433762373 contained error status TOKEN_NOT_ASSOCIATED_TO_ACCOUNT",
+        "status": "TOKEN_NOT_ASSOCIATED_TO_ACCOUNT"
+      },
+      "context": {}
+    },
+    {
+      "operation": "Token Transfer - user2",
+      "attempt": 1,
+      "timestamp": "2025-10-28T12:53:49.107Z",
+      "error": {
+        "message": "Token Transfer - user2 - Receipt Validation failed after 4 attempts: receipt for transaction 0.0.7149926@1761656021.433762373 contained error status TOKEN_NOT_ASSOCIATED_TO_ACCOUNT"
+      },
+      "context": {
+        "amount": 75000,
+        "user": "user2"
+      }
+    }
+  ],
+  "summary": {
+    "mostCommonError": "TOKEN_NOT_ASSOCIATED_TO_ACCOUNT",
+    "totalRetries": 4,
+    "successfulRetries": 0
+  }
+}

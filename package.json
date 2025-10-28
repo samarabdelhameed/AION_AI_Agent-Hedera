@@ -31,7 +31,12 @@
     "validate:env": "node scripts/validate-environment.js",
     "test:hedera": "node scripts/test-hedera-connection.js",
     "create:accounts": "node scripts/create-test-accounts.js",
-    "setup:complete": "node scripts/setup-complete-infrastructure.js"
+    "setup:complete": "node scripts/setup-complete-infrastructure.js",
+    "generate:verification": "node scripts/generate-hedera-verification-links.js",
+    "deploy:hedera": "node scripts/deploy-hedera-contracts.js",
+    "create:hts": "node scripts/create-real-hts-token.js",
+    "mint:hts": "node scripts/execute-hts-mint-operations.js",
+    "burn:hts": "node scripts/execute-hts-burn-operations.js"
   },
   "keywords": [
     "defi",
