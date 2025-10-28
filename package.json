@@ -46,7 +46,11 @@
     "deposit:flow": "node scripts/execute-real-deposit-flow.js",
     "ai:rebalancing": "node scripts/execute-ai-rebalancing.js",
     "withdrawal:flow": "node scripts/execute-real-withdrawal-flow.js",
-    "user:journey": "node scripts/execute-complete-user-journey.js"
+    "user:journey": "node scripts/execute-complete-user-journey.js",
+    "measure:hedera": "node scripts/measure-hedera-performance.js",
+    "measure:bsc": "node scripts/execute-bsc-comparison.js",
+    "compare:performance": "node scripts/generate-performance-comparison.js",
+    "collect:links": "node scripts/collect-verification-links.js"
   },
   "keywords": [
     "defi",
