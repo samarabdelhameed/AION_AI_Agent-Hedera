@@ -50,7 +50,9 @@
     "measure:hedera": "node scripts/measure-hedera-performance.js",
     "measure:bsc": "node scripts/execute-bsc-comparison.js",
     "compare:performance": "node scripts/generate-performance-comparison.js",
-    "collect:links": "node scripts/collect-verification-links.js"
+    "collect:links": "node scripts/collect-verification-links.js",
+    "verify:real": "node scripts/verify-real-data-generation.js",
+    "execute:complete": "node scripts/execute-complete-verification.js"
   },
   "keywords": [
     "defi",

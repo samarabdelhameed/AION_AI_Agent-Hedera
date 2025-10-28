@@ -2663,6 +2663,32 @@ npm run generate:verification # ✅ Task 2: Complete Verification
 
 **The complete end-to-end user journey system is now fully operational, demonstrating real deposit flows, AI-driven optimization, and withdrawal processes with actual gains realization for hackathon judges! 🎊**
 
+## ⚠️ **IMPORTANT: Real Data Generation Required**
+
+### 🚨 **Before Hackathon Demonstration**
+
+**The scripts generate REAL Hedera IDs and transaction hashes, but they must be executed to replace placeholder values (0.0.XXXXXX) with actual data.**
+
+```bash
+# 🔍 STEP 1: Check if you have real data or placeholders
+npm run verify:real
+
+# 🚀 STEP 2: If placeholders found, generate real data
+npm run execute:complete
+
+# ✅ STEP 3: Confirm all data is now real
+npm run verify:real
+```
+
+**Expected Real Data:**
+- ✅ **HTS Token ID**: `0.0.123456` (not `0.0.XXXXXX`)
+- ✅ **HCS Topic ID**: `0.0.789012` (not `0.0.XXXXXX`)  
+- ✅ **HFS File IDs**: `0.0.345678` (not `0.0.XXXXXX`)
+- ✅ **Transaction Hashes**: Real Hedera format with `@` symbol
+- ✅ **Explorer Links**: All links work and show real data
+
+---
+
 ## 🎊 **AION Vault - Complete System Status**
 
 ### 🏆 **All Tasks Completed Successfully ✅**
@@ -2692,19 +2718,34 @@ npm run generate:verification # ✅ Task 2: Complete Verification
 
 ### 🚀 **Quick Start Commands**
 
-**For Hackathon Judges - Complete Verification:**
+**For Hackathon Judges - Complete Verification with REAL DATA:**
 ```bash
-# 1. Validate Environment
-npm run validate:env
+# ⚠️ IMPORTANT: Generate REAL Hedera IDs (not placeholders)
+# This command runs ALL verification scripts in correct order
+npm run execute:complete
 
-# 2. Setup Complete Infrastructure  
-npm run setup:complete
+# OR run individual steps to ensure real data:
+npm run verify:real          # Check current data status
+npm run setup:complete       # Setup with real accounts
+npm run create:hts           # Create REAL HTS token
+npm run create:hcs           # Create REAL HCS topic  
+npm run store:hfs            # Store REAL HFS files
+npm run user:journey         # Execute with REAL transactions
+npm run collect:links        # Collect REAL verification links
+npm run verify:real          # Confirm all data is real
+```
 
-# 3. Execute Complete User Journey
-npm run user:journey
+**⚠️ CRITICAL: Verify Real Data Generation**
+```bash
+# Before demonstration, ALWAYS run this to ensure no placeholders:
+npm run verify:real
 
-# 4. Generate Final Verification Links
-npm run generate:verification
+# Expected output should show:
+# ✅ Hedera Account ID: REAL (0.0.XXXXXX)
+# ✅ HTS Token ID: REAL (0.0.XXXXXX) 
+# ✅ HCS Topic ID: REAL (0.0.XXXXXX)
+# ✅ HFS File IDs: REAL (X files)
+# 🎉 System is ready for hackathon demonstration!
 ```
 
 **Individual Component Testing:**
