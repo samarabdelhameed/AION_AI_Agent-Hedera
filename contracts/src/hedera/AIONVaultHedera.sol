@@ -439,7 +439,7 @@ contract AIONVaultHedera is Ownable, ReentrancyGuard, Pausable {
      * @dev Get AI decision by ID
      */
     function getAIDecision(uint256 decisionId) external view returns (AIDecision memory) {
-        require(decisionId < aiDecisionCount, "Invalid decision ID");
+        require(decisionId > 0 && decisionId <= aiDecisionCount, "Invalid decision ID");
         return aiDecisions[decisionId];
     }
 

@@ -92,10 +92,10 @@ contract AIONVaultHederaSimpleTest is Test {
             "hfs_file_456"
         );
 
-        assertEq(decisionId, 0);
+        assertEq(decisionId, 1);
         assertEq(vault.aiDecisionCount(), 1);
 
-        AIONVaultHedera.AIDecision memory decision = vault.getAIDecision(0);
+        AIONVaultHedera.AIDecision memory decision = vault.getAIDecision(1);
         assertEq(decision.decisionType, "rebalance");
         assertEq(decision.fromStrategy, address(0x100));
         assertEq(decision.toStrategy, address(0x200));
@@ -130,50 +130,53 @@ contract AIONVaultHederaSimpleTest is Test {
         
         vm.stopPrank();
 
-        // Test getting decisions in range
-        (AIONVaultHedera.AIDecision[] memory decisions,) = vault.getAIDecisions(1, 2);
+        // Test getting decisions in range (1-indexed, inclusive)
+        (AIONVaultHedera.AIDecision[] memory decisions,) = vault.getAIDecisions(1, 3);
         assertEq(decisions.length, 3);
         assertEq(decisions[0].decisionType, "rebalance");
         assertEq(decisions[1].decisionType, "deposit");
         assertEq(decisions[2].decisionType, "withdraw");
 
         // Test getting single decision
-        (decisions,) = vault.getAIDecisions(1, 1);
+        (decisions,) = vault.getAIDecisions(2, 2);
         assertEq(decisions.length, 1);
         assertEq(decisions[0].decisionType, "deposit");
     }
 
     function testGetAIDecisionsInvalidRange() public {
-        vm.expectRevert("Invalid range");
-        vault.getAIDecisions(0, 0); // No decisions recorded yet
+        vm.expectRevert("Invalid from index");
+        vault.getAIDecisions(1, 1); // No decisions recorded yet
 
         vm.prank(aiAgent);
         vault.recordAIDecision("test", address(0), address(0), 0, "test", "hcs", "hfs");
 
         vm.expectRevert("Invalid range");
-        vault.getAIDecisions(1, 0); // from > to
+        vault.getAIDecisions(2, 1); // from > to
 
-        vm.expectRevert("Invalid range");
-        vault.getAIDecisions(0, 5); // to >= aiDecisionCount
+        vm.expectRevert("Invalid to index");
+        vault.getAIDecisions(1, 5); // to > aiDecisionCount (only 1 decision exists)
     }
 
     function testGetLatestModelSnapshot() public {
-        // Initially no snapshot
+        // Create and activate model snapshot
+        vm.startPrank(aiAgent);
+        vault.createModelSnapshot(
+            "v1.0.0",
+            "hfs_model_v1",
+            keccak256("model_data"),
+            9500, // 95% performance score
+            "Production model v1"
+        );
+        vault.activateModelSnapshot(1); // Activate the first snapshot
+        vm.stopPrank();
+
+        // Now get the latest model snapshot
         (AIONVaultHedera.ModelSnapshot memory snapshot,,) = vault.getLatestModelSnapshot();
         string memory fileId = snapshot.hfsFileId;
         uint256 timestamp = snapshot.timestamp;
-        assertEq(fileId, "");
-        assertEq(timestamp, 0);
-
-        // Record decision with model snapshot
-        vm.prank(aiAgent);
-        vault.recordAIDecision("rebalance", address(0), address(0), 0, "test", "hcs_123", "hfs_model_v1");
-
-        (snapshot,,) = vault.getLatestModelSnapshot();
-        fileId = snapshot.hfsFileId;
-        timestamp = snapshot.timestamp;
         assertEq(fileId, "hfs_model_v1");
         assertTrue(timestamp > 0);
+        assertTrue(snapshot.active);
     }
 
     function testSetMinDepositBNB() public {

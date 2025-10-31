@@ -275,7 +275,8 @@ contract StrategyWombatTest is Test {
     function test_RevertWhen_UnauthorizedStrategyChange() public {
         address newStrat = address(0x9999);
         // محاولة تغيير Strategy بدون صلاحية AI Agent
-        vm.expectRevert();
+        vm.prank(user1); // user1 doesn't have AI_AGENT_ROLE
+        vm.expectRevert("Not authorized (AI)");
         vault.setStrategy(newStrat);
     }
 

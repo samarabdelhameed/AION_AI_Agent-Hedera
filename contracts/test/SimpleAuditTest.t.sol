@@ -17,7 +17,13 @@ contract SimpleAuditTest is Test {
         
         vault = new AIONVaultHedera(owner);
         vault.setAIAgent(aiAgent);
-        vault.initializeShareToken("AION Shares", "AION", 18);
+        
+        // Initialize HTS token (skip on non-Hedera chains)
+        try vault.initializeShareToken("AION Shares", "AION", 18) {
+            // HTS initialization successful
+        } catch {
+            // Ignore in local EVM where Hedera precompile is unavailable
+        }
         
         vm.deal(user1, 10 ether);
     }
@@ -69,6 +75,12 @@ contract SimpleAuditTest is Test {
     }
 
     function testUserActivity() public {
+        // Skip if HTS not initialized (local testing)
+        if (!vault.htsTokenManager().isTokenActive()) {
+            vm.skip(true);
+            return;
+        }
+        
         vm.prank(user1);
         vault.deposit{value: 1 ether}();
         
