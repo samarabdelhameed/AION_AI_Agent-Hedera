@@ -53,21 +53,71 @@
   "blockchain": {
     "networks": {
       "bscTestnet": {
+        "name": "BSC Testnet",
         "rpc": "https://data-seed-prebsc-1-s1.binance.org:8545/",
         "chainId": 97,
         "gasPrice": "10000000000",
-        "gasLimit": "8000000"
+        "gasLimit": "8000000",
+        "blockExplorer": "https://testnet.bscscan.com",
+        "nativeCurrency": {
+          "name": "BNB",
+          "symbol": "BNB",
+          "decimals": 18
+        }
       },
       "bscMainnet": {
+        "name": "BSC Mainnet",
         "rpc": "https://bsc-dataseed1.binance.org/",
         "chainId": 56,
         "gasPrice": "5000000000",
-        "gasLimit": "8000000"
+        "gasLimit": "8000000",
+        "blockExplorer": "https://bscscan.com",
+        "nativeCurrency": {
+          "name": "BNB",
+          "symbol": "BNB",
+          "decimals": 18
+        }
+      },
+      "hederaTestnet": {
+        "name": "Hedera Testnet",
+        "rpc": "https://testnet.hashio.io/api",
+        "chainId": "hedera-testnet",
+        "gasPrice": "0",
+        "gasLimit": "300000",
+        "blockExplorer": "https://hashscan.io/testnet",
+        "mirrorNode": "https://testnet.mirrornode.hedera.com",
+        "nativeCurrency": {
+          "name": "HBAR",
+          "symbol": "HBAR",
+          "decimals": 8
+        }
+      },
+      "hederaMainnet": {
+        "name": "Hedera Mainnet",
+        "rpc": "https://mainnet.hashio.io/api",
+        "chainId": "hedera-mainnet",
+        "gasPrice": "0",
+        "gasLimit": "300000",
+        "blockExplorer": "https://hashscan.io/mainnet",
+        "mirrorNode": "https://mainnet.mirrornode.hedera.com",
+        "nativeCurrency": {
+          "name": "HBAR",
+          "symbol": "HBAR",
+          "decimals": 8
+        }
       }
     },
     "defaultNetwork": "bscTestnet",
     "retryAttempts": 3,
-    "retryDelay": 1000
+    "retryDelay": 1000,
+    "crossChain": {
+      "enabled": true,
+      "supportedNetworks": ["bscTestnet", "hederaTestnet"],
+      "bridgeContracts": {
+        "bscTestnet": "0x...",
+        "hederaTestnet": "0.0...."
+      }
+    }
   },
   "oracle": {
     "dataSources": {
@@ -95,5 +145,89 @@
     "maxConnections": 100,
     "heartbeatInterval": 30000,
     "requestTimeout": 60000
+  },
+  "hedera": {
+    "network": "testnet",
+    "services": {
+      "hcs": {
+        "enabled": true,
+        "topicId": null,
+        "auditTopicId": null,
+        "submitTimeout": 30000,
+        "maxMessageSize": 6144,
+        "batchSize": 10,
+        "pollingInterval": 5000
+      },
+      "hfs": {
+        "enabled": true,
+        "bridgeFileId": null,
+        "modelFileId": null,
+        "maxFileSize": 1048576,
+        "chunkSize": 4096,
+        "timeout": 60000
+      },
+      "hts": {
+        "enabled": true,
+        "shareTokenId": null,
+        "decimals": 18,
+        "symbol": "AION",
+        "name": "AION Vault Shares",
+        "initialSupply": 0
+      },
+      "hscs": {
+        "enabled": true,
+        "vaultContractId": null,
+        "gasLimit": 300000
+      }
+    },
+    "accounts": {
+      "operator": {
+        "accountId": null,
+        "privateKey": null
+      },
+      "treasury": {
+        "accountId": null,
+        "privateKey": null
+      },
+      "aiAgent": {
+        "accountId": null,
+        "privateKey": null
+      }
+    },
+    "bridge": {
+      "enabled": true,
+      "minAmount": "1000000000000000000",
+      "maxAmount": "1000000000000000000000",
+      "fee": "10000000000000000",
+      "confirmationBlocks": 12,
+      "multisigThreshold": 2,
+      "maxDailyVolume": "10000000000000000000000"
+    },
+    "monitoring": {
+      "enabled": true,
+      "healthCheckInterval": 30000,
+      "performanceTracking": true,
+      "errorReporting": true
+    }
+  },
+  "ai": {
+    "model": {
+      "version": "v2.1.0",
+      "confidenceThreshold": 0.8,
+      "rebalanceInterval": 3600000,
+      "maxRetries": 3
+    },
+    "decisionLogging": {
+      "enabled": true,
+      "logToHCS": true,
+      "logToFile": true,
+      "batchSize": 10,
+      "flushInterval": 30000
+    },
+    "modelMetadata": {
+      "storeToHFS": true,
+      "versionControl": true,
+      "performanceTracking": true
+    }
   }
 }

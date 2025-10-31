@@ -85,6 +85,35 @@
     },
     "coingecko": {
       "baseUrl": "https://api.coingecko.com/api/v3"
+    },
+    "hedera": {
+      "mirrorNode": "https://testnet.mirrornode.hedera.com",
+      "hashscan": "https://hashscan.io/testnet"
+    }
+  },
+  "hedera": {
+    "network": "testnet",
+    "services": {
+      "hcs": {
+        "pollingInterval": 3000,
+        "batchSize": 5
+      },
+      "hfs": {
+        "timeout": 30000
+      }
+    },
+    "monitoring": {
+      "healthCheckInterval": 15000,
+      "performanceTracking": true
+    }
+  },
+  "ai": {
+    "model": {
+      "confidenceThreshold": 0.7,
+      "rebalanceInterval": 1800000
+    },
+    "decisionLogging": {
+      "flushInterval": 15000
     }
   }
 }

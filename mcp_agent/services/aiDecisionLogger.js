@@ -1,426 +1,750 @@
-import HederaService from './hederaService.js';
-import { ethers } from 'ethers';
+/**
+ * @fileoverview Enhanced AI Decision Logger with Hedera Integration
+ * @description Comprehensive logging system for AI decisions with HCS integration and batch processing
+ * @author AION Team
+ * @version 2.0.0
+ */
+
+const EventEmitter = require('events');
+const crypto = require('crypto');
+const fs = require('fs').promises;
+const path = require('path');
 
 /**
- * AI Decision Logger Service
- * Monitors AIRebalance events from vault contract and logs them to HCS
+ * Enhanced AI Decision Logger with Hedera integration
  */
-class AIDecisionLogger {
-    constructor(web3Provider, contractAddress, contractABI) {
-        this.web3Provider = web3Provider;
-        this.contractAddress = contractAddress;
-        this.contractABI = contractABI;
-        this.hederaService = new HederaService();
-        this.contract = null;
-        this.eventMappings = new Map(); // Maps event hashes to HCS message IDs
-        this.isMonitoring = false;
-        this.lastProcessedBlock = 0;
-        this.eventQueue = [];
-        this.processingInterval = null;
+class AIDecisionLogger extends EventEmitter {
+    constructor(config = {}) {
+        super();
+        
+        // Configuration
+        this.config = {
+            // Hedera integration
+            hederaService: config.hederaService || null,
+            hcsTopicId: config.hcsTopicId || process.env.HEDERA_HCS_TOPIC_ID,
+            hcsAuditTopicId: config.hcsAuditTopicId || process.env.HEDERA_HCS_AUDIT_TOPIC_ID,
+            
+            // Logging settings
+            logLevel: config.logLevel || 'info',
+            enableHederaLogging: config.enableHederaLogging !== false,
+            enableLocalLogging: config.enableLocalLogging !== false,
+            
+            // Batch processing
+            batchSize: config.batchSize || 20,
+            batchTimeout: config.batchTimeout || 5000, // 5 seconds
+            maxRetries: config.maxRetries || 3,
+            
+            // Storage settings
+            localLogPath: config.localLogPath || './logs/ai-decisions',
+            maxLogFileSize: config.maxLogFileSize || 10 * 1024 * 1024, // 10MB
+            maxLogFiles: config.maxLogFiles || 10,
+            
+            // Decision tracking
+            trackDecisionOutcomes: config.trackDecisionOutcomes !== false,
+            outcomeTrackingWindow: config.outcomeTrackingWindow || 24 * 60 * 60 * 1000, // 24 hours
+            
+            // Performance settings
+            enableMetrics: config.enableMetrics !== false,
+            metricsInterval: config.metricsInterval || 60000 // 1 minute
+        };
+        
+        // State management
+        this.isInitialized = false;
+        this.batchQueue = [];
+        this.batchTimer = null;
+        this.decisionHistory = new Map();
+        this.outcomeTracking = new Map();
+        
+        // Metrics
+        this.metrics = {
+            totalDecisions: 0,
+            successfulLogs: 0,
+            failedLogs: 0,
+            batchesProcessed: 0,
+            averageProcessingTime: 0,
+            lastLogTime: null,
+            hederaLogsCount: 0,
+            localLogsCount: 0
+        };
+        
+        // Performance tracking
+        this.performanceData = {
+            processingTimes: [],
+            batchSizes: [],
+            errorRates: []
+        };
+        
+        // Initialize logger
+        this.initialize();
     }
-
+    
     /**
-     * Initialize the AI decision logger
+     * Initialize the AI Decision Logger
      */
     async initialize() {
         try {
-            console.log('🚀 Initializing AI Decision Logger...');
+            console.log('🤖 Initializing Enhanced AI Decision Logger...');
             
-            // Initialize Hedera service
-            await this.hederaService.initialize();
+            // Validate configuration
+            this.validateConfiguration();
             
-            // Create HCS topic if not exists
-            if (!process.env.HCS_TOPIC_ID) {
-                const topicId = await this.hederaService.createHCSTopic("AION AI Decision Audit Trail");
-                console.log(`✅ Created HCS topic: ${topicId}`);
+            // Setup local logging directory
+            if (this.config.enableLocalLogging) {
+                await this.setupLocalLogging();
             }
             
-            // Initialize contract interface
-            this.contract = new ethers.Contract(
-                this.contractAddress,
-                this.contractABI,
-                this.web3Provider
-            );
+            // Initialize Hedera integration
+            if (this.config.enableHederaLogging && this.config.hederaService) {
+                await this.initializeHederaIntegration();
+            }
             
-            // Get current block number
-            this.lastProcessedBlock = await this.web3Provider.getBlockNumber();
+            // Start batch processing
+            this.startBatchProcessing();
+            
+            // Start metrics collection
+            if (this.config.enableMetrics) {
+                this.startMetricsCollection();
+            }
+            
+            this.isInitialized = true;
+            this.emit('initialized', { timestamp: Date.now() });
             
             console.log('✅ AI Decision Logger initialized successfully');
-            return true;
+            
         } catch (error) {
             console.error('❌ Failed to initialize AI Decision Logger:', error);
+            this.emit('error', error);
             throw error;
         }
     }
-
+    
     /**
-     * Start monitoring AIRebalance events
+     * Validate configuration
      */
-    async startMonitoring(pollInterval = 5000) {
-        if (this.isMonitoring) {
-            console.warn('⚠️ Monitoring already active');
-            return;
+    validateConfiguration() {
+        if (this.config.enableHederaLogging && !this.config.hederaService) {
+            console.warn('⚠️ Hedera logging enabled but no HederaService provided');
         }
-
-        try {
-            console.log(`👀 Starting AIRebalance event monitoring (poll interval: ${pollInterval}ms)`);
-            
-            this.isMonitoring = true;
-            
-            // Start event polling
-            this.processingInterval = setInterval(async () => {
-                try {
-                    await this.pollForEvents();
-                    await this.processEventQueue();
-                } catch (error) {
-                    console.error('❌ Error during event monitoring:', error);
-                }
-            }, pollInterval);
-            
-            console.log('✅ Event monitoring started');
-            return {
-                status: 'monitoring_started',
-                contractAddress: this.contractAddress,
-                pollInterval: pollInterval
-            };
-        } catch (error) {
-            console.error('❌ Failed to start monitoring:', error);
-            throw error;
-        }
-    }
-
-    /**
-     * Poll for new AIRebalance events
-     */
-    async pollForEvents() {
-        try {
-            const currentBlock = await this.web3Provider.getBlockNumber();
-            const fromBlock = this.lastProcessedBlock + 1;
-
-            if (fromBlock > currentBlock) {
-                return; // No new blocks
-            }
-
-            // Get AIRebalance events
-            const filter = this.contract.filters.AIRebalance();
-            const events = await this.contract.queryFilter(filter, fromBlock, currentBlock);
-
-            // Add events to processing queue
-            for (const event of events) {
-                const eventData = await this.parseAIRebalanceEvent(event);
-                this.eventQueue.push(eventData);
-                console.log(`📝 Queued AIRebalance event: ${event.transactionHash}`);
-            }
-
-            // Update last processed block
-            this.lastProcessedBlock = currentBlock;
-
-            if (events.length > 0) {
-                console.log(`📊 Found ${events.length} new AIRebalance events up to block ${currentBlock}`);
-            }
-        } catch (error) {
-            console.error('❌ Error polling for events:', error);
-        }
-    }
-
-    /**
-     * Parse AIRebalance event data
-     */
-    async parseAIRebalanceEvent(event) {
-        try {
-            const receipt = await this.web3Provider.getTransactionReceipt(event.transactionHash);
-            const block = await this.web3Provider.getBlock(event.blockNumber);
-            
-            return {
-                // Event identification
-                eventHash: this.generateEventHash(event),
-                transactionHash: event.transactionHash,
-                blockNumber: event.blockNumber,
-                blockTimestamp: block.timestamp,
-                logIndex: event.logIndex,
-                
-                // Event data
-                agent: event.args.agent,
-                timestamp: event.args.timestamp.toString(),
-                decisionCid: event.args.decisionCid,
-                fromStrategy: event.args.fromStrategy.toString(),
-                toStrategy: event.args.toStrategy.toString(),
-                amount: event.args.amount.toString(),
-                
-                // Transaction details
-                gasUsed: receipt.gasUsed.toString(),
-                gasPrice: receipt.effectiveGasPrice?.toString() || '0',
-                
-                // Processing metadata
-                processedAt: Date.now(),
-                status: 'pending'
-            };
-        } catch (error) {
-            console.error('❌ Error parsing AIRebalance event:', error);
-            throw error;
-        }
-    }
-
-    /**
-     * Process queued events and submit to HCS
-     */
-    async processEventQueue() {
-        if (this.eventQueue.length === 0) {
-            return;
-        }
-
-        console.log(`🔄 Processing ${this.eventQueue.length} queued events`);
-
-        const eventsToProcess = [...this.eventQueue];
-        this.eventQueue = [];
-
-        for (const eventData of eventsToProcess) {
-            try {
-                await this.submitEventToHCS(eventData);
-            } catch (error) {
-                console.error(`❌ Failed to process event ${eventData.transactionHash}:`, error);
-                // Re-queue failed events for retry
-                eventData.retryCount = (eventData.retryCount || 0) + 1;
-                if (eventData.retryCount < 3) {
-                    this.eventQueue.push(eventData);
-                }
-            }
-        }
-    }
-
-    /**
-     * Submit AI decision event to HCS
-     */
-    async submitEventToHCS(eventData) {
-        try {
-            console.log(`📤 Submitting AIRebalance event to HCS: ${eventData.transactionHash}`);
-
-            // Prepare decision data for HCS
-            const decisionData = {
-                // Core event identification
-                txHash: eventData.transactionHash,
-                blockNumber: eventData.blockNumber,
-                logIndex: eventData.logIndex,
-                eventHash: eventData.eventHash,
-                
-                // Decision details
-                type: 'ai_rebalance',
-                agent: eventData.agent,
-                decisionId: eventData.decisionCid,
-                timestamp: eventData.timestamp,
-                decisionCid: eventData.decisionCid,
-                fromStrategy: eventData.fromStrategy,
-                toStrategy: eventData.toStrategy,
-                amount: eventData.amount,
-                
-                // Network information
-                chainId: await this.web3Provider.getNetwork().then(n => n.chainId.toString()),
-                contractAddress: this.contractAddress,
-                gasUsed: eventData.gasUsed,
-                gasPrice: eventData.gasPrice,
-                
-                // Timing information
-                blockTimestamp: eventData.blockTimestamp,
-                processedAt: eventData.processedAt,
-                
-                // Additional metadata
-                reason: 'AI-driven yield optimization',
-                confidence: 0.95, // Default confidence
-                expectedYield: null, // To be enhanced with actual data
-                riskScore: null // To be enhanced with actual data
-            };
-
-            // Submit to HCS with retry mechanism
-            const hcsResult = await this.hederaService.submitDecisionWithRetry(decisionData, 3, 1000);
-            
-            // Store mapping between event and HCS message
-            this.eventMappings.set(eventData.eventHash, {
-                hcsTopicId: hcsResult.topicId,
-                hcsSequenceNumber: hcsResult.sequenceNumber,
-                hcsTransactionId: hcsResult.transactionId,
-                submittedAt: Date.now(),
-                eventData: eventData
-            });
-
-            console.log(`✅ AIRebalance event submitted to HCS: ${hcsResult.sequenceNumber}`);
-            
-            return {
-                success: true,
-                eventHash: eventData.eventHash,
-                hcsResult: hcsResult
-            };
-        } catch (error) {
-            console.error(`❌ Failed to submit event to HCS:`, error);
-            throw error;
-        }
-    }
-
-    /**
-     * Generate unique hash for event identification
-     */
-    generateEventHash(event) {
-        const crypto = require('crypto');
-        const hashInput = `${event.transactionHash}-${event.blockNumber}-${event.logIndex}`;
-        return crypto.createHash('sha256').update(hashInput).digest('hex');
-    }
-
-    /**
-     * Get mapping between event and HCS message
-     */
-    getEventMapping(eventHash) {
-        return this.eventMappings.get(eventHash);
-    }
-
-    /**
-     * Get all event mappings
-     */
-    getAllEventMappings() {
-        return Array.from(this.eventMappings.entries()).map(([eventHash, mapping]) => ({
-            eventHash,
-            ...mapping
-        }));
-    }
-
-    /**
-     * Verify event was logged to HCS
-     */
-    async verifyEventLogging(eventHash) {
-        const mapping = this.eventMappings.get(eventHash);
-        if (!mapping) {
-            return {
-                verified: false,
-                reason: 'Event not found in mappings'
-            };
-        }
-
-        return {
-            verified: true,
-            hcsTopicId: mapping.hcsTopicId,
-            hcsSequenceNumber: mapping.hcsSequenceNumber,
-            submittedAt: mapping.submittedAt,
-            eventData: mapping.eventData
-        };
-    }
-
-    /**
-     * Get logging statistics
-     */
-    getStatistics() {
-        const mappings = this.getAllEventMappings();
-        const now = Date.now();
-        const last24h = mappings.filter(m => (now - m.submittedAt) < 24 * 60 * 60 * 1000);
         
-        return {
-            totalEventsLogged: mappings.length,
-            eventsLast24h: last24h.length,
-            queuedEvents: this.eventQueue.length,
-            isMonitoring: this.isMonitoring,
-            lastProcessedBlock: this.lastProcessedBlock,
-            contractAddress: this.contractAddress,
-            hederaServiceStatus: this.hederaService.getStatus()
-        };
+        if (!this.config.enableHederaLogging && !this.config.enableLocalLogging) {
+            throw new Error('At least one logging method must be enabled');
+        }
+        
+        if (this.config.batchSize <= 0 || this.config.batchTimeout <= 0) {
+            throw new Error('Batch size and timeout must be positive numbers');
+        }
     }
-
+    
     /**
-     * Stop monitoring and cleanup
+     * Setup local logging directory and files
      */
-    async stopMonitoring() {
+    async setupLocalLogging() {
         try {
-            console.log('⏹️ Stopping AI decision logging...');
+            const logDir = path.dirname(this.config.localLogPath);
+            await fs.mkdir(logDir, { recursive: true });
             
-            this.isMonitoring = false;
-            
-            if (this.processingInterval) {
-                clearInterval(this.processingInterval);
-                this.processingInterval = null;
+            // Create initial log file if it doesn't exist
+            const logFile = `${this.config.localLogPath}/decisions-${this.getDateString()}.json`;
+            try {
+                await fs.access(logFile);
+            } catch {
+                await fs.writeFile(logFile, JSON.stringify({ initialized: Date.now(), decisions: [] }, null, 2));
             }
             
-            // Process remaining queued events
-            if (this.eventQueue.length > 0) {
-                console.log(`🔄 Processing ${this.eventQueue.length} remaining events...`);
-                await this.processEventQueue();
-            }
+            console.log(`📁 Local logging setup at: ${logDir}`);
             
-            console.log('✅ AI decision logging stopped');
-            return {
-                status: 'monitoring_stopped',
-                finalStatistics: this.getStatistics()
-            };
         } catch (error) {
-            console.error('❌ Error stopping monitoring:', error);
+            console.error('❌ Failed to setup local logging:', error);
             throw error;
         }
     }
-
+    
     /**
-     * Health check for the decision logger
+     * Initialize Hedera integration
      */
-    async healthCheck() {
-        const health = {
-            timestamp: Date.now(),
-            status: 'healthy',
-            issues: []
-        };
-
+    async initializeHederaIntegration() {
         try {
-            // Check Hedera service health
-            const hederaHealth = await this.hederaService.healthCheck();
-            if (hederaHealth.errors.length > 0) {
-                health.issues.push(...hederaHealth.errors);
-                health.status = 'degraded';
+            if (!this.config.hederaService.isConnected) {
+                console.warn('⚠️ HederaService not connected, Hedera logging may fail');
             }
-
-            // Check Web3 provider
-            try {
-                await this.web3Provider.getBlockNumber();
-            } catch (error) {
-                health.issues.push(`Web3 provider error: ${error.message}`);
-                health.status = 'degraded';
+            
+            // Verify HCS topics exist
+            if (!this.config.hcsTopicId) {
+                console.warn('⚠️ No HCS topic ID provided for decision logging');
             }
-
-            // Check contract interface
-            if (!this.contract) {
-                health.issues.push('Contract interface not initialized');
-                health.status = 'degraded';
-            }
-
-            // Check monitoring status
-            if (!this.isMonitoring) {
-                health.issues.push('Event monitoring not active');
-            }
-
-            // Check queue size
-            if (this.eventQueue.length > 100) {
-                health.issues.push(`Large event queue: ${this.eventQueue.length} events`);
-                health.status = 'degraded';
-            }
-
-            if (health.issues.length === 0) {
-                health.status = 'healthy';
-            } else if (health.issues.length > 3) {
-                health.status = 'unhealthy';
-            }
-
+            
+            console.log('🔗 Hedera integration initialized');
+            
         } catch (error) {
-            health.status = 'unhealthy';
-            health.issues.push(`Health check failed: ${error.message}`);
+            console.error('❌ Failed to initialize Hedera integration:', error);
+            throw error;
         }
-
-        return health;
     }
-
+    
+    // ========== Core Logging Methods ==========
+    
     /**
-     * Close and cleanup resources
+     * Log an AI decision
+     * @param {object} decision - Decision data
+     * @returns {Promise<string>} Decision ID
      */
-    async close() {
+    async logDecision(decision) {
         try {
-            await this.stopMonitoring();
-            await this.hederaService.close();
-            console.log('✅ AI Decision Logger closed');
+            const startTime = Date.now();
+            
+            // Generate unique decision ID
+            const decisionId = this.generateDecisionId(decision);
+            
+            // Prepare decision entry
+            const decisionEntry = this.prepareDecisionEntry(decision, decisionId);
+            
+            // Add to batch queue
+            this.batchQueue.push(decisionEntry);
+            
+            // Store in decision history for tracking
+            this.decisionHistory.set(decisionId, {
+                ...decisionEntry,
+                logged: false,
+                loggedAt: null
+            });
+            
+            // Process batch if it's full
+            if (this.batchQueue.length >= this.config.batchSize) {
+                await this.processBatch();
+            }
+            
+            // Update metrics
+            this.metrics.totalDecisions++;
+            const processingTime = Date.now() - startTime;
+            this.updateProcessingTime(processingTime);
+            
+            this.emit('decisionQueued', { decisionId, processingTime });
+            
+            return decisionId;
+            
         } catch (error) {
-            console.error('❌ Error closing AI Decision Logger:', error);
+            console.error('❌ Failed to log decision:', error);
+            this.metrics.failedLogs++;
+            this.emit('logError', { error, decision });
+            throw error;
+        }
+    }
+    
+    /**
+     * Log multiple AI decisions in batch
+     * @param {Array} decisions - Array of decision data
+     * @returns {Promise<Array>} Array of decision IDs
+     */
+    async logDecisionBatch(decisions) {
+        try {
+            const startTime = Date.now();
+            const decisionIds = [];
+            
+            for (const decision of decisions) {
+                const decisionId = this.generateDecisionId(decision);
+                const decisionEntry = this.prepareDecisionEntry(decision, decisionId);
+                
+                this.batchQueue.push(decisionEntry);
+                this.decisionHistory.set(decisionId, {
+                    ...decisionEntry,
+                    logged: false,
+                    loggedAt: null
+                });
+                
+                decisionIds.push(decisionId);
+            }
+            
+            // Process batch immediately for large batches
+            if (this.batchQueue.length >= this.config.batchSize) {
+                await this.processBatch();
+            }
+            
+            // Update metrics
+            this.metrics.totalDecisions += decisions.length;
+            const processingTime = Date.now() - startTime;
+            this.updateProcessingTime(processingTime);
+            
+            this.emit('batchQueued', { count: decisions.length, decisionIds, processingTime });
+            
+            return decisionIds;
+            
+        } catch (error) {
+            console.error('❌ Failed to log decision batch:', error);
+            this.metrics.failedLogs += decisions.length;
+            throw error;
+        }
+    }
+    
+    /**
+     * Log decision outcome for tracking
+     * @param {string} decisionId - Decision ID
+     * @param {object} outcome - Outcome data
+     * @returns {Promise<boolean>} Success status
+     */
+    async logDecisionOutcome(decisionId, outcome) {
+        try {
+            if (!this.config.trackDecisionOutcomes) {
+                return false;
+            }
+            
+            const decision = this.decisionHistory.get(decisionId);
+            if (!decision) {
+                console.warn(`⚠️ Decision ${decisionId} not found for outcome tracking`);
+                return false;
+            }
+            
+            // Prepare outcome entry
+            const outcomeEntry = {
+                decisionId: decisionId,
+                outcome: outcome,
+                timestamp: Date.now(),
+                originalDecision: decision,
+                timeSinceDecision: Date.now() - decision.timestamp
+            };
+            
+            // Store outcome
+            this.outcomeTracking.set(decisionId, outcomeEntry);
+            
+            // Log outcome to Hedera if enabled
+            if (this.config.enableHederaLogging && this.config.hederaService) {
+                await this.logOutcomeToHedera(outcomeEntry);
+            }
+            
+            // Log outcome locally if enabled
+            if (this.config.enableLocalLogging) {
+                await this.logOutcomeLocally(outcomeEntry);
+            }
+            
+            this.emit('outcomeLogged', { decisionId, outcome });
+            
+            return true;
+            
+        } catch (error) {
+            console.error('❌ Failed to log decision outcome:', error);
+            this.emit('outcomeLogError', { decisionId, outcome, error });
+            return false;
+        }
+    }
+    
+    // ========== Batch Processing ==========
+    
+    /**
+     * Start batch processing timer
+     */
+    startBatchProcessing() {
+        this.batchTimer = setInterval(async () => {
+            if (this.batchQueue.length > 0) {
+                await this.processBatch();
+            }
+        }, this.config.batchTimeout);
+        
+        console.log(`⏱️ Batch processing started (${this.config.batchTimeout}ms interval)`);
+    }
+    
+    /**
+     * Process current batch of decisions
+     */
+    async processBatch() {
+        if (this.batchQueue.length === 0) {
+            return;
+        }
+        
+        const startTime = Date.now();
+        const batch = [...this.batchQueue];
+        this.batchQueue = [];
+        
+        try {
+            console.log(`📦 Processing batch of ${batch.length} decisions`);
+            
+            // Process Hedera logging
+            if (this.config.enableHederaLogging && this.config.hederaService) {
+                await this.processBatchHedera(batch);
+            }
+            
+            // Process local logging
+            if (this.config.enableLocalLogging) {
+                await this.processBatchLocal(batch);
+            }
+            
+            // Update decision history
+            batch.forEach(decision => {
+                const historyEntry = this.decisionHistory.get(decision.id);
+                if (historyEntry) {
+                    historyEntry.logged = true;
+                    historyEntry.loggedAt = Date.now();
+                }
+            });
+            
+            // Update metrics
+            this.metrics.batchesProcessed++;
+            this.metrics.successfulLogs += batch.length;
+            this.metrics.lastLogTime = Date.now();
+            
+            const processingTime = Date.now() - startTime;
+            this.performanceData.batchSizes.push(batch.length);
+            this.updateProcessingTime(processingTime);
+            
+            this.emit('batchProcessed', {
+                batchSize: batch.length,
+                processingTime: processingTime,
+                timestamp: Date.now()
+            });
+            
+            console.log(`✅ Batch processed successfully in ${processingTime}ms`);
+            
+        } catch (error) {
+            console.error('❌ Failed to process batch:', error);
+            
+            // Re-queue failed decisions
+            this.batchQueue.unshift(...batch);
+            this.metrics.failedLogs += batch.length;
+            
+            this.emit('batchError', { batchSize: batch.length, error });
+        }
+    }
+    
+    /**
+     * Process batch to Hedera
+     * @param {Array} batch - Batch of decisions
+     */
+    async processBatchHedera(batch) {
+        try {
+            // Prepare messages for HCS
+            const messages = batch.map(decision => ({
+                type: 'AI_DECISION',
+                data: decision,
+                timestamp: Date.now(),
+                version: '2.0.0'
+            }));
+            
+            // Submit batch to HCS
+            const results = await this.config.hederaService.submitBatchToHCS(
+                this.config.hcsTopicId,
+                messages
+            );
+            
+            // Log successful submissions
+            const successCount = results.filter(r => r.success).length;
+            this.metrics.hederaLogsCount += successCount;
+            
+            console.log(`🔗 Hedera batch: ${successCount}/${batch.length} decisions logged`);
+            
+        } catch (error) {
+            console.error('❌ Failed to process Hedera batch:', error);
+            throw error;
+        }
+    }
+    
+    /**
+     * Process batch to local storage
+     * @param {Array} batch - Batch of decisions
+     */
+    async processBatchLocal(batch) {
+        try {
+            const logFile = `${this.config.localLogPath}/decisions-${this.getDateString()}.json`;
+            
+            // Read existing log file
+            let logData;
+            try {
+                const fileContent = await fs.readFile(logFile, 'utf8');
+                logData = JSON.parse(fileContent);
+            } catch {
+                logData = { initialized: Date.now(), decisions: [] };
+            }
+            
+            // Add batch to log data
+            logData.decisions.push(...batch);
+            logData.lastUpdated = Date.now();
+            logData.totalDecisions = logData.decisions.length;
+            
+            // Write updated log file
+            await fs.writeFile(logFile, JSON.stringify(logData, null, 2));
+            
+            this.metrics.localLogsCount += batch.length;
+            
+            console.log(`💾 Local batch: ${batch.length} decisions logged to ${logFile}`);
+            
+        } catch (error) {
+            console.error('❌ Failed to process local batch:', error);
+            throw error;
+        }
+    }
+    
+    // ========== Decision Tracking ==========
+    
+    /**
+     * Get decision by ID
+     * @param {string} decisionId - Decision ID
+     * @returns {object|null} Decision data
+     */
+    getDecision(decisionId) {
+        return this.decisionHistory.get(decisionId) || null;
+    }
+    
+    /**
+     * Get decisions by criteria
+     * @param {object} criteria - Search criteria
+     * @returns {Array} Matching decisions
+     */
+    getDecisions(criteria = {}) {
+        const decisions = Array.from(this.decisionHistory.values());
+        
+        return decisions.filter(decision => {
+            if (criteria.type && decision.type !== criteria.type) return false;
+            if (criteria.strategy && decision.strategy !== criteria.strategy) return false;
+            if (criteria.confidence && decision.confidence < criteria.confidence) return false;
+            if (criteria.startTime && decision.timestamp < criteria.startTime) return false;
+            if (criteria.endTime && decision.timestamp > criteria.endTime) return false;
+            if (criteria.logged !== undefined && decision.logged !== criteria.logged) return false;
+            
+            return true;
+        });
+    }
+    
+    /**
+     * Get decision outcomes
+     * @param {string} decisionId - Decision ID (optional)
+     * @returns {Array|object} Outcomes
+     */
+    getDecisionOutcomes(decisionId = null) {
+        if (decisionId) {
+            return this.outcomeTracking.get(decisionId) || null;
+        }
+        
+        return Array.from(this.outcomeTracking.values());
+    }
+    
+    // ========== Utility Methods ==========
+    
+    /**
+     * Generate unique decision ID
+     * @param {object} decision - Decision data
+     * @returns {string} Decision ID
+     */
+    generateDecisionId(decision) {
+        const data = `${decision.type}-${Date.now()}-${JSON.stringify(decision.context || {})}`;
+        return crypto.createHash('sha256').update(data).digest('hex').substring(0, 16);
+    }
+    
+    /**
+     * Prepare decision entry for logging
+     * @param {object} decision - Raw decision data
+     * @param {string} decisionId - Decision ID
+     * @returns {object} Prepared decision entry
+     */
+    prepareDecisionEntry(decision, decisionId) {
+        return {
+            id: decisionId,
+            timestamp: Date.now(),
+            type: decision.type || 'unknown',
+            strategy: decision.strategy || null,
+            action: decision.action || null,
+            confidence: decision.confidence || 0,
+            reasoning: decision.reasoning || '',
+            context: decision.context || {},
+            parameters: decision.parameters || {},
+            expectedOutcome: decision.expectedOutcome || null,
+            riskLevel: decision.riskLevel || 'medium',
+            metadata: {
+                version: '2.0.0',
+                source: 'AION_AI_Agent',
+                environment: process.env.NODE_ENV || 'development',
+                ...decision.metadata
+            }
+        };
+    }
+    
+    /**
+     * Log outcome to Hedera
+     * @param {object} outcomeEntry - Outcome entry
+     */
+    async logOutcomeToHedera(outcomeEntry) {
+        try {
+            const message = {
+                type: 'AI_DECISION_OUTCOME',
+                data: outcomeEntry,
+                timestamp: Date.now(),
+                version: '2.0.0'
+            };
+            
+            await this.config.hederaService.submitToHCS(
+                this.config.hcsAuditTopicId || this.config.hcsTopicId,
+                message
+            );
+            
+        } catch (error) {
+            console.error('❌ Failed to log outcome to Hedera:', error);
+            throw error;
+        }
+    }
+    
+    /**
+     * Log outcome locally
+     * @param {object} outcomeEntry - Outcome entry
+     */
+    async logOutcomeLocally(outcomeEntry) {
+        try {
+            const outcomeFile = `${this.config.localLogPath}/outcomes-${this.getDateString()}.json`;
+            
+            let outcomeData;
+            try {
+                const fileContent = await fs.readFile(outcomeFile, 'utf8');
+                outcomeData = JSON.parse(fileContent);
+            } catch {
+                outcomeData = { initialized: Date.now(), outcomes: [] };
+            }
+            
+            outcomeData.outcomes.push(outcomeEntry);
+            outcomeData.lastUpdated = Date.now();
+            outcomeData.totalOutcomes = outcomeData.outcomes.length;
+            
+            await fs.writeFile(outcomeFile, JSON.stringify(outcomeData, null, 2));
+            
+        } catch (error) {
+            console.error('❌ Failed to log outcome locally:', error);
+            throw error;
+        }
+    }
+    
+    /**
+     * Get date string for file naming
+     * @returns {string} Date string
+     */
+    getDateString() {
+        return new Date().toISOString().split('T')[0];
+    }
+    
+    /**
+     * Update processing time metrics
+     * @param {number} processingTime - Processing time in ms
+     */
+    updateProcessingTime(processingTime) {
+        this.performanceData.processingTimes.push(processingTime);
+        
+        // Keep only last 100 measurements
+        if (this.performanceData.processingTimes.length > 100) {
+            this.performanceData.processingTimes.shift();
+        }
+        
+        // Update average
+        const times = this.performanceData.processingTimes;
+        this.metrics.averageProcessingTime = times.reduce((a, b) => a + b, 0) / times.length;
+    }
+    
+    // ========== Metrics and Monitoring ==========
+    
+    /**
+     * Start metrics collection
+     */
+    startMetricsCollection() {
+        setInterval(() => {
+            this.collectMetrics();
+        }, this.config.metricsInterval);
+        
+        console.log(`📊 Metrics collection started (${this.config.metricsInterval}ms interval)`);
+    }
+    
+    /**
+     * Collect and emit metrics
+     */
+    collectMetrics() {
+        const currentTime = Date.now();
+        
+        const metricsData = {
+            ...this.metrics,
+            timestamp: currentTime,
+            queueSize: this.batchQueue.length,
+            historySize: this.decisionHistory.size,
+            outcomeTrackingSize: this.outcomeTracking.size,
+            performance: {
+                averageProcessingTime: this.metrics.averageProcessingTime,
+                averageBatchSize: this.performanceData.batchSizes.length > 0 ?
+                    this.performanceData.batchSizes.reduce((a, b) => a + b, 0) / this.performanceData.batchSizes.length : 0,
+                errorRate: this.metrics.totalDecisions > 0 ?
+                    (this.metrics.failedLogs / this.metrics.totalDecisions) * 100 : 0
+            }
+        };
+        
+        this.emit('metrics', metricsData);
+    }
+    
+    /**
+     * Get current metrics
+     * @returns {object} Current metrics
+     */
+    getMetrics() {
+        return {
+            ...this.metrics,
+            queueSize: this.batchQueue.length,
+            historySize: this.decisionHistory.size,
+            outcomeTrackingSize: this.outcomeTracking.size,
+            uptime: Date.now() - (this.metrics.lastLogTime || Date.now()),
+            performance: {
+                averageProcessingTime: this.metrics.averageProcessingTime,
+                averageBatchSize: this.performanceData.batchSizes.length > 0 ?
+                    this.performanceData.batchSizes.reduce((a, b) => a + b, 0) / this.performanceData.batchSizes.length : 0,
+                errorRate: this.metrics.totalDecisions > 0 ?
+                    (this.metrics.failedLogs / this.metrics.totalDecisions) * 100 : 0
+            }
+        };
+    }
+    
+    /**
+     * Get service status
+     * @returns {object} Service status
+     */
+    getStatus() {
+        return {
+            isInitialized: this.isInitialized,
+            configuration: {
+                enableHederaLogging: this.config.enableHederaLogging,
+                enableLocalLogging: this.config.enableLocalLogging,
+                batchSize: this.config.batchSize,
+                batchTimeout: this.config.batchTimeout,
+                trackDecisionOutcomes: this.config.trackDecisionOutcomes
+            },
+            metrics: this.getMetrics(),
+            health: {
+                queueHealthy: this.batchQueue.length < this.config.batchSize * 2,
+                hederaConnected: this.config.hederaService ? this.config.hederaService.isConnected : false,
+                localLoggingEnabled: this.config.enableLocalLogging
+            }
+        };
+    }
+    
+    /**
+     * Gracefully shutdown the logger
+     */
+    async shutdown() {
+        try {
+            console.log('🛑 Shutting down AI Decision Logger...');
+            
+            // Process remaining batch
+            if (this.batchQueue.length > 0) {
+                await this.processBatch();
+            }
+            
+            // Clear timers
+            if (this.batchTimer) {
+                clearInterval(this.batchTimer);
+                this.batchTimer = null;
+            }
+            
+            // Clear data structures
+            this.batchQueue = [];
+            this.decisionHistory.clear();
+            this.outcomeTracking.clear();
+            
+            this.isInitialized = false;
+            this.emit('shutdown', { timestamp: Date.now() });
+            
+            console.log('✅ AI Decision Logger shutdown complete');
+            
+        } catch (error) {
+            console.error('❌ Error during shutdown:', error);
+            throw error;
         }
     }
 }
 
-export default AIDecisionLogger;
+module.exports = AIDecisionLogger;

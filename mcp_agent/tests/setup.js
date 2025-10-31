@@ -1,109 +1,93 @@
 /**
  * @fileoverview Jest Test Setup
- * @description Global test setup and utilities
+ * @description Global test setup and configuration
+ * @author AION Team
+ * @version 2.0.0
  */
 
-const dotenv = require('dotenv');
-const path = require('path');
-
-// Load test environment variables
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
-
-// Set test environment
+// Set test environment variables
 process.env.NODE_ENV = 'test';
+process.env.JWT_SECRET = 'test_jwt_secret_key_for_testing_only';
+process.env.DEFAULT_ADMIN_PASSWORD = 'TestAdmin123!';
+process.env.API_USER_PASSWORD = 'TestAPI123!';
+process.env.HEDERA_NETWORK = 'testnet';
+process.env.HEDERA_OPERATOR_ID = '0.0.123456';
+process.env.HEDERA_OPERATOR_KEY = 'test_private_key';
+
+// Mock console methods to reduce noise in tests
+const originalConsoleLog = console.log;
+const originalConsoleWarn = console.warn;
+const originalConsoleError = console.error;
+
+// Only show console output if VERBOSE_TESTS is set
+if (!process.env.VERBOSE_TESTS) {
+    console.log = jest.fn();
+    console.warn = jest.fn();
+    console.error = jest.fn();
+}
 
 // Global test utilities
 global.testUtils = {
-  // Mock Ethereum address
-  mockAddress: '0x1234567890123456789012345678901234567890',
-  
-  // Mock transaction hash
-  mockTxHash: '0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890',
-  
-  // Create mock request object
-  createMockRequest: (body = {}, query = {}, headers = {}) => ({
-    body,
-    query,
-    headers,
-    ip: '127.0.0.1',
-    method: 'GET',
-    url: '/test'
-  }),
-  
-  // Create mock reply object
-  createMockReply: () => {
-    const reply = {
-      statusCode: 200,
-      headers: {},
-      sent: false,
-      payload: null
-    };
+    // Restore console methods for debugging
+    enableConsole: () => {
+        console.log = originalConsoleLog;
+        console.warn = originalConsoleWarn;
+        console.error = originalConsoleError;
+    },
     
-    reply.status = (code) => {
-      reply.statusCode = code;
-      return reply;
-    };
+    // Disable console methods
+    disableConsole: () => {
+        console.log = jest.fn();
+        console.warn = jest.fn();
+        console.error = jest.fn();
+    },
     
-    reply.send = (payload) => {
-      reply.payload = payload;
-      reply.sent = true;
-      return reply;
-    };
+    // Wait for a specified time
+    wait: (ms) => new Promise(resolve => setTimeout(resolve, ms)),
     
-    reply.header = (key, value) => {
-      reply.headers[key] = value;
-      return reply;
-    };
+    // Generate random test data
+    generateTestUser: (overrides = {}) => ({
+        username: `test_user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        email: `test_${Date.now()}@example.com`,
+        password: 'TestPassword123!',
+        role: 'trader',
+        ...overrides
+    }),
     
-    return reply;
-  },
-  
-  // Wait for async operations
-  wait: (ms) => new Promise(resolve => setTimeout(resolve, ms)),
-  
-  // Generate random test data
-  randomString: (length = 10) => Math.random().toString(36).substring(2, length + 2),
-  randomNumber: (min = 0, max = 100) => Math.floor(Math.random() * (max - min + 1)) + min,
-  randomAddress: () => '0x' + Math.random().toString(16).substr(2, 40),
-  randomHash: () => '0x' + Math.random().toString(16).substr(2, 64)
+    // Generate test Hedera account ID
+    generateHederaAccountId: () => `0.0.${Math.floor(Math.random() * 999999) + 100000}`,
+    
+    // Generate test transaction data
+    generateTestTransaction: (overrides = {}) => ({
+        amount: '1000000000000000000', // 1 ETH
+        asset: 'ETH',
+        userAddress: '0x742d35Cc6634C0532925a3b8D4C9db96590c6C87',
+        hederaAccountId: global.testUtils.generateHederaAccountId(),
+        ...overrides
+    })
 };
 
-// Global test constants
-global.testConstants = {
-  NETWORKS: {
-    BSC_TESTNET: 'bscTestnet',
-    BSC_MAINNET: 'bscMainnet',
-    ETHEREUM: 'ethereum'
-  },
-  
-  STRATEGIES: {
-    VENUS: 'venus',
-    BEEFY: 'beefy',
-    PANCAKE: 'pancake',
-    AAVE: 'aave'
-  },
-  
-  ACTIONS: {
-    DEPOSIT: 'deposit',
-    WITHDRAW: 'withdraw',
-    REBALANCE: 'rebalance'
-  }
-};
+// Global test hooks
+beforeEach(() => {
+    // Clear any global state
+    if (global.rateLimitStore) {
+        global.rateLimitStore.clear();
+    }
+});
 
-// Mock console methods for cleaner test output
-const originalConsole = { ...console };
-global.mockConsole = () => {
-  console.log = jest.fn();
-  console.warn = jest.fn();
-  console.error = jest.fn();
-  console.info = jest.fn();
-};
-
-global.restoreConsole = () => {
-  Object.assign(console, originalConsole);
-};
-
-// Global test cleanup
 afterEach(() => {
-  jest.clearAllMocks();
+    // Clean up after each test
+    jest.clearAllTimers();
+});
+
+// Handle unhandled promise rejections in tests
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    // Don't exit the process in tests, just log the error
+});
+
+// Handle uncaught exceptions in tests
+process.on('uncaughtException', (error) => {
+    console.error('Uncaught Exception:', error);
+    // Don't exit the process in tests, just log the error
 });

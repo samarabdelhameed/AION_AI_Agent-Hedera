@@ -255,7 +255,10 @@ contract StrategyCompound is BaseStrategy {
             uint256 cTokenBalance = cToken.balanceOfUnderlying(address(this));
             if (cTokenBalance > 0) {
                 cToken.redeemUnderlying(cTokenBalance);
-                underlyingToken.safeTransfer(_vault, underlyingToken.balanceOf(address(this)));
+                underlyingToken.safeTransfer(
+                    _vault,
+                    underlyingToken.balanceOf(address(this))
+                );
             }
         }
     }
@@ -416,7 +419,7 @@ contract StrategyCompound is BaseStrategy {
 
     /// @notice Test real revert when unauthorized strategy
     function revertWhenUnauthorizedStrategy() external pure returns (bool) {
-        return true; // Will revert with "NotVault"
+        revert("Unauthorized strategy change");
     }
 
     /// @notice Test real revert when withdraw more than balance

@@ -26,7 +26,13 @@
     "logs": "tail -f logs/*.log",
     "logs:mcp": "tail -f logs/mcp_agent.log",
     "logs:frontend": "tail -f logs/frontend.log",
-    "setup:hedera": "node scripts/setup-verification-environment.js",
+    "setup:hedera": "node scripts/setup-hedera-dev-environment.js",
+    "setup:hedera-services": "node scripts/setup-hedera-services.js",
+    "update:config": "node scripts/update-configuration-files.js",
+    "validate:config": "node scripts/validate-configuration.js",
+    "monitor:start": "node -e \"import('./mcp_agent/services/comprehensiveMonitoringSystem.js').then(m => new m.default({}).startMonitoring())\"",
+    "monitor:test": "node scripts/test-monitoring-system.js",
+    "monitor:alerts": "node -e \"import('./mcp_agent/services/realAlertingSystem.js').then(m => new m.default({}).testRealAlert())\"",
     "verify:hedera": "node scripts/generate-hedera-verification-links.js",
     "validate:env": "node scripts/validate-environment.js",
     "test:hedera": "node scripts/test-hedera-connection.js",
@@ -89,6 +95,7 @@
   },
   "dependencies": {
     "@hashgraph/sdk": "^2.75.0",
+    "chalk": "^4.1.2",
     "dotenv": "^17.2.3",
     "ethers": "^6.15.0"
   },

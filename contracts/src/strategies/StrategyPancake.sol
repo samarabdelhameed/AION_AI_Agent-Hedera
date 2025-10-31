@@ -847,7 +847,7 @@ contract StrategyPancake is BaseStrategy {
 
     /// @notice Test revert when unauthorized strategy (placeholder)
     function revertWhenUnauthorizedStrategy() external pure returns (bool) {
-        return true; // Reverts - unauthorized
+        revert("Unauthorized strategy change");
     }
 
     /// @notice Test revert when withdraw more than balance (placeholder)

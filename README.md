@@ -111,40 +111,60 @@
 
 ## 🔗 **Hedera Hashgraph Integration** 
 
-> **🏆 HACKATHON ACHIEVEMENT:** First AI-powered DeFi platform with complete Hedera integration across all 4 services (HTS, HCS, HFS, HSCS) with **100% real transaction data** and verifiable explorer links.
+> **🏆 ENHANCED INTEGRATION:** Complete Hedera development environment with automated setup, comprehensive testing, and production-ready services across all 4 Hedera services (HTS, HCS, HFS, HSCS).
 
 ### 🏆 **Complete Hedera Service Integration**
 
-AION Vault is now fully integrated with **all four Hedera services**, demonstrating production-ready blockchain capabilities with **real transaction data** and verifiable explorer links.
+AION now features a **comprehensive Hedera integration** with automated development environment setup, enhanced services, and production-ready capabilities.
 
 **🎯 Why Hedera?**
-- ⚡ **Instant Finality** - Transactions confirmed in 1.2 seconds vs 3.5s on BSC
-- 💰 **Fixed Fees** - Predictable HBAR costs vs variable gas fees
+- ⚡ **Instant Finality** - Transactions confirmed in ~3 seconds
+- 💰 **Predictable Fees** - Fixed HBAR costs vs variable gas fees
 - 🛡️ **aBFT Security** - Asynchronous Byzantine Fault Tolerance
 - 🌍 **Enterprise Grade** - Built for real-world adoption
+- 🔄 **Native Services** - HTS, HCS, HFS, HSCS integration
+
+### 🚀 **Quick Hedera Setup**
+
+```bash
+# 1. Setup Hedera development environment
+npm run setup:hedera
+
+# 2. Test connection to Hedera testnet
+npm run test:hedera
+
+# 3. Create Hedera services (HCS, HFS, HTS)
+npm run setup:hedera-services
+
+# 4. Deploy smart contracts
+npm run deploy:hedera
+
+# 5. Run comprehensive tests
+npm run test:hedera-integration
+```
 
 <div align="center">
 
 ```
-🌟 HEDERA INTEGRATION STATUS: 100% COMPLETE
+🌟 HEDERA INTEGRATION ARCHITECTURE
 ┌─────────────────────────────────────────────────────────────────────────────────┐
 
 🪙 HTS (TOKEN SERVICE)           💬 HCS (CONSENSUS SERVICE)
 ┌─────────────────────────────┐   ┌─────────────────────────────┐
-│ Token ID: 0.0.7150671       │   │ Topic ID: 0.0.7150678       │
-│ Name: AION Vault Shares     │   │ Purpose: AI Decision Log    │
-│ Symbol: AION                │   │ Messages: 16+ Real Messages │
-│ Status: ✅ LIVE & VERIFIED  │   │ Status: ✅ LIVE & VERIFIED  │
-│ Explorer: hashscan.io       │   │ Explorer: hashscan.io       │
+│ • AION Share Tokens         │   │ • AI Decision Logging       │
+│ • Mint/Burn Operations      │   │ • Audit Trail Records       │
+│ • Native Token Features     │   │ • Immutable Message Log     │
+│ • Cross-chain Bridge        │   │ • Real-time Event Stream    │
+│ Status: ✅ PRODUCTION READY │   │ Status: ✅ PRODUCTION READY │
 └─────────────────────────────┘   └─────────────────────────────┘
 
 📁 HFS (FILE SERVICE)            🔗 HSCS (SMART CONTRACTS)
 ┌─────────────────────────────┐   ┌─────────────────────────────┐
-│ Files Stored: 6 Files       │   │ Contract: AION Vault        │
-│ AI Metadata: Complete       │   │ Status: Deployed & Verified│
-│ File IDs: 0.0.7150714-21    │   │ Network: Hedera Testnet     │
-│ Status: ✅ LIVE & VERIFIED  │   │ Status: ✅ LIVE & VERIFIED  │
-│ Explorer: hashscan.io       │   │ Explorer: hashscan.io       │
+│ • AI Model Metadata         │   │ • Enhanced Vault Logic      │
+│ • Bridge Configuration      │   │ • Hedera Native Integration │
+│ • Decentralized Storage     │   │ • Cross-chain Capabilities  │
+│ • Version Control System    │   │ • Advanced Security         │
+│ Status: ✅ PRODUCTION READY │   │ Status: ✅ PRODUCTION READY │
 └─────────────────────────────┘   └─────────────────────────────┘
 ```
 

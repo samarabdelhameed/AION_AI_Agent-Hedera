@@ -4,17 +4,43 @@ out = "out"
 libs = ["lib"]
 remappings = [
     "@openzeppelin/=lib/openzeppelin-contracts/",
-    "forge-std/=lib/forge-std/src/"
+    "forge-std/=lib/forge-std/src/",
+    "@hedera/=contracts/hedera-smart-contracts-0.11.0/contracts/"
 ]
 chain_id = 97
 solc_version = "0.8.30"
 optimizer = false
 optimizer_runs = 200
 
+# Hedera Profile for Hedera-specific deployments
+[profile.hedera]
+src = "src"
+out = "out/hedera"
+libs = ["lib", "contracts/hedera-smart-contracts-0.11.0"]
+remappings = [
+    "@openzeppelin/=lib/openzeppelin-contracts/",
+    "@hedera/=contracts/hedera-smart-contracts-0.11.0/contracts/",
+    "forge-std/=lib/forge-std/src/"
+]
+solc_version = "0.8.30"
+optimizer = true
+optimizer_runs = 200
+via_ir = true
+
 [rpc_endpoints]
+# BSC Networks
 bsctest = "https://data-seed-prebsc-1-s1.binance.org:8545"
 bnbTestnet = "https://bsc-testnet.public.blastapi.io"
 bnbMainnet = "${BNB_MAINNET_RPC_URL}"
 
+# Hedera Networks
+hederaTestnet = "https://testnet.hashio.io/api"
+hederaMainnet = "https://mainnet.hashio.io/api"
+hederaPreviewnet = "https://previewnet.hashio.io/api"
+
 [profile.fork]
-url = "https://bsc-testnet.publicnode.com" 
+url = "https://bsc-testnet.publicnode.com"
+
+# Hedera Fork Profile
+[profile.hedera-fork]
+url = "https://testnet.hashio.io/api" 

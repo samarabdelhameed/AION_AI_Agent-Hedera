@@ -1,71 +1,129 @@
 {
-  "name": "aion-mcp-agent",
+  "name": "aion-mcp-agent-enhanced",
   "version": "2.0.0",
-  "description": "AION AI Agent - Advanced MCP Server with Real Protocol Integration",
-  "main": "index.js",
-  "type": "module",
+  "description": "Enhanced AION MCP Agent with Hedera Integration",
+  "main": "server/app.js",
+  "type": "commonjs",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": "jest --runInBand",
-    "test:unit": "jest tests/unit --runInBand",
-    "test:integration": "jest tests/integration --runInBand",
-    "test:performance": "jest tests/performance --runInBand --testTimeout=60000",
-    "test:edge-cases": "jest tests/edge-cases --runInBand",
-    "test:smoke": "jest tests/smoke --runInBand",
-    "test:real-data": "jest tests/integration/real-data-integration.test.js --runInBand --testTimeout=60000",
-    "test:smart-contracts": "jest tests/integration/smart-contract-validation.test.js --runInBand --testTimeout=60000",
-    "test:stress": "jest tests/performance/real-data-stress.test.js --runInBand --testTimeout=120000",
-    "test:comprehensive": "jest tests/integration/comprehensive-integration.test.js --runInBand --testTimeout=120000",
-    "test:hedera": "jest --testPathPattern=hederaServiceIntegration --runInBand --testTimeout=30000",
-    "test:coverage": "jest --coverage --runInBand",
-    "test:watch": "jest --watch --runInBand",
-    "test:all": "npm run test:unit && npm run test:integration && npm run test:performance && npm run test:edge-cases && npm run test:smoke && npm run test:real-data && npm run test:smart-contracts && npm run test:stress && npm run test:comprehensive",
-    "test:enhanced": "node tests/enhanced_execution_test.mjs",
-    "test:mainnet": "node scripts/test-mainnet-integration.js",
-    "test:mainnet-integration": "node scripts/test-mainnet-integration.js",
-    "warmup": "node scripts/warmup.js",
-    "setup:hedera": "node scripts/setup-hedera-services.js",
-    "create:hcs-topic": "node scripts/create-hcs-topic.js",
-    "init:hfs-storage": "node scripts/init-hfs-storage.js",
-    "monitor:events": "node scripts/monitor-events.js",
-    "validate:config": "node scripts/validate-config.js"
+    "start": "node server/app.js",
+    "dev": "nodemon server/app.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:hedera": "node ../scripts/test-hedera-service.js",
+    "test:ai-logger": "node ../scripts/test-ai-decision-logger.js",
+    "test:model-manager": "node ../scripts/test-model-metadata-manager.js",
+    "test:web3": "node ../scripts/test-web3-service.js",
+    "test:integration": "node ../scripts/test-enhanced-services-integration.js",
+    "test:api": "node ../scripts/test-hedera-api-endpoints.js",
+    "test:simple": "node ../scripts/simple-enhanced-services-test.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "build": "echo 'No build step required for Node.js server'",
+    "clean": "rm -rf node_modules coverage .nyc_output",
+    "setup": "npm install",
+    "health": "curl -f http://localhost:3000/health || exit 1",
+    "status": "curl -s http://localhost:3000/api | jq .",
+    "logs": "tail -f ../logs/mcp_agent.log"
   },
   "keywords": [
-    "defi",
-    "ai",
-    "mcp",
+    "mcp-agent",
+    "hedera",
     "blockchain",
-    "yield-farming"
+    "ai",
+    "defi",
+    "fastify",
+    "api",
+    "microservice"
   ],
   "author": "AION Team",
   "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "dependencies": {
-    "@fastify/cors": "^8.4.0",
-    "@fastify/rate-limit": "^9.0.1",
     "@hashgraph/sdk": "^2.75.0",
-    "ajv": "^8.12.0",
-    "ajv-formats": "^2.1.1",
-    "axios": "^1.6.0",
+    "fastify": "^4.24.3",
+    "@fastify/cors": "^8.4.0",
+    "@fastify/helmet": "^11.1.1",
+    "@fastify/rate-limit": "^9.1.0",
+    "axios": "^1.6.2",
     "chalk": "^4.1.2",
     "dotenv": "^16.3.1",
-    "ethers": "^6.8.1",
-    "fastify": "^4.24.3",
-    "node-fetch": "^3.3.2",
-    "pino": "^8.16.1",
-    "prom-client": "^15.0.0",
-    "rate-limiter-flexible": "^2.4.2",
-    "supertest": "^6.3.3",
-    "ws": "^8.14.2"
+    "ethers": "^6.15.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "uuid": "^9.0.1",
+    "winston": "^3.11.0",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "bcryptjs": "^2.4.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.0",
-    "@babel/preset-env": "^7.28.0",
-    "babel-jest": "^30.0.5",
+    "@types/node": "^20.10.0",
+    "nodemon": "^3.0.2",
     "jest": "^29.7.0",
-    "nodemon": "^3.0.1"
+    "jest-junit": "^16.0.0",
+    "supertest": "^6.3.3",
+    "eslint": "^8.55.0",
+    "prettier": "^3.1.0",
+    "@eslint/js": "^8.55.0"
   },
-  "engines": {
-    "node": ">=18.0.0"
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "services/**/*.js",
+      "server/**/*.js",
+      "!**/node_modules/**",
+      "!**/coverage/**"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "html"
+    ]
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true,
+      "es2022": true,
+      "jest": true
+    },
+    "extends": [
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 2022,
+      "sourceType": "module"
+    },
+    "rules": {
+      "no-unused-vars": "warn",
+      "no-console": "off",
+      "prefer-const": "error",
+      "no-var": "error"
+    }
+  },
+  "prettier": {
+    "semi": true,
+    "trailingComma": "es5",
+    "singleQuote": true,
+    "printWidth": 100,
+    "tabWidth": 4
+  },
+  "nodemonConfig": {
+    "watch": [
+      "server/",
+      "services/"
+    ],
+    "ext": "js,json",
+    "ignore": [
+      "node_modules/",
+      "coverage/",
+      "*.test.js"
+    ],
+    "delay": 1000
   }
 }

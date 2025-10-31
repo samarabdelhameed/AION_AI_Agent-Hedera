@@ -1,0 +1,39 @@
+{
+  "healthCheck": {
+    "enabled": true,
+    "interval": 15000,
+    "timeout": 3000,
+    "endpoints": [
+      "http://localhost:3001/health",
+      "http://localhost:3001/api/hedera/status"
+    ]
+  },
+  "metrics": {
+    "enabled": true,
+    "port": 4001,
+    "path": "/metrics",
+    "collectDefaultMetrics": true,
+    "customMetrics": [
+      "hedera_operations_total",
+      "ai_decisions_total",
+      "vault_operations_total",
+      "api_requests_duration_seconds"
+    ]
+  },
+  "alerts": {
+    "enabled": false,
+    "demoMode": true
+  },
+  "logging": {
+    "level": "info",
+    "rotation": {
+      "enabled": true,
+      "maxFiles": 3,
+      "maxSize": "10MB",
+      "datePattern": "YYYY-MM-DD"
+    },
+    "structured": true,
+    "includeMetadata": true,
+    "demoMode": true
+  }
+}

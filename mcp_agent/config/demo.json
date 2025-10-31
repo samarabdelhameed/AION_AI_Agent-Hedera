@@ -1,0 +1,114 @@
+{
+  "server": {
+    "port": 3001,
+    "host": "0.0.0.0",
+    "timeout": 30000,
+    "cors": {
+      "enabled": true,
+      "origins": [
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "http://127.0.0.1:3000"
+      ],
+      "credentials": true
+    }
+  },
+  "security": {
+    "jwtSecret": "demo_jwt_secret_for_testing_only",
+    "jwtExpiresIn": "24h",
+    "bcryptRounds": 10,
+    "rateLimitWindow": 60000,
+    "rateLimitMax": 100,
+    "corsOrigins": [
+      "http://localhost:3000",
+      "http://127.0.0.1:3000"
+    ],
+    "trustedProxies": [
+      "127.0.0.1",
+      "::1"
+    ]
+  },
+  "logging": {
+    "level": "info",
+    "format": "json",
+    "file": "./logs/mcp_agent_demo.log",
+    "console": true,
+    "maxFiles": 5,
+    "maxSize": "10m"
+  },
+  "hedera": {
+    "network": "testnet",
+    "demoMode": true,
+    "services": {
+      "hcs": {
+        "enabled": true,
+        "topicId": "0.0.789012",
+        "submitTimeout": 30000,
+        "maxMessageSize": 6144,
+        "batchSize": 10,
+        "pollingInterval": 5000,
+        "demoMode": true
+      },
+      "hfs": {
+        "enabled": true,
+        "maxFileSize": 1048576,
+        "chunkSize": 4096,
+        "timeout": 60000,
+        "demoMode": true
+      },
+      "hts": {
+        "enabled": true,
+        "shareTokenId": "0.0.901234",
+        "decimals": 18,
+        "symbol": "AION",
+        "name": "AION Vault Shares (Demo)",
+        "initialSupply": 0,
+        "demoMode": true
+      },
+      "hscs": {
+        "enabled": true,
+        "vaultContractId": "0.0.567890",
+        "gasLimit": 300000,
+        "demoMode": true
+      }
+    },
+    "accounts": {
+      "operator": {
+        "accountId": "0.0.123456",
+        "privateKey": "demo_private_key_placeholder"
+      }
+    },
+    "monitoring": {
+      "enabled": true,
+      "healthCheckInterval": 30000,
+      "performanceTracking": true,
+      "errorReporting": true
+    }
+  },
+  "ai": {
+    "model": {
+      "version": "v2.1.0-demo",
+      "confidenceThreshold": 0.75,
+      "rebalanceInterval": 60000,
+      "maxRetries": 3
+    },
+    "decisionLogging": {
+      "enabled": true,
+      "logToHCS": true,
+      "logToFile": true,
+      "batchSize": 5,
+      "flushInterval": 10000
+    },
+    "modelMetadata": {
+      "storeToHFS": true,
+      "versionControl": true,
+      "performanceTracking": true
+    }
+  },
+  "demo": {
+    "enabled": true,
+    "mockData": true,
+    "simulateHedera": true,
+    "fastMode": true
+  }
+}

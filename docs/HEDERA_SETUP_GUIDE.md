@@ -1,485 +1,275 @@
 # AION Hedera Integration Setup Guide
 
-This guide provides step-by-step instructions for setting up the AION AI Agent with Hedera integration.
+This guide walks you through setting up the complete Hedera development environment for AION AI Agent integration.
 
-## Table of Contents
+## 📋 Prerequisites
 
-1. [Prerequisites](#prerequisites)
-2. [Environment Setup](#environment-setup)
-3. [Hedera Account Configuration](#hedera-account-configuration)
-4. [Contract Deployment](#contract-deployment)
-5. [Service Initialization](#service-initialization)
-6. [MCP Agent Configuration](#mcp-agent-configuration)
-7. [Testing and Verification](#testing-and-verification)
-8. [Troubleshooting](#troubleshooting)
+### 1. Hedera Testnet Account
+- Visit [Hedera Portal](https://portal.hedera.com/register)
+- Create a testnet account
+- Fund your account with testnet HBAR from the [faucet](https://portal.hedera.com/faucet)
+- Note down your Account ID and Private Key
 
-## Prerequisites
-
-### System Requirements
-
-- Node.js 18.0.0 or higher
-- npm or yarn package manager
+### 2. System Requirements
+- Node.js >= 18.0.0
+- npm >= 8.0.0
 - Git
-- Foundry (for smart contract deployment)
 
-### Hedera Requirements
+### 3. Environment Setup
+- Clone the AION repository
+- Install dependencies: `npm install`
 
-- Hedera testnet account with HBAR balance
-- Private key for the account
-- Access to Hedera testnet services
+## 🚀 Quick Start
 
-### Installation
+### Step 1: Configure Environment
+1. Copy the example environment file:
+   ```bash
+   cp .env.hedera.example .env.hedera
+   ```
 
+2. Edit `.env.hedera` with your Hedera testnet credentials:
+   ```bash
+   HEDERA_NETWORK=testnet
+   HEDERA_ACCOUNT_ID=0.0.YOUR_ACCOUNT_ID
+   HEDERA_PRIVATE_KEY=YOUR_PRIVATE_KEY_HERE
+   HEDERA_RPC_URL=https://testnet.hashio.io/api
+   ```
+
+### Step 2: Test Connection
 ```bash
-# Clone the repository
-git clone https://github.com/samarabdelhameed/AION_AI_Agent-Hedera.git
-cd AION_AI_Agent-Hedera
-
-# Install dependencies
-cd mcp_agent && npm install
-cd ../contracts && forge install
-```
-
-## Environment Setup
-
-### 1. Create Environment Files
-
-```bash
-# Copy environment templates
-cp contracts/.env.hedera.example contracts/.env.hedera
-cp mcp_agent/.env.example mcp_agent/.env.hedera
-```
-
-### 2. Configure Hedera Environment
-
-Edit `contracts/.env.hedera`:
-
-```bash
-# Hedera Network Configuration
-HEDERA_NETWORK=testnet
-HEDERA_RPC_URL=https://testnet.hashio.io/api
-HEDERA_MIRROR_NODE_URL=https://testnet.mirrornode.hedera.com
-
-# Hedera Account Configuration (REQUIRED)
-HEDERA_ACCOUNT_ID=0.0.YOUR_ACCOUNT_ID
-HEDERA_PRIVATE_KEY=0xYOUR_PRIVATE_KEY_HERE
-HEDERA_PUBLIC_KEY=0xYOUR_PUBLIC_KEY_HERE
-
-# Deployment Configuration
-PRIVATE_KEY=0xYOUR_PRIVATE_KEY_HERE
-ADMIN_ADDRESS=0xYOUR_ADMIN_ADDRESS_HERE
-AI_AGENT_ADDRESS=0xYOUR_AI_AGENT_ADDRESS_HERE
-
-# Vault Configuration
-VAULT_NAME=AION Hedera Vault
-VAULT_SYMBOL=AION-H
-INITIAL_SUPPLY=1000000000000000000000000
-TEST_MODE=true
-```
-
-### 3. Configure MCP Agent Environment
-
-Edit `mcp_agent/.env.hedera`:
-
-```bash
-# Copy Hedera configuration from contracts/.env.hedera
-HEDERA_NETWORK=testnet
-HEDERA_ACCOUNT_ID=0.0.YOUR_ACCOUNT_ID
-HEDERA_PRIVATE_KEY=0xYOUR_PRIVATE_KEY_HERE
-
-# MCP Agent Configuration
-MCP_AGENT_PORT=3002
-MCP_AGENT_HOST=0.0.0.0
-ENABLE_HEDERA_INTEGRATION=true
-HEDERA_POLL_INTERVAL=5000
-
-# Service Configuration
-ENABLE_REAL_TIME_MONITORING=true
-EVENT_QUEUE_SIZE=1000
-MAX_RETRY_ATTEMPTS=5
-CIRCUIT_BREAKER_THRESHOLD=5
-CIRCUIT_BREAKER_TIMEOUT=60000
-```
-
-## Hedera Account Configuration
-
-### 1. Create Hedera Testnet Account
-
-1. Visit [Hedera Portal](https://portal.hedera.com/)
-2. Create a new testnet account
-3. Fund the account with testnet HBAR (minimum 100 HBAR recommended)
-4. Note down your Account ID and Private Key
-
-### 2. Verify Account Balance
-
-```bash
-cd contracts
-make -f Makefile.hedera balance
-```
-
-### 3. Test Network Connectivity
-
-```bash
-cd contracts
-make -f Makefile.hedera block-number
-```
-
-## Contract Deployment
-
-### 1. Build Contracts
-
-```bash
-cd contracts
-make -f Makefile.hedera build
-```
-
-### 2. Run Tests
-
-```bash
-cd contracts
-make -f Makefile.hedera test-hedera
-```
-
-### 3. Deploy to Hedera Testnet
-
-```bash
-cd contracts
-make -f Makefile.hedera deploy-hedera
-```
-
-This will deploy:
-- `AIONVaultHedera` - Main vault contract
-- `HTSTokenManager` - HTS token management
-- `SafeHederaService` - Hedera service wrapper
-
-### 4. Setup Hedera Services
-
-```bash
-cd contracts
-make -f Makefile.hedera setup-services
-```
-
-### 5. Update Environment with Contract Addresses
-
-After deployment, update your `.env.hedera` files with the deployed contract addresses:
-
-```bash
-VAULT_CONTRACT_ADDRESS=0xDEPLOYED_VAULT_ADDRESS
-HTS_TOKEN_MANAGER_ADDRESS=0xDEPLOYED_TOKEN_MANAGER_ADDRESS
-SAFE_HEDERA_SERVICE_ADDRESS=0xDEPLOYED_HEDERA_SERVICE_ADDRESS
-```
-
-## Service Initialization
-
-### 1. Initialize Hedera Services
-
-```bash
-cd mcp_agent
-npm run setup:hedera
-```
-
-This script will:
-- Initialize HederaService
-- Create HCS topic for decision logging
-- Initialize HFS storage for model metadata
-- Test service integration
-
-### 2. Create HCS Topic (Alternative)
-
-```bash
-cd mcp_agent
-npm run create:hcs-topic
-```
-
-### 3. Initialize HFS Storage (Alternative)
-
-```bash
-cd mcp_agent
-npm run init:hfs-storage
-```
-
-### 4. Update Environment with Service IDs
-
-After service initialization, update your `.env.hedera` files:
-
-```bash
-HCS_TOPIC_ID=0.0.CREATED_TOPIC_ID
-HFS_FILE_ID=0.0.CREATED_FILE_ID
-```
-
-## MCP Agent Configuration
-
-### 1. Start MCP Agent
-
-```bash
-cd mcp_agent
-npm start
-```
-
-The agent will start with Hedera integration enabled.
-
-### 2. Verify Hedera Integration
-
-Check the startup logs for:
-```
-✅ Hedera Consensus Service (HCS) - Decision logging
-✅ Hedera File Service (HFS) - Model metadata storage
-✅ AI Decision Logger - Real-time event monitoring
-✅ Model Metadata Manager - Version control & caching
-✅ Real-time Event Monitor - Cross-chain coordination
-```
-
-### 3. Test API Endpoints
-
-```bash
-# Check Hedera service status
-curl http://localhost:3002/api/hedera/status
-
-# Check health
-curl http://localhost:3002/api/health
-```
-
-## Testing and Verification
-
-### 1. Run Integration Tests
-
-```bash
-cd mcp_agent
 npm run test:hedera
 ```
 
-### 2. Test Decision Flow
+This will verify:
+- ✅ Connection to Hedera testnet
+- ✅ Account authentication
+- ✅ Account balance (minimum 5 HBAR recommended)
+- ✅ Network information
 
+### Step 3: Setup Development Environment
 ```bash
-# Submit a test AI decision
-curl -X POST http://localhost:3002/api/decide \
-  -H "Content-Type: application/json" \
-  -d '{
-    "currentStrategy": "venus",
-    "amount": "1000000000000000000"
-  }'
+npm run setup:hedera
 ```
 
-### 3. Monitor Events
+This will:
+- Create test accounts (Treasury, AI Agent, User1, User2)
+- Update environment configuration
+- Validate the setup
 
+### Step 4: Create Hedera Services
 ```bash
-cd mcp_agent
-npm run monitor:events
+npm run setup:hedera-services
 ```
 
-### 4. Check HCS Logs
+This will create:
+- 📝 HCS Topic for AI decisions
+- 📋 HCS Topic for audit trail
+- 🌉 HFS File for bridge configuration
+- 🤖 HFS File for AI model metadata
+- 🪙 HTS Token for AION shares
 
-Visit [Hedera Mirror Node Explorer](https://hashscan.io/testnet) and search for your HCS topic ID to view logged decisions.
+## 🏗️ Architecture Overview
 
-## API Endpoints
+### Hedera Services Integration
 
-### Hedera Integration Endpoints
-
-- `GET /api/hedera/status` - Get Hedera services status
-- `POST /api/hedera/log-decision` - Log decision to HCS
-- `POST /api/hedera/store-model` - Store model metadata on HFS
-- `POST /api/hedera/monitoring/start` - Start event monitoring
-- `POST /api/hedera/monitoring/stop` - Stop event monitoring
-- `GET /api/hedera/monitoring/stats` - Get monitoring statistics
-- `GET /api/hedera/error-handler/stats` - Get error handler statistics
-- `POST /api/hedera/error-handler/reset-circuit/:serviceName` - Reset circuit breaker
-- `POST /api/hedera/error-handler/clear-queue` - Clear error queue
-
-### Enhanced AI Decision Endpoint
-
-- `POST /api/decide` - AI decision with automatic HCS logging
-
-## Configuration Options
-
-### Hedera Service Configuration
-
-```javascript
-// In your application
-const hederaConfig = {
-  network: 'testnet',
-  accountId: '0.0.123456',
-  privateKey: '0x...',
-  services: {
-    hcs: {
-      topicId: '0.0.789012',
-      enableLogging: true
-    },
-    hfs: {
-      fileId: '0.0.345678',
-      enableStorage: true
-    }
-  },
-  monitoring: {
-    pollInterval: 5000,
-    enableRealTime: true
-  }
-};
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    HEDERA HASHGRAPH SERVICES                   │
+├─────────────────┬─────────────────┬─────────────────┬───────────┤
+│      HTS        │      HCS        │      HFS        │   HSCS    │
+│  Token Service  │ Consensus Service│  File Service   │ Contracts │
+├─────────────────┼─────────────────┼─────────────────┼───────────┤
+│ • AION Tokens   │ • AI Decisions  │ • Model Data    │ • Vault   │
+│ • Mint/Burn     │ • Audit Trail   │ • Bridge Config │ • Logic   │
+│ • Transfer      │ • Immutable Log │ • Metadata      │ • Security│
+└─────────────────┴─────────────────┴─────────────────┴───────────┘
 ```
 
-### Error Handling Configuration
+### Service Responsibilities
 
-```javascript
-const errorConfig = {
-  retry: {
-    maxRetries: 5,
-    baseDelay: 1000,
-    maxDelay: 30000,
-    backoffMultiplier: 2
-  },
-  circuitBreaker: {
-    failureThreshold: 5,
-    recoveryTimeout: 60000
-  },
-  queue: {
-    maxSize: 1000,
-    processingInterval: 30000
-  }
-};
+#### HCS (Hedera Consensus Service)
+- **AI Decision Topic**: Logs all AI rebalancing decisions
+- **Audit Topic**: Records bridge operations and system events
+- **Immutable Logging**: Provides tamper-proof audit trail
+
+#### HFS (Hedera File Service)
+- **Bridge Configuration**: Stores cross-chain bridge settings
+- **AI Model Metadata**: Stores model versions and performance metrics
+- **Decentralized Storage**: Ensures data availability and integrity
+
+#### HTS (Hedera Token Service)
+- **AION Share Token**: Represents user shares in the vault
+- **Native Integration**: Leverages Hedera's native token capabilities
+- **Efficient Operations**: Low-cost minting, burning, and transfers
+
+#### HSCS (Hedera Smart Contract Service)
+- **Vault Logic**: Core DeFi functionality
+- **Bridge Contracts**: Cross-chain interoperability
+- **Security Mechanisms**: Access control and emergency procedures
+
+## 🔧 Configuration Details
+
+### Environment Variables
+
+#### Required Variables
+```bash
+HEDERA_NETWORK=testnet                    # Network (testnet/mainnet)
+HEDERA_ACCOUNT_ID=0.0.123456             # Your operator account
+HEDERA_PRIVATE_KEY=302e020100300506...    # Your private key
+HEDERA_RPC_URL=https://testnet.hashio.io/api  # RPC endpoint
 ```
 
-## Troubleshooting
+#### Service IDs (Auto-generated)
+```bash
+HCS_TOPIC_ID=0.0.789012                  # AI decision topic
+HCS_AUDIT_TOPIC_ID=0.0.789013            # Audit trail topic
+HFS_BRIDGE_FILE_ID=0.0.345678            # Bridge config file
+HFS_MODEL_FILE_ID=0.0.345679             # AI model metadata
+HTS_SHARE_TOKEN_ID=0.0.567890            # AION share token
+```
+
+#### Test Accounts (Auto-generated)
+```bash
+TREASURY_ACCOUNT_ID=0.0.111111           # Treasury account
+TREASURY_PRIVATE_KEY=302e020100...       # Treasury private key
+AI_AGENT_ACCOUNT_ID=0.0.222222           # AI agent account
+AI_AGENT_PRIVATE_KEY=302e020100...       # AI agent private key
+USER1_ACCOUNT_ID=0.0.333333              # Test user 1
+USER1_PRIVATE_KEY=302e020100...          # Test user 1 key
+USER2_ACCOUNT_ID=0.0.444444              # Test user 2
+USER2_PRIVATE_KEY=302e020100...          # Test user 2 key
+```
+
+## 🧪 Testing
+
+### Connection Test
+```bash
+npm run test:hedera
+```
+
+### Service Integration Test
+```bash
+npm run test:hedera-integration
+```
+
+### MCP Agent Test
+```bash
+cd mcp_agent && npm run test:hedera
+```
+
+## 📊 Monitoring and Verification
+
+### Explorer Links
+After setup, you can verify your services on [HashScan](https://hashscan.io/testnet):
+
+- **HCS Topics**: `https://hashscan.io/testnet/topic/0.0.YOUR_TOPIC_ID`
+- **HFS Files**: `https://hashscan.io/testnet/file/0.0.YOUR_FILE_ID`
+- **HTS Tokens**: `https://hashscan.io/testnet/token/0.0.YOUR_TOKEN_ID`
+- **Accounts**: `https://hashscan.io/testnet/account/0.0.YOUR_ACCOUNT_ID`
+
+### Service Status Check
+```bash
+# Check all services status
+npm run status
+
+# Check specific service logs
+npm run logs:mcp
+```
+
+## 🔍 Troubleshooting
 
 ### Common Issues
 
-#### 1. Hedera Service Initialization Failed
+#### 1. Insufficient Balance
+**Error**: `INSUFFICIENT_ACCOUNT_BALANCE`
+**Solution**: Fund your account with more HBAR from the [testnet faucet](https://portal.hedera.com/faucet)
 
-**Error**: `Failed to initialize Hedera service`
+#### 2. Invalid Account ID
+**Error**: `INVALID_ACCOUNT_ID`
+**Solution**: Verify your account ID format (should be `0.0.123456`)
 
-**Solutions**:
-- Verify HEDERA_ACCOUNT_ID and HEDERA_PRIVATE_KEY are correct
-- Check account balance (minimum 10 HBAR required)
-- Ensure network connectivity to Hedera testnet
+#### 3. Network Connection Issues
+**Error**: Connection timeout or network errors
+**Solution**: 
+- Check your internet connection
+- Verify RPC URL: `https://testnet.hashio.io/api`
+- Try different network endpoint
 
-#### 2. HCS Topic Creation Failed
-
-**Error**: `Failed to create HCS topic`
-
-**Solutions**:
-- Check account has sufficient HBAR balance
-- Verify account permissions
-- Try with a different topic memo
-
-#### 3. Contract Deployment Failed
-
-**Error**: `Deployment failed`
-
-**Solutions**:
-- Verify Foundry is installed and updated
-- Check RPC URL is accessible
-- Ensure private key has sufficient balance
-
-#### 4. Event Monitoring Not Working
-
-**Error**: `Event monitoring failed to start`
-
-**Solutions**:
-- Verify contract address is correct
-- Check Web3 provider connectivity
-- Ensure contract ABI is correct
+#### 4. Private Key Format
+**Error**: `INVALID_PRIVATE_KEY`
+**Solution**: Ensure private key is in correct format (DER-encoded hex string)
 
 ### Debug Mode
-
 Enable debug logging:
-
 ```bash
-export LOG_LEVEL=debug
-npm start
+DEBUG=hedera:* npm run test:hedera
 ```
 
-### Health Checks
-
-Monitor service health:
-
+### Reset Environment
+If you need to start fresh:
 ```bash
-# Check all services
-curl http://localhost:3002/api/health
+# Remove existing configuration
+rm .env.hedera
 
-# Check Hedera services specifically
-curl http://localhost:3002/api/hedera/status
+# Copy fresh template
+cp .env.hedera.example .env.hedera
 
-# Check error handler statistics
-curl http://localhost:3002/api/hedera/error-handler/stats
+# Reconfigure and setup
+npm run setup:hedera
 ```
 
-### Reset Services
+## 🔗 Useful Resources
 
-If services are in a bad state:
+### Official Documentation
+- [Hedera Documentation](https://docs.hedera.com)
+- [Hedera SDK for JavaScript](https://docs.hedera.com/hedera/sdks-and-apis/sdks/javascript-sdk)
+- [HCS Documentation](https://docs.hedera.com/hedera/core-concepts/consensus-service)
+- [HFS Documentation](https://docs.hedera.com/hedera/core-concepts/file-service)
+- [HTS Documentation](https://docs.hedera.com/hedera/core-concepts/token-service)
 
-```bash
-# Reset circuit breakers
-curl -X POST http://localhost:3002/api/hedera/error-handler/reset-circuit/hcs_submit
-curl -X POST http://localhost:3002/api/hedera/error-handler/reset-circuit/hfs_store
+### Tools and Explorers
+- [Hedera Portal](https://portal.hedera.com) - Account management
+- [HashScan Explorer](https://hashscan.io/testnet) - Testnet explorer
+- [Testnet Faucet](https://portal.hedera.com/faucet) - Get testnet HBAR
+- [Mirror Node API](https://docs.hedera.com/hedera/sdks-and-apis/rest-api) - Query historical data
 
-# Clear error queue
-curl -X POST http://localhost:3002/api/hedera/error-handler/clear-queue
-```
+### Community
+- [Hedera Discord](https://discord.com/invite/hedera)
+- [Hedera GitHub](https://github.com/hashgraph)
+- [Developer Portal](https://hedera.com/developers)
 
-## Performance Optimization
+## 📈 Performance Benchmarks
 
-### 1. Batch Operations
+### Expected Performance (Testnet)
+- **Transaction Finality**: ~3-5 seconds
+- **HCS Message Submission**: ~2-3 seconds
+- **HFS File Creation**: ~5-10 seconds
+- **HTS Operations**: ~2-4 seconds
 
-Configure batch processing for better performance:
+### Cost Estimates (Testnet)
+- **HCS Message**: ~$0.0001 USD
+- **HFS File (1KB)**: ~$0.05 USD
+- **HTS Token Creation**: ~$1 USD
+- **HTS Operations**: ~$0.001 USD
 
-```javascript
-const batchConfig = {
-  batchSize: 10,
-  batchTimeout: 5000,
-  maxConcurrent: 5
-};
-```
+## 🚀 Next Steps
 
-### 2. Caching
+After completing the Hedera setup:
 
-Enable caching for model metadata:
+1. **Deploy Smart Contracts**: `npm run deploy:hedera`
+2. **Start MCP Agent**: `npm run start:mcp`
+3. **Run Integration Tests**: `npm run test:comprehensive`
+4. **Launch Frontend**: `npm run start:frontend`
 
-```javascript
-const cacheConfig = {
-  enableCache: true,
-  cacheSize: 100,
-  cacheTTL: 3600000 // 1 hour
-};
-```
+## 📝 Support
 
-### 3. Connection Pooling
+If you encounter issues:
 
-Use connection pooling for better resource management:
+1. Check this troubleshooting guide
+2. Review the [official documentation](https://docs.hedera.com)
+3. Join the [Hedera Discord](https://discord.com/invite/hedera)
+4. Create an issue in the [AION repository](https://github.com/samarabdelhameed/AION_AI_Agent/issues)
 
-```javascript
-const poolConfig = {
-  maxConnections: 10,
-  connectionTimeout: 30000,
-  idleTimeout: 300000
-};
-```
+---
 
-## Security Considerations
-
-### 1. Private Key Management
-
-- Never commit private keys to version control
-- Use environment variables or secure key management
-- Rotate keys regularly
-
-### 2. Network Security
-
-- Use HTTPS for all API calls
-- Implement rate limiting
-- Monitor for suspicious activity
-
-### 3. Access Control
-
-- Implement proper authentication
-- Use role-based access control
-- Audit all operations
-
-## Support
-
-For additional support:
-
-1. Check the [GitHub Issues](https://github.com/samarabdelhameed/AION_AI_Agent-Hedera/issues)
-2. Review the [Hedera Documentation](https://docs.hedera.com/)
-3. Join the [AION Community](https://discord.gg/aion)
-
-## License
-
-This project is licensed under the MIT License. See [LICENSE](../LICENSE) for details.
+**Happy Building! 🎉**

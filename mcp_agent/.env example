@@ -1,3 +1,207 @@
+# ============================================================================
+# AION MCP Agent Configuration
+# Copy this file to .env and fill in your values
+# ============================================================================
+
+# ============================================================================
+# BLOCKCHAIN CONFIGURATION
+# ============================================================================
+
+# BSC Configuration (Primary)
 RPC_URL=https://data-seed-prebsc-1-s1.binance.org:8545
-PRIVATE_KEY=
-CONTRACT_ADDRESS=
+BSC_TESTNET_RPC_URL=https://data-seed-prebsc-1-s1.binance.org:8545
+BSC_MAINNET_RPC_URL=https://bsc-dataseed1.binance.org
+CHAIN_ID=97
+NETWORK=testnet
+
+# Hedera Configuration (Enhanced Integration)
+HEDERA_NETWORK=testnet
+HEDERA_RPC_URL=https://testnet.hashio.io/api
+HEDERA_ACCOUNT_ID=0.0.YOUR_ACCOUNT_ID
+HEDERA_PRIVATE_KEY=YOUR_HEDERA_PRIVATE_KEY_HERE
+HEDERA_MIRROR_NODE_URL=https://testnet.mirrornode.hedera.com
+
+# ============================================================================
+# CONTRACT ADDRESSES & SERVICE IDs
+# ============================================================================
+
+# BSC Contracts
+CONTRACT_ADDRESS=0x4625bB7f14D4e34F9D11a5Df7566cd7Ec1994849
+VAULT_CONTRACT_ADDRESS=0x4625bB7f14D4e34F9D11a5Df7566cd7Ec1994849
+
+# Hedera Service IDs (Auto-generated during setup)
+HCS_TOPIC_ID=0.0.YOUR_HCS_TOPIC_ID
+HCS_AUDIT_TOPIC_ID=0.0.YOUR_AUDIT_TOPIC_ID
+HFS_BRIDGE_FILE_ID=0.0.YOUR_BRIDGE_FILE_ID
+HFS_MODEL_FILE_ID=0.0.YOUR_MODEL_FILE_ID
+HTS_SHARE_TOKEN_ID=0.0.YOUR_SHARE_TOKEN_ID
+VAULT_CONTRACT_ID=0.0.YOUR_VAULT_CONTRACT_ID
+
+# ============================================================================
+# WALLET CONFIGURATION
+# ============================================================================
+
+# Primary Wallet (DO NOT COMMIT REAL PRIVATE KEY)
+PRIVATE_KEY=your_private_key_here
+WALLET_ADDRESS=0x14D7795A2566Cd16eaA1419A26ddB643CE523655
+
+# Test Accounts (Auto-generated during setup)
+TREASURY_ACCOUNT_ID=0.0.YOUR_TREASURY_ACCOUNT
+TREASURY_PRIVATE_KEY=YOUR_TREASURY_PRIVATE_KEY
+AI_AGENT_ACCOUNT_ID=0.0.YOUR_AI_AGENT_ACCOUNT
+AI_AGENT_PRIVATE_KEY=YOUR_AI_AGENT_PRIVATE_KEY
+USER1_ACCOUNT_ID=0.0.YOUR_USER1_ACCOUNT
+USER1_PRIVATE_KEY=YOUR_USER1_PRIVATE_KEY
+USER2_ACCOUNT_ID=0.0.YOUR_USER2_ACCOUNT
+USER2_PRIVATE_KEY=YOUR_USER2_PRIVATE_KEY
+
+# ============================================================================
+# SERVER CONFIGURATION
+# ============================================================================
+
+# Server Settings
+PORT=3003
+HOST=0.0.0.0
+NODE_ENV=development
+LOG_LEVEL=debug
+
+# CORS Configuration
+CORS_ORIGINS=http://localhost:3000,http://localhost:5173
+CORS_CREDENTIALS=true
+
+# ============================================================================
+# AI & DECISION MAKING
+# ============================================================================
+
+# AI Model Configuration
+AI_MODEL_VERSION=v2.1.0
+AI_DECISION_CONFIDENCE_THRESHOLD=0.8
+AI_REBALANCE_INTERVAL=3600000
+AI_MAX_RETRIES=3
+
+# Memory Configuration
+MEMORY_FILE_PATH=./memory.json
+HISTORY_FILE_PATH=./history.json
+CACHE_TTL=300000
+
+# ============================================================================
+# EXTERNAL API KEYS
+# ============================================================================
+
+# Price Oracle APIs
+COINGECKO_API_KEY=your_coingecko_api_key_here
+BINANCE_API_KEY=your_binance_api_key_here
+DEFILLAMA_API_KEY=your_defillama_api_key_here
+
+# Blockchain Explorers
+BSCSCAN_API_KEY=your_bscscan_api_key_here
+HEDERA_MIRROR_API_KEY=your_hedera_mirror_api_key_here
+
+# AI Services
+OPENAI_API_KEY=your_openai_api_key_here
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
+
+# ============================================================================
+# DATABASE & CACHING
+# ============================================================================
+
+# Database Configuration
+DATABASE_URL=postgresql://user:password@localhost:5432/aion_mcp_dev
+DATABASE_POOL_MIN=2
+DATABASE_POOL_MAX=10
+
+# Redis Configuration
+REDIS_URL=redis://localhost:6379
+REDIS_DB=0
+REDIS_TTL=300
+
+# ============================================================================
+# MONITORING & LOGGING
+# ============================================================================
+
+# Logging Configuration
+LOG_FILE=./logs/mcp-agent.log
+ENABLE_CONSOLE_LOGS=true
+LOG_ROTATION=daily
+LOG_MAX_FILES=7
+
+# Performance Monitoring
+ENABLE_METRICS=true
+METRICS_PORT=9090
+HEALTH_CHECK_INTERVAL=30000
+PERFORMANCE_MONITORING=true
+
+# ============================================================================
+# SECURITY CONFIGURATION
+# ============================================================================
+
+# JWT Configuration
+JWT_SECRET=your_jwt_secret_here
+JWT_EXPIRES_IN=24h
+
+# Rate Limiting
+RATE_LIMIT_WINDOW=60000
+RATE_LIMIT_MAX=1000
+RATE_LIMIT_SKIP_SUCCESSFUL=true
+
+# API Security
+API_KEY=your_api_key_here
+ENABLE_API_KEY_AUTH=false
+
+# ============================================================================
+# CROSS-CHAIN BRIDGE CONFIGURATION
+# ============================================================================
+
+# Bridge Settings
+BRIDGE_ENABLED=true
+BRIDGE_MIN_AMOUNT=1000000000000000000
+BRIDGE_MAX_AMOUNT=1000000000000000000000
+BRIDGE_FEE=10000000000000000
+BRIDGE_CONFIRMATION_BLOCKS=12
+
+# Bridge Security
+BRIDGE_MULTISIG_THRESHOLD=2
+BRIDGE_MAX_DAILY_VOLUME=10000000000000000000000
+
+# ============================================================================
+# HEDERA SPECIFIC CONFIGURATION
+# ============================================================================
+
+# HCS Configuration
+HCS_SUBMIT_TIMEOUT=30000
+HCS_MAX_MESSAGE_SIZE=6144
+HCS_BATCH_SIZE=10
+HCS_POLLING_INTERVAL=5000
+
+# HFS Configuration
+HFS_MAX_FILE_SIZE=1048576
+HFS_CHUNK_SIZE=4096
+HFS_TIMEOUT=60000
+
+# HTS Configuration
+HTS_DECIMALS=18
+HTS_SYMBOL=AION
+HTS_NAME=AION Vault Shares
+HTS_INITIAL_SUPPLY=0
+
+# ============================================================================
+# DEVELOPMENT & TESTING
+# ============================================================================
+
+# Development Flags
+DEBUG_MODE=true
+ENABLE_TESTNETS=true
+MOCK_EXTERNAL_APIS=false
+ENABLE_EXPERIMENTAL_FEATURES=true
+
+# Test Configuration
+MIN_TEST_BALANCE=100000000000000000000
+TEST_TIMEOUT=30000
+ENABLE_INTEGRATION_TESTS=true
+
+# Setup Tracking
+SETUP_VERSION=2.0.0
+SERVICES_CREATED=
+LAST_UPDATED=
+TOTAL_TEST_ACCOUNTS=
+TEST_ACCOUNTS_CREATED=
