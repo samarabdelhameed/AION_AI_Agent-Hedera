@@ -10,6 +10,22 @@
 
 ---
 
+## 🎥 **Live Demo Video**
+
+<div align="center">
+
+### 🔴 **Watch the Complete Hedera Hackathon Demo**
+
+[![AION Live Demo](https://img.youtube.com/vi/bxUEt6NXvNg/maxresdefault.jpg)](https://youtu.be/bxUEt6NXvNg)
+
+**🎬 [▶️ Watch Full Demo on YouTube →](https://youtu.be/bxUEt6NXvNg)**
+
+*Complete walkthrough of AION's Hedera integration with live smart contract demonstrations*
+
+</div>
+
+---
+
 ## 🏅 **Official Hedera Hackathon Certificate**
 
 <div align="center">
