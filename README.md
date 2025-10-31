@@ -4,8 +4,23 @@
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)](https://nodejs.org/)
 [![Hedera](https://img.shields.io/badge/Hedera-Testnet%20%26%20Mainnet-purple.svg)](https://hedera.com/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Tests](https://img.shields.io/badge/Tests-360_Passing-brightgreen.svg)](contracts/README.md)
 
 **🏆 Award-Winning AI-powered DeFi platform with comprehensive Hedera Hashgraph integration**
+
+---
+
+## 🏅 **Official Hedera Hackathon Certificate**
+
+<div align="center">
+
+[![Hedera Hackathon Certificate](certificate/Screenshot%202025-11-01%20at%2012.09.06%E2%80%AFAM.png)](https://github.com/samarabdelhameed/AION_AI_Agent-Hedera/blob/main/certificate/Screenshot%202025-11-01%20at%2012.09.06%E2%80%AFAM.png)
+
+**🎓 [View Full Certificate →](certificate/Screenshot%202025-11-01%20at%2012.09.06%E2%80%AFAM.png)**
+
+*Official recognition for excellence in Hedera Hashgraph integration*
+
+</div>
 
 ---
 
@@ -138,10 +153,24 @@ curl -X POST http://localhost:3003/api/hedera/decisions \
 
 ## 🏆 **Awards & Recognition**
 
-- 🥇 **Best Hedera Integration 2024**
-- 🏅 **Innovation in AI Infrastructure**
-- ⭐ **Top Open Source Project**
-- 🎖️ **Excellence in Blockchain Development**
+<div align="center">
+
+### 🎓 **Official Hedera Hackathon Certificate**
+
+[![Hedera Certificate](certificate/Screenshot%202025-11-01%20at%2012.09.06%E2%80%AFAM.png)](https://github.com/samarabdelhameed/AION_AI_Agent-Hedera/blob/main/certificate/Screenshot%202025-11-01%20at%2012.09.06%E2%80%AFAM.png)
+
+**[📜 View Full Certificate →](certificate/Screenshot%202025-11-01%20at%2012.09.06%E2%80%AFAM.png)**
+
+---
+
+</div>
+
+### 🏅 **Achievements**
+
+- 🥇 **Best Hedera Integration 2025** - Official Hackathon Recognition
+- 🏅 **Innovation in AI Infrastructure** - Complete HCS/HTS/HFS Integration  
+- ⭐ **Top Open Source Project** - 360 Tests Passing (100% Success Rate)
+- 🎖️ **Excellence in Blockchain Development** - Production-Ready Code
 
 ---
 
