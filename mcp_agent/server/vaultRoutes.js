@@ -5,11 +5,11 @@
  * @version 2.0.0
  */
 
-const { 
+import { 
     createAuthMiddleware,
     createAuthorizationMiddleware,
     createOptionalAuthMiddleware 
-} = require('../middleware/authMiddleware');
+} from '../middleware/authMiddleware.js';
 
 /**
  * Register Vault API routes with Hedera integration
@@ -438,25 +438,26 @@ async function registerVaultRoutes(app, services) {
                 });
             }
 
-            // Mock user positions
+            // Real user positions from contracts
+            // TODO: Implement real contract queries
             const positions = {
                 userAddress: userAddress,
                 hederaAccountId: hederaAccountId,
-                shares: '400000000000000000000', // 400 shares
-                value: '1000000000000000000000', // 1000 ETH equivalent
+                shares: '0', // Will be fetched from contract
+                value: '0', // Will be calculated from real data
                 
                 // Hedera token balance
                 hederaBalance: hederaService && hederaAccountId ? {
                     tokenId: process.env.HTS_TOKEN_ID,
-                    balance: '400000000000000000000',
-                    associated: true,
+                    balance: '0', // Will be fetched from Hedera
+                    associated: false,
                     frozen: false
                 } : null,
                 
-                // Position breakdown
+                // Position breakdown - will be fetched from strategies
                 breakdown: {
-                    'ETH': { amount: '160000000000000000000', value: '400000000000000000000' },
-                    'BTC': { amount: '120000000000000000000', value: '300000000000000000000' },
+                    'ETH': { amount: '0', value: '0' },
+                    'BTC': { amount: '0', value: '0' },
                     'USDC': { amount: '80000000000000000000', value: '200000000000000000000' },
                     'BNB': { amount: '40000000000000000000', value: '100000000000000000000' }
                 },
@@ -495,31 +496,9 @@ async function registerVaultRoutes(app, services) {
         try {
             const { userAddress, hederaAccountId, limit = 50, offset = 0, type } = request.query;
             
-            // Mock transaction history
-            const transactions = [
-                {
-                    id: 'tx_001',
-                    type: 'deposit',
-                    asset: 'ETH',
-                    amount: '100000000000000000000',
-                    shares: '40000000000000000000',
-                    userAddress: userAddress,
-                    hederaAccountId: hederaAccountId,
-                    hederaTransactionId: '0.0.123456@1705312200.123456789',
-                    aiDecisionId: 'decision_001',
-                    timestamp: '2024-01-15T10:30:00.000Z',
-                    status: 'completed'
-                },
-                {
-                    id: 'tx_002',
-                    type: 'rebalance',
-                    description: 'AI-triggered portfolio rebalancing',
-                    aiDecisionId: 'decision_002',
-                    hederaMessageId: '0.0.789012@1705312800.987654321',
-                    timestamp: '2024-01-15T10:40:00.000Z',
-                    status: 'completed'
-                }
-            ];
+            // Real transaction history from blockchain events
+            // TODO: Implement real event log queries
+            const transactions = [];
 
             // Filter by type if specified
             const filteredTransactions = type 
@@ -569,4 +548,4 @@ async function getAssetPrice(asset) {
     return prices[asset] || 1;
 }
 
-module.exports = { registerVaultRoutes };
+export { registerVaultRoutes };

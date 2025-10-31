@@ -119,25 +119,29 @@ HEDERA_PRIVATE_KEY=302e020100300506...    # Your private key
 HEDERA_RPC_URL=https://testnet.hashio.io/api  # RPC endpoint
 ```
 
-#### Service IDs (Auto-generated)
+#### Service IDs (Generated after setup)
 ```bash
-HCS_TOPIC_ID=0.0.789012                  # AI decision topic
-HCS_AUDIT_TOPIC_ID=0.0.789013            # Audit trail topic
-HFS_BRIDGE_FILE_ID=0.0.345678            # Bridge config file
-HFS_MODEL_FILE_ID=0.0.345679             # AI model metadata
-HTS_SHARE_TOKEN_ID=0.0.567890            # AION share token
+HCS_TOPIC_ID=                            # AI decision topic (will be created)
+HCS_AUDIT_TOPIC_ID=                      # Audit trail topic (will be created)
+HFS_BRIDGE_FILE_ID=                      # Bridge config file (will be created)
+HFS_MODEL_FILE_ID=                       # AI model metadata (will be created)
+HTS_SHARE_TOKEN_ID=                      # AION share token (will be created)
 ```
 
-#### Test Accounts (Auto-generated)
+**Example of real deployed services**:
+- HTS Token: `0.0.7150671` (AION Vault Shares - 3.5B supply)
+- HCS Topic: `0.0.7150678` (AI Decision Logging - 16+ messages)
+
+#### Test Accounts (Will be auto-generated during setup)
 ```bash
-TREASURY_ACCOUNT_ID=0.0.111111           # Treasury account
-TREASURY_PRIVATE_KEY=302e020100...       # Treasury private key
-AI_AGENT_ACCOUNT_ID=0.0.222222           # AI agent account
-AI_AGENT_PRIVATE_KEY=302e020100...       # AI agent private key
-USER1_ACCOUNT_ID=0.0.333333              # Test user 1
-USER1_PRIVATE_KEY=302e020100...          # Test user 1 key
-USER2_ACCOUNT_ID=0.0.444444              # Test user 2
-USER2_PRIVATE_KEY=302e020100...          # Test user 2 key
+TREASURY_ACCOUNT_ID=                     # Treasury account
+TREASURY_PRIVATE_KEY=                    # Treasury private key
+AI_AGENT_ACCOUNT_ID=                     # AI agent account
+AI_AGENT_PRIVATE_KEY=                    # AI agent private key
+USER1_ACCOUNT_ID=                        # Test user 1
+USER1_PRIVATE_KEY=                       # Test user 1 key
+USER2_ACCOUNT_ID=                        # Test user 2
+USER2_PRIVATE_KEY=                       # Test user 2 key
 ```
 
 ## 🧪 Testing
