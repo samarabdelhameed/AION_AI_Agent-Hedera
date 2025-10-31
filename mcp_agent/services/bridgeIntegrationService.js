@@ -3,9 +3,9 @@
  * Coordinates between bridge operations and HCS logging
  */
 
-const { BridgeOperationLogger } = require('./bridgeOperationLogger');
-const { HederaService } = require('./hederaService');
-const { AIDecisionLogger } = require('./aiDecisionLogger');
+import { BridgeOperationLogger } from './bridgeOperationLogger.js';
+import { HederaService } from './hederaService.js';
+import { AIDecisionLogger } from './aiDecisionLogger.js';
 
 class BridgeIntegrationService {
     constructor(hederaService, aiDecisionLogger) {
@@ -684,4 +684,4 @@ class BridgeIntegrationService {
     }
 }
 
-module.exports = { BridgeIntegrationService };
+export { BridgeIntegrationService };

@@ -5,11 +5,11 @@
  * @version 2.0.0
  */
 
-const { 
+import { 
     createAuthMiddleware,
     createAuthorizationMiddleware,
     createOptionalAuthMiddleware 
-} = require('../middleware/authMiddleware');
+} from '../middleware/authMiddleware.js';
 
 /**
  * Register Authentication API routes
@@ -452,4 +452,4 @@ async function registerAuthRoutes(app, services) {
     return app;
 }
 
-module.exports = { registerAuthRoutes };
+export { registerAuthRoutes };

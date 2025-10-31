@@ -1,0 +1,51 @@
+{
+  "createdAt": "2025-10-28T15:34:00.211Z",
+  "operatorAccount": "0.0.7149926",
+  "network": "testnet",
+  "accounts": [
+    {
+      "name": "user1",
+      "accountId": "0.0.7152091",
+      "privateKey": "302e020100300506032b657004220420e48662f85742a136be64927cfadbebfe691300ff9d9077ff3a402702a00c1602",
+      "publicKey": "302a300506032b657003210051a7a955e73f947c0d23910cb8b52a2e344736cc8b65937dd54670a829193a28",
+      "role": "Test user for deposits and HTS operations",
+      "initialBalance": "50 ℏ",
+      "createdAt": "2025-10-28T15:33:44.567Z",
+      "currentBalance": "50 ℏ"
+    },
+    {
+      "name": "user2",
+      "accountId": "0.0.7152093",
+      "privateKey": "302e020100300506032b657004220420de06b2724a184f760af829d99e2d9a84ce06f11b432f96651d503ac6afc1d340",
+      "publicKey": "302a300506032b6570032100fe9e0672a7cd5746bda90dc547736e07f446ca0242eec33c226d4fcd75cdda8a",
+      "role": "Test user for withdrawals and burn operations",
+      "initialBalance": "30 ℏ",
+      "createdAt": "2025-10-28T15:33:47.950Z",
+      "currentBalance": "30 ℏ"
+    },
+    {
+      "name": "aiAgent",
+      "accountId": "0.0.7152096",
+      "privateKey": "302e020100300506032b65700422042041150a0d429b0c97206b6fba7faf31709b843187664511faa0d674e298821835",
+      "publicKey": "302a300506032b6570032100c0ac79012eed572e973cacaa4cfa3a70cf9e4e8266727ec9a3ae6633c86eb9f8",
+      "role": "AI agent for rebalancing and HCS logging",
+      "initialBalance": "25 ℏ",
+      "createdAt": "2025-10-28T15:33:52.354Z",
+      "currentBalance": "25 ℏ"
+    },
+    {
+      "name": "treasury",
+      "accountId": "0.0.7152097",
+      "privateKey": "302e020100300506032b657004220420ece96a0b9a388fa386ddbfba4682d548d6b48d7356a469ffb3e4c20eec57536d",
+      "publicKey": "302a300506032b6570032100bd7f2bf663c038776d531cc7a378f78db066b6053f3d1d9ec0d0c42247f2789e",
+      "role": "Treasury account for HTS token management",
+      "initialBalance": "20 ℏ",
+      "createdAt": "2025-10-28T15:33:56.714Z",
+      "currentBalance": "20 ℏ"
+    }
+  ],
+  "summary": {
+    "totalAccounts": 4,
+    "totalInitialBalance": "125 ℏ"
+  }
+}

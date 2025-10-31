@@ -503,4 +503,10 @@ class MonitoringRoutes {
     }
 }
 
-export default MonitoringRoutes;
+export { MonitoringRoutes };
+
+// For backward compatibility
+export function registerMonitoringRoutes(app, services) {
+    const monitoringRoutes = new MonitoringRoutes(app, services);
+    return monitoringRoutes;
+}

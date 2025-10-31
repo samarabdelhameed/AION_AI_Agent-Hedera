@@ -7,38 +7,47 @@
  * @version 2.0.0
  */
 
-const fastify = require('fastify');
-const cors = require('@fastify/cors');
-const helmet = require('@fastify/helmet');
-const rateLimit = require('@fastify/rate-limit');
-const chalk = require('chalk');
+console.log('🚀 Starting AION MCP Agent...');
+
+console.log('📦 Loading dependencies...');
+import fastify from 'fastify';
+import cors from '@fastify/cors';
+import helmet from '@fastify/helmet';
+import rateLimit from '@fastify/rate-limit';
+import chalk from 'chalk';
+console.log('✅ Basic dependencies loaded');
 
 // Import route handlers
-const { registerHederaRoutes } = require('./hederaRoutes');
-const { registerMonitoringRoutes } = require('./monitoringRoutes');
-const { registerVaultRoutes } = require('./vaultRoutes');
-const { registerExecuteRoutes } = require('./executeRoutes');
-const { registerAuthRoutes } = require('./authRoutes');
+console.log('📡 Loading route handlers...');
+import { registerHederaRoutes } from './hederaRoutes.js';
+import { registerMonitoringRoutes } from './monitoringRoutes.js';
+import { registerVaultRoutes } from './vaultRoutes.js';
+import { registerExecuteRoutes } from './executeRoutes.js';
+import { registerAuthRoutes } from './authRoutes.js';
+console.log('✅ Route handlers loaded');
 
 // Import services
-const HederaService = require('../services/hederaService');
-const AIDecisionLogger = require('../services/AIDecisionLogger');
-const ModelMetadataManager = require('../services/ModelMetadataManager');
-const Web3Service = require('../services/Web3Service');
-const AuthenticationService = require('../services/AuthenticationService');
+console.log('🔧 Loading services...');
+import HederaService from '../services/hederaService.js';
+import AIDecisionLogger from '../services/AIDecisionLogger.js';
+import ModelMetadataManager from '../services/ModelMetadataManager.js';
+import Web3Service from '../services/Web3Service.js';
+import AuthenticationService from '../services/AuthenticationService.js';
+console.log('✅ Services loaded');
 
 /**
  * Enhanced AION Server with Hedera Integration
  */
 class AIONServer {
     constructor(options = {}) {
+        console.log('🏗️ Creating AION Server instance...');
         this.config = {
             port: options.port || process.env.PORT || 3000,
             host: options.host || process.env.HOST || '0.0.0.0',
             environment: options.environment || process.env.NODE_ENV || 'development',
             ...options
         };
-        
+
         this.services = {};
         this.app = null;
         this.isStarted = false;
@@ -50,8 +59,7 @@ class AIONServer {
     async initializeApp() {
         this.app = fastify({
             logger: {
-                level: this.config.environment === 'production' ? 'info' : 'debug',
-                prettyPrint: this.config.environment !== 'production'
+                level: this.config.environment === 'production' ? 'info' : 'debug'
             },
             trustProxy: true
         });
@@ -62,7 +70,7 @@ class AIONServer {
         });
 
         await this.app.register(cors, {
-            origin: this.config.environment === 'production' 
+            origin: this.config.environment === 'production'
                 ? ['https://aion-ai.com', 'https://app.aion-ai.com']
                 : true,
             credentials: true
@@ -99,12 +107,12 @@ class AIONServer {
         // Global error handler
         this.app.setErrorHandler(async (error, request, reply) => {
             this.app.log.error(error);
-            
+
             const statusCode = error.statusCode || 500;
             const response = {
                 success: false,
-                error: this.config.environment === 'production' 
-                    ? 'Internal server error' 
+                error: this.config.environment === 'production'
+                    ? 'Internal server error'
                     : error.message,
                 timestamp: new Date().toISOString()
             };
@@ -134,7 +142,7 @@ class AIONServer {
 
             const allHealthy = Object.values(health.services).every(status => status === true);
             const statusCode = allHealthy ? 200 : 503;
-            
+
             return reply.status(statusCode).send(health);
         });
 
@@ -389,22 +397,37 @@ process.on('SIGINT', async () => {
 
 // Main execution
 async function main() {
+    console.log('🎯 Starting main function...');
     const server = new AIONServer({
         port: process.env.PORT || 3000,
         host: process.env.HOST || '0.0.0.0',
         environment: process.env.NODE_ENV || 'development'
     });
 
+    console.log('🌐 Starting server...');
     global.server = server;
     await server.start();
 }
 
 // Run if called directly
-if (require.main === module) {
+console.log('🔍 Checking if running directly...');
+const currentFileUrl = import.meta.url;
+const runningFileUrl = `file://${process.argv[1]}`;
+
+console.log('Current file URL:', currentFileUrl);
+console.log('Running file URL:', runningFileUrl);
+
+// More robust check for direct execution
+const isDirectExecution = currentFileUrl.includes(process.argv[1].split('/').pop());
+
+if (isDirectExecution) {
+    console.log('✅ Running directly - starting main...');
     main().catch(error => {
         console.error(chalk.red('❌ Application failed to start:'), error);
         process.exit(1);
     });
+} else {
+    console.log('ℹ️ Not running directly - module imported');
 }
 
-module.exports = { AIONServer };
+export { AIONServer };

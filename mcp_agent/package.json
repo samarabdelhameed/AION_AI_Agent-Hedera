@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "Enhanced AION MCP Agent with Hedera Integration",
   "main": "server/app.js",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "start": "node server/app.js",
     "dev": "nodemon server/app.js",

@@ -5,10 +5,10 @@
  * @version 2.0.0
  */
 
-const EventEmitter = require('events');
-const crypto = require('crypto');
-const fs = require('fs').promises;
-const path = require('path');
+import { EventEmitter } from 'events';
+import crypto from 'crypto';
+import { promises as fs } from 'fs';
+import path from 'path';
 
 /**
  * Enhanced AI Decision Logger with Hedera integration
@@ -747,4 +747,4 @@ class AIDecisionLogger extends EventEmitter {
     }
 }
 
-module.exports = AIDecisionLogger;
+export default AIDecisionLogger;

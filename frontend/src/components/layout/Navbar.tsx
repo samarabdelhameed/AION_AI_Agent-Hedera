@@ -15,11 +15,11 @@ const navigation = [
   { name: 'AI Agent', href: 'agent' as Page },
   { name: 'Execute', href: 'execute' as Page },
   { name: 'Strategies', href: 'strategies' as Page },
-  { name: 'Hedera 🚀', href: 'hedera' as Page },
   { name: 'Analytics', href: 'proof' as Page },
 ];
 
 const moreNavigation = [
+  { name: 'Hedera Integration', href: 'hedera' as Page },
   { name: 'Advanced', href: 'advanced' as Page },
   { name: 'Timeline', href: 'timeline' as Page },
   { name: 'Settings', href: 'settings' as Page },

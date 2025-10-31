@@ -323,7 +323,7 @@ function parseTimeWindow(timeWindow) {
     return parseInt(value) * units[unit.toLowerCase()];
 }
 
-module.exports = {
+export {
     createAuthMiddleware,
     createAuthorizationMiddleware,
     createRoleMiddleware,

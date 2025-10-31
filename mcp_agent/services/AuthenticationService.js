@@ -5,10 +5,10 @@
  * @version 2.0.0
  */
 
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const crypto = require('crypto');
-const { EventEmitter } = require('events');
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
+import { EventEmitter } from 'events';
 
 /**
  * Enhanced Authentication Service
@@ -589,4 +589,4 @@ class AuthenticationService extends EventEmitter {
     }
 }
 
-module.exports = AuthenticationService;
+export default AuthenticationService;

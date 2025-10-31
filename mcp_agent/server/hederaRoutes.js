@@ -722,4 +722,4 @@ async function registerHederaRoutes(app, services) {
     return app;
 }
 
-module.exports = { registerHederaRoutes };
+export { registerHederaRoutes };

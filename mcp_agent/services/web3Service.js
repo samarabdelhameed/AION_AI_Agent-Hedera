@@ -5,8 +5,8 @@
  * @version 2.0.0
  */
 
-const EventEmitter = require('events');
-const { ethers } = require('ethers');
+import { EventEmitter } from 'events';
+import { ethers } from 'ethers';
 
 /**
  * Enhanced Web3 Service with Hedera integration
@@ -27,10 +27,10 @@ class Web3Service extends EventEmitter {
             
             // Connection settings
             rpcUrls: {
-                ethereum: config.rpcUrls?.ethereum || 'https://mainnet.infura.io/v3/your-key',
-                bsc: config.rpcUrls?.bsc || 'https://bsc-dataseed1.binance.org/',
-                bscTestnet: config.rpcUrls?.bscTestnet || 'https://data-seed-prebsc-1-s1.binance.org:8545/',
-                hedera: config.rpcUrls?.hedera || 'https://testnet.hashio.io/api',
+                ethereum: config.rpcUrls?.ethereum || process.env.ETHEREUM_RPC_URL || 'https://eth.llamarpc.com',
+                bsc: config.rpcUrls?.bsc || process.env.BSC_MAINNET_RPC_URL || 'https://bsc-dataseed1.binance.org/',
+                bscTestnet: config.rpcUrls?.bscTestnet || process.env.BSC_TESTNET_RPC_URL || 'https://data-seed-prebsc-1-s1.binance.org:8545/',
+                hedera: config.rpcUrls?.hedera || process.env.HEDERA_RPC_URL || 'https://testnet.hashio.io/api',
                 ...config.rpcUrls
             },
             
@@ -38,7 +38,7 @@ class Web3Service extends EventEmitter {
             confirmations: config.confirmations || 2,
             timeout: config.timeout || 120000, // 2 minutes
             gasLimit: config.gasLimit || 500000,
-            maxGasPrice: config.maxGasPrice || ethers.utils.parseUnits('50', 'gwei'),
+            maxGasPrice: config.maxGasPrice || ethers.parseUnits('50', 'gwei'),
             
             // Cross-chain settings
             enableCrossChain: config.enableCrossChain !== false,
@@ -50,31 +50,24 @@ class Web3Service extends EventEmitter {
             
             // Security settings
             enableTransactionValidation: config.enableTransactionValidation !== false,
-            maxTransactionValue: config.maxTransactionValue || ethers.utils.parseEther('100')
+            maxTransactionValue: config.maxTransactionValue || ethers.parseEther('100')
         };
         
         // State management
         this.isInitialized = false;
+        this.currentNetwork = this.config.defaultNetwork;
         this.providers = new Map();
         this.contracts = new Map();
-        this.currentNetwork = this.config.defaultNetwork;
         
-        // Contract addresses
-        this.contractAddresses = {
+        // Contract addresses for different networks
+        this.contractAddresses = config.contractAddresses || {
             ethereum: {
-                aionVault: config.contractAddresses?.ethereum?.aionVault || null,
-                strategies: config.contractAddresses?.ethereum?.strategies || {}
+                aionVault: '0x...',
+                strategies: {}
             },
             bsc: {
-                aionVault: config.contractAddresses?.bsc?.aionVault || '0xB176c1FA7B3feC56cB23681B6E447A7AE60C5254',
-                strategies: config.contractAddresses?.bsc?.strategies || {
-                    venus: '0x9D20A69E95CFEc37E5BC22c0D4218A705d90EdcB',
-                    pancake: '0xf2116eE783Be82ba51a6Eda9453dFD6A1723d205'
-                }
-            },
-            hedera: {
-                aionVault: config.contractAddresses?.hedera?.aionVault || null,
-                htsTokens: config.contractAddresses?.hedera?.htsTokens || {}
+                aionVault: '0x...',
+                strategies: {}
             }
         };
         
@@ -88,4 +81,614 @@ class Web3Service extends EventEmitter {
             averageGasUsed: 0,
             averageTransactionTime: 0,
             lastTransactionTime: null
-        };\n        \n        // Performance tracking\n        this.performanceData = {\n            transactionTimes: [],\n            gasUsages: [],\n            networkLatencies: []\n        };\n        \n        // Initialize service\n        this.initialize();\n    }\n    \n    /**\n     * Initialize Web3 Service\n     */\n    async initialize() {\n        try {\n            console.log('🌐 Initializing Enhanced Web3 Service...');\n            \n            // Validate configuration\n            this.validateConfiguration();\n            \n            // Initialize network providers\n            await this.initializeProviders();\n            \n            // Initialize Hedera integration\n            if (this.config.enableHederaIntegration && this.config.hederaService) {\n                await this.initializeHederaIntegration();\n            }\n            \n            // Load contract instances\n            await this.loadContracts();\n            \n            // Start metrics collection\n            if (this.config.enableMetrics) {\n                this.startMetricsCollection();\n            }\n            \n            this.isInitialized = true;\n            this.emit('initialized', { timestamp: Date.now() });\n            \n            console.log('✅ Web3 Service initialized successfully');\n            \n        } catch (error) {\n            console.error('❌ Failed to initialize Web3 Service:', error);\n            this.emit('error', error);\n            throw error;\n        }\n    }\n    \n    /**\n     * Validate configuration\n     */\n    validateConfiguration() {\n        if (this.config.networks.length === 0) {\n            throw new Error('At least one network must be configured');\n        }\n        \n        if (!this.config.networks.includes(this.config.defaultNetwork)) {\n            throw new Error('Default network must be included in networks list');\n        }\n        \n        // Validate RPC URLs\n        for (const network of this.config.networks) {\n            if (network !== 'hedera' && !this.config.rpcUrls[network]) {\n                throw new Error(`RPC URL not configured for network: ${network}`);\n            }\n        }\n    }\n    \n    /**\n     * Initialize network providers\n     */\n    async initializeProviders() {\n        try {\n            for (const network of this.config.networks) {\n                if (network === 'hedera') {\n                    // Hedera uses different connection method\n                    continue;\n                }\n                \n                const rpcUrl = this.config.rpcUrls[network];\n                const provider = new ethers.providers.JsonRpcProvider(rpcUrl);\n                \n                // Test connection\n                await provider.getNetwork();\n                \n                this.providers.set(network, provider);\n                console.log(`🔗 Connected to ${network} network`);\n            }\n            \n        } catch (error) {\n            console.error('❌ Failed to initialize providers:', error);\n            throw error;\n        }\n    }\n    \n    /**\n     * Initialize Hedera integration\n     */\n    async initializeHederaIntegration() {\n        try {\n            if (!this.config.hederaService.isConnected) {\n                console.warn('⚠️ HederaService not connected');\n                return;\n            }\n            \n            console.log('🔗 Hedera integration initialized');\n            \n        } catch (error) {\n            console.error('❌ Failed to initialize Hedera integration:', error);\n            throw error;\n        }\n    }\n    \n    /**\n     * Load contract instances\n     */\n    async loadContracts() {\n        try {\n            // Load contracts for each network\n            for (const network of this.config.networks) {\n                if (network === 'hedera') continue;\n                \n                const networkContracts = this.contractAddresses[network];\n                if (!networkContracts) continue;\n                \n                const provider = this.providers.get(network);\n                if (!provider) continue;\n                \n                // Load AION Vault contract\n                if (networkContracts.aionVault) {\n                    const contractKey = `${network}_aionVault`;\n                    // In a real implementation, you would load the ABI and create contract instance\n                    // const contract = new ethers.Contract(networkContracts.aionVault, ABI, provider);\n                    // this.contracts.set(contractKey, contract);\n                    console.log(`📄 Loaded AION Vault contract for ${network}`);\n                }\n                \n                // Load strategy contracts\n                for (const [strategyName, address] of Object.entries(networkContracts.strategies || {})) {\n                    const contractKey = `${network}_strategy_${strategyName}`;\n                    // const contract = new ethers.Contract(address, STRATEGY_ABI, provider);\n                    // this.contracts.set(contractKey, contract);\n                    console.log(`📄 Loaded ${strategyName} strategy contract for ${network}`);\n                }\n            }\n            \n        } catch (error) {\n            console.error('❌ Failed to load contracts:', error);\n            throw error;\n        }\n    }\n    \n    // ========== Network Operations ==========\n    \n    /**\n     * Switch to different network\n     * @param {string} network - Target network\n     */\n    async switchNetwork(network) {\n        try {\n            if (!this.config.networks.includes(network)) {\n                throw new Error(`Network not supported: ${network}`);\n            }\n            \n            this.currentNetwork = network;\n            this.emit('networkSwitched', { network, timestamp: Date.now() });\n            \n            console.log(`🔄 Switched to ${network} network`);\n            \n        } catch (error) {\n            console.error('❌ Failed to switch network:', error);\n            throw error;\n        }\n    }\n    \n    /**\n     * Get current provider\n     * @returns {ethers.providers.Provider} Current provider\n     */\n    getCurrentProvider() {\n        if (this.currentNetwork === 'hedera') {\n            return this.config.hederaService;\n        }\n        \n        return this.providers.get(this.currentNetwork);\n    }\n    \n    /**\n     * Get network status\n     * @param {string} network - Network name\n     * @returns {Promise<object>} Network status\n     */\n    async getNetworkStatus(network = this.currentNetwork) {\n        try {\n            if (network === 'hedera') {\n                return await this.getHederaNetworkStatus();\n            }\n            \n            const provider = this.providers.get(network);\n            if (!provider) {\n                throw new Error(`Provider not found for network: ${network}`);\n            }\n            \n            const [networkInfo, blockNumber, gasPrice] = await Promise.all([\n                provider.getNetwork(),\n                provider.getBlockNumber(),\n                provider.getGasPrice()\n            ]);\n            \n            return {\n                network: network,\n                chainId: networkInfo.chainId,\n                name: networkInfo.name,\n                blockNumber: blockNumber,\n                gasPrice: gasPrice.toString(),\n                connected: true,\n                timestamp: Date.now()\n            };\n            \n        } catch (error) {\n            console.error(`❌ Failed to get network status for ${network}:`, error);\n            return {\n                network: network,\n                connected: false,\n                error: error.message,\n                timestamp: Date.now()\n            };\n        }\n    }\n    \n    /**\n     * Get Hedera network status\n     * @returns {Promise<object>} Hedera network status\n     */\n    async getHederaNetworkStatus() {\n        try {\n            if (!this.config.hederaService) {\n                throw new Error('Hedera service not configured');\n            }\n            \n            const status = this.config.hederaService.getStatus();\n            \n            return {\n                network: 'hedera',\n                connected: status.isConnected,\n                services: status.services,\n                metrics: status.metrics,\n                timestamp: Date.now()\n            };\n            \n        } catch (error) {\n            console.error('❌ Failed to get Hedera network status:', error);\n            return {\n                network: 'hedera',\n                connected: false,\n                error: error.message,\n                timestamp: Date.now()\n            };\n        }\n    }\n    \n    // ========== Transaction Operations ==========\n    \n    /**\n     * Execute contract function\n     * @param {string} contractAddress - Contract address\n     * @param {string} functionName - Function name\n     * @param {Array} params - Function parameters\n     * @param {object} options - Transaction options\n     * @returns {Promise<object>} Transaction result\n     */\n    async executeContractFunction(contractAddress, functionName, params = [], options = {}) {\n        try {\n            const startTime = Date.now();\n            const network = options.network || this.currentNetwork;\n            \n            // Validate transaction\n            if (this.config.enableTransactionValidation) {\n                await this.validateTransaction(contractAddress, functionName, params, options);\n            }\n            \n            let result;\n            \n            if (network === 'hedera') {\n                result = await this.executeHederaContractFunction(contractAddress, functionName, params, options);\n            } else {\n                result = await this.executeEVMContractFunction(contractAddress, functionName, params, options);\n            }\n            \n            // Update metrics\n            const transactionTime = Date.now() - startTime;\n            this.updateTransactionMetrics(true, transactionTime, result.gasUsed);\n            \n            // Log to Hedera if enabled\n            if (this.config.enableHederaIntegration && this.config.hederaService) {\n                await this.logTransactionToHedera({\n                    network: network,\n                    contractAddress: contractAddress,\n                    functionName: functionName,\n                    params: params,\n                    result: result,\n                    timestamp: Date.now()\n                });\n            }\n            \n            this.emit('transactionExecuted', {\n                network: network,\n                contractAddress: contractAddress,\n                functionName: functionName,\n                transactionHash: result.transactionHash,\n                success: true,\n                transactionTime: transactionTime\n            });\n            \n            return result;\n            \n        } catch (error) {\n            console.error('❌ Failed to execute contract function:', error);\n            this.updateTransactionMetrics(false, 0, 0);\n            \n            this.emit('transactionFailed', {\n                contractAddress: contractAddress,\n                functionName: functionName,\n                error: error.message\n            });\n            \n            throw error;\n        }\n    }\n    \n    /**\n     * Execute EVM contract function\n     * @param {string} contractAddress - Contract address\n     * @param {string} functionName - Function name\n     * @param {Array} params - Function parameters\n     * @param {object} options - Transaction options\n     * @returns {Promise<object>} Transaction result\n     */\n    async executeEVMContractFunction(contractAddress, functionName, params, options) {\n        const network = options.network || this.currentNetwork;\n        const provider = this.providers.get(network);\n        \n        if (!provider) {\n            throw new Error(`Provider not found for network: ${network}`);\n        }\n        \n        // In a real implementation, you would:\n        // 1. Get the contract instance\n        // 2. Prepare the transaction\n        // 3. Estimate gas\n        // 4. Send transaction\n        // 5. Wait for confirmation\n        \n        // Simulated result for now\n        return {\n            transactionHash: `0x${Date.now().toString(16)}`,\n            blockNumber: await provider.getBlockNumber() + 1,\n            gasUsed: 150000,\n            status: 1,\n            network: network\n        };\n    }\n    \n    /**\n     * Execute Hedera contract function\n     * @param {string} contractAddress - Contract address\n     * @param {string} functionName - Function name\n     * @param {Array} params - Function parameters\n     * @param {object} options - Transaction options\n     * @returns {Promise<object>} Transaction result\n     */\n    async executeHederaContractFunction(contractAddress, functionName, params, options) {\n        if (!this.config.hederaService) {\n            throw new Error('Hedera service not configured');\n        }\n        \n        // In a real implementation, you would use Hedera SDK to execute smart contract functions\n        // For now, we'll simulate the operation\n        \n        this.metrics.hederaOperations++;\n        \n        return {\n            transactionId: `0.0.${Date.now()}@${Date.now()}.${Math.floor(Math.random() * 1000000000)}`,\n            consensusTimestamp: Date.now(),\n            status: 'SUCCESS',\n            network: 'hedera'\n        };\n    }\n    \n    /**\n     * Validate transaction\n     * @param {string} contractAddress - Contract address\n     * @param {string} functionName - Function name\n     * @param {Array} params - Function parameters\n     * @param {object} options - Transaction options\n     */\n    async validateTransaction(contractAddress, functionName, params, options) {\n        // Basic validation\n        if (!contractAddress || !ethers.utils.isAddress(contractAddress)) {\n            throw new Error('Invalid contract address');\n        }\n        \n        if (!functionName || typeof functionName !== 'string') {\n            throw new Error('Invalid function name');\n        }\n        \n        // Value validation\n        if (options.value && ethers.BigNumber.from(options.value).gt(this.config.maxTransactionValue)) {\n            throw new Error('Transaction value exceeds maximum allowed');\n        }\n        \n        // Gas validation\n        if (options.gasLimit && options.gasLimit > this.config.gasLimit * 2) {\n            throw new Error('Gas limit too high');\n        }\n    }\n    \n    // ========== Cross-Chain Operations ==========\n    \n    /**\n     * Execute cross-chain operation\n     * @param {string} fromNetwork - Source network\n     * @param {string} toNetwork - Target network\n     * @param {object} operation - Operation details\n     * @returns {Promise<object>} Cross-chain result\n     */\n    async executeCrossChainOperation(fromNetwork, toNetwork, operation) {\n        try {\n            if (!this.config.enableCrossChain) {\n                throw new Error('Cross-chain operations are disabled');\n            }\n            \n            console.log(`🌉 Executing cross-chain operation: ${fromNetwork} → ${toNetwork}`);\n            \n            const startTime = Date.now();\n            \n            // Step 1: Execute on source network\n            const sourceResult = await this.executeContractFunction(\n                operation.sourceContract,\n                operation.sourceFunction,\n                operation.sourceParams,\n                { network: fromNetwork, ...operation.sourceOptions }\n            );\n            \n            // Step 2: Wait for confirmation\n            await this.waitForConfirmation(sourceResult.transactionHash, fromNetwork);\n            \n            // Step 3: Execute on target network\n            const targetResult = await this.executeContractFunction(\n                operation.targetContract,\n                operation.targetFunction,\n                operation.targetParams,\n                { network: toNetwork, ...operation.targetOptions }\n            );\n            \n            // Step 4: Log cross-chain operation to Hedera\n            if (this.config.enableHederaIntegration && this.config.hederaService) {\n                await this.logCrossChainOperationToHedera({\n                    fromNetwork: fromNetwork,\n                    toNetwork: toNetwork,\n                    sourceResult: sourceResult,\n                    targetResult: targetResult,\n                    operation: operation,\n                    timestamp: Date.now()\n                });\n            }\n            \n            this.metrics.crossChainOperations++;\n            \n            const totalTime = Date.now() - startTime;\n            \n            this.emit('crossChainOperationCompleted', {\n                fromNetwork: fromNetwork,\n                toNetwork: toNetwork,\n                sourceTransactionHash: sourceResult.transactionHash,\n                targetTransactionHash: targetResult.transactionHash,\n                totalTime: totalTime\n            });\n            \n            return {\n                success: true,\n                fromNetwork: fromNetwork,\n                toNetwork: toNetwork,\n                sourceResult: sourceResult,\n                targetResult: targetResult,\n                totalTime: totalTime\n            };\n            \n        } catch (error) {\n            console.error('❌ Cross-chain operation failed:', error);\n            \n            this.emit('crossChainOperationFailed', {\n                fromNetwork: fromNetwork,\n                toNetwork: toNetwork,\n                error: error.message\n            });\n            \n            throw error;\n        }\n    }\n    \n    /**\n     * Bridge assets between networks\n     * @param {string} fromNetwork - Source network\n     * @param {string} toNetwork - Target network\n     * @param {string} asset - Asset to bridge\n     * @param {string} amount - Amount to bridge\n     * @param {string} recipient - Recipient address\n     * @returns {Promise<object>} Bridge result\n     */\n    async bridgeAssets(fromNetwork, toNetwork, asset, amount, recipient) {\n        try {\n            const bridgeOperation = {\n                sourceContract: this.config.bridgeContracts[fromNetwork],\n                sourceFunction: 'lockAssets',\n                sourceParams: [asset, amount, toNetwork, recipient],\n                targetContract: this.config.bridgeContracts[toNetwork],\n                targetFunction: 'releaseAssets',\n                targetParams: [asset, amount, recipient]\n            };\n            \n            return await this.executeCrossChainOperation(fromNetwork, toNetwork, bridgeOperation);\n            \n        } catch (error) {\n            console.error('❌ Asset bridging failed:', error);\n            throw error;\n        }\n    }\n    \n    /**\n     * Wait for transaction confirmation\n     * @param {string} transactionHash - Transaction hash\n     * @param {string} network - Network name\n     * @returns {Promise<object>} Confirmation result\n     */\n    async waitForConfirmation(transactionHash, network) {\n        try {\n            if (network === 'hedera') {\n                // Hedera transactions are confirmed immediately\n                return { confirmed: true, confirmations: 1 };\n            }\n            \n            const provider = this.providers.get(network);\n            if (!provider) {\n                throw new Error(`Provider not found for network: ${network}`);\n            }\n            \n            const receipt = await provider.waitForTransaction(\n                transactionHash,\n                this.config.confirmations,\n                this.config.timeout\n            );\n            \n            return {\n                confirmed: receipt.status === 1,\n                confirmations: receipt.confirmations,\n                blockNumber: receipt.blockNumber,\n                gasUsed: receipt.gasUsed.toString()\n            };\n            \n        } catch (error) {\n            console.error('❌ Failed to wait for confirmation:', error);\n            throw error;\n        }\n    }\n    \n    // ========== Hedera Integration ==========\n    \n    /**\n     * Log transaction to Hedera\n     * @param {object} transactionData - Transaction data\n     */\n    async logTransactionToHedera(transactionData) {\n        try {\n            const message = {\n                type: 'WEB3_TRANSACTION',\n                data: transactionData,\n                timestamp: Date.now(),\n                version: '2.0.0'\n            };\n            \n            await this.config.hederaService.submitToHCS(\n                this.config.hederaService.config.hcsTopicId,\n                message\n            );\n            \n        } catch (error) {\n            console.error('❌ Failed to log transaction to Hedera:', error);\n            // Don't throw - logging failure shouldn't break the main operation\n        }\n    }\n    \n    /**\n     * Log cross-chain operation to Hedera\n     * @param {object} operationData - Operation data\n     */\n    async logCrossChainOperationToHedera(operationData) {\n        try {\n            const message = {\n                type: 'CROSS_CHAIN_OPERATION',\n                data: operationData,\n                timestamp: Date.now(),\n                version: '2.0.0'\n            };\n            \n            await this.config.hederaService.submitToHCS(\n                this.config.hederaService.config.hcsAuditTopicId || this.config.hederaService.config.hcsTopicId,\n                message\n            );\n            \n        } catch (error) {\n            console.error('❌ Failed to log cross-chain operation to Hedera:', error);\n        }\n    }\n    \n    // ========== Utility Methods ==========\n    \n    /**\n     * Update transaction metrics\n     * @param {boolean} success - Transaction success\n     * @param {number} transactionTime - Transaction time in ms\n     * @param {number} gasUsed - Gas used\n     */\n    updateTransactionMetrics(success, transactionTime, gasUsed) {\n        this.metrics.totalTransactions++;\n        \n        if (success) {\n            this.metrics.successfulTransactions++;\n        } else {\n            this.metrics.failedTransactions++;\n        }\n        \n        if (transactionTime > 0) {\n            this.performanceData.transactionTimes.push(transactionTime);\n            \n            // Keep only last 100 measurements\n            if (this.performanceData.transactionTimes.length > 100) {\n                this.performanceData.transactionTimes.shift();\n            }\n            \n            // Update average\n            const times = this.performanceData.transactionTimes;\n            this.metrics.averageTransactionTime = times.reduce((a, b) => a + b, 0) / times.length;\n        }\n        \n        if (gasUsed > 0) {\n            this.performanceData.gasUsages.push(gasUsed);\n            \n            // Keep only last 100 measurements\n            if (this.performanceData.gasUsages.length > 100) {\n                this.performanceData.gasUsages.shift();\n            }\n            \n            // Update average\n            const gasUsages = this.performanceData.gasUsages;\n            this.metrics.averageGasUsed = gasUsages.reduce((a, b) => a + b, 0) / gasUsages.length;\n        }\n        \n        this.metrics.lastTransactionTime = Date.now();\n    }\n    \n    // ========== Metrics and Monitoring ==========\n    \n    /**\n     * Start metrics collection\n     */\n    startMetricsCollection() {\n        setInterval(() => {\n            this.collectMetrics();\n        }, this.config.metricsInterval);\n        \n        console.log(`📊 Metrics collection started (${this.config.metricsInterval}ms interval)`);\n    }\n    \n    /**\n     * Collect and emit metrics\n     */\n    collectMetrics() {\n        const currentTime = Date.now();\n        \n        const metricsData = {\n            ...this.metrics,\n            timestamp: currentTime,\n            networks: {\n                total: this.config.networks.length,\n                connected: this.providers.size + (this.config.enableHederaIntegration ? 1 : 0),\n                current: this.currentNetwork\n            },\n            contracts: {\n                loaded: this.contracts.size\n            },\n            performance: {\n                averageTransactionTime: this.metrics.averageTransactionTime,\n                averageGasUsed: this.metrics.averageGasUsed,\n                successRate: this.metrics.totalTransactions > 0 ?\n                    (this.metrics.successfulTransactions / this.metrics.totalTransactions) * 100 : 0\n            }\n        };\n        \n        this.emit('metrics', metricsData);\n    }\n    \n    /**\n     * Get current metrics\n     * @returns {object} Current metrics\n     */\n    getMetrics() {\n        return {\n            ...this.metrics,\n            networks: {\n                total: this.config.networks.length,\n                connected: this.providers.size + (this.config.enableHederaIntegration ? 1 : 0),\n                current: this.currentNetwork,\n                supported: this.config.networks\n            },\n            contracts: {\n                loaded: this.contracts.size\n            },\n            performance: {\n                averageTransactionTime: this.metrics.averageTransactionTime,\n                averageGasUsed: this.metrics.averageGasUsed,\n                successRate: this.metrics.totalTransactions > 0 ?\n                    (this.metrics.successfulTransactions / this.metrics.totalTransactions) * 100 : 0\n            }\n        };\n    }\n    \n    /**\n     * Get service status\n     * @returns {object} Service status\n     */\n    getStatus() {\n        return {\n            isInitialized: this.isInitialized,\n            currentNetwork: this.currentNetwork,\n            configuration: {\n                networks: this.config.networks,\n                enableHederaIntegration: this.config.enableHederaIntegration,\n                enableCrossChain: this.config.enableCrossChain,\n                confirmations: this.config.confirmations\n            },\n            metrics: this.getMetrics(),\n            health: {\n                providersConnected: this.providers.size,\n                contractsLoaded: this.contracts.size,\n                hederaConnected: this.config.hederaService ? this.config.hederaService.isConnected : false\n            }\n        };\n    }\n    \n    /**\n     * Get all network statuses\n     * @returns {Promise<object>} All network statuses\n     */\n    async getAllNetworkStatuses() {\n        const statuses = {};\n        \n        for (const network of this.config.networks) {\n            try {\n                statuses[network] = await this.getNetworkStatus(network);\n            } catch (error) {\n                statuses[network] = {\n                    network: network,\n                    connected: false,\n                    error: error.message,\n                    timestamp: Date.now()\n                };\n            }\n        }\n        \n        return statuses;\n    }\n    \n    /**\n     * Gracefully shutdown the service\n     */\n    async shutdown() {\n        try {\n            console.log('🛑 Shutting down Web3 Service...');\n            \n            // Clear providers\n            this.providers.clear();\n            \n            // Clear contracts\n            this.contracts.clear();\n            \n            this.isInitialized = false;\n            this.emit('shutdown', { timestamp: Date.now() });\n            \n            console.log('✅ Web3 Service shutdown complete');\n            \n        } catch (error) {\n            console.error('❌ Error during shutdown:', error);\n            throw error;\n        }\n    }\n}\n\nmodule.exports = Web3Service;
+        };
+        
+        // Performance tracking
+        this.performanceData = {
+            transactionTimes: [],
+            gasUsages: [],
+            networkLatencies: []
+        };
+        
+        // Initialize service
+        this.initialize();
+    }
+    
+    /**
+     * Initialize Web3 Service
+     */
+    async initialize() {
+        try {
+            console.log('🌐 Initializing Enhanced Web3 Service...');
+            
+            // Validate configuration
+            this.validateConfiguration();
+            
+            // Initialize network providers
+            await this.initializeProviders();
+            
+            // Initialize Hedera integration
+            if (this.config.enableHederaIntegration && this.config.hederaService) {
+                await this.initializeHederaIntegration();
+            }
+            
+            // Load contract instances
+            await this.loadContracts();
+            
+            // Start metrics collection
+            if (this.config.enableMetrics) {
+                this.startMetricsCollection();
+            }
+            
+            this.isInitialized = true;
+            this.emit('initialized', { timestamp: Date.now() });
+            
+            console.log('✅ Web3 Service initialized successfully');
+            
+        } catch (error) {
+            console.error('❌ Failed to initialize Web3 Service:', error);
+            this.emit('error', error);
+            throw error;
+        }
+    }
+    
+    /**
+     * Validate configuration
+     */
+    validateConfiguration() {
+        if (this.config.networks.length === 0) {
+            throw new Error('At least one network must be configured');
+        }
+        
+        if (!this.config.networks.includes(this.config.defaultNetwork)) {
+            throw new Error('Default network must be included in networks list');
+        }
+        
+        // Validate RPC URLs
+        for (const network of this.config.networks) {
+            if (network !== 'hedera' && !this.config.rpcUrls[network]) {
+                throw new Error(`RPC URL not configured for network: ${network}`);
+            }
+        }
+    }
+    
+    /**
+     * Initialize network providers
+     */
+    async initializeProviders() {
+        try {
+            console.log('🔗 Initializing blockchain providers...');
+            
+            for (const network of this.config.networks) {
+                if (network === 'hedera') {
+                    // Hedera uses different connection method
+                    continue;
+                }
+                
+                try {
+                    const rpcUrl = this.config.rpcUrls[network];
+                    console.log(`🔗 Connecting to ${network}: ${rpcUrl}`);
+                    
+                    const provider = new ethers.JsonRpcProvider(rpcUrl);
+                    
+                    // Test connection with timeout
+                    const networkInfo = await Promise.race([
+                        provider.getNetwork(),
+                        new Promise((_, reject) => 
+                            setTimeout(() => reject(new Error('Connection timeout')), 10000)
+                        )
+                    ]);
+                    
+                    this.providers.set(network, provider);
+                    console.log(`✅ Connected to ${network} network (Chain ID: ${networkInfo.chainId})`);
+                    
+                } catch (networkError) {
+                    console.warn(`⚠️ Failed to connect to ${network}: ${networkError.message}`);
+                    // Continue with other networks instead of failing completely
+                }
+            }
+            
+            if (this.providers.size === 0) {
+                console.warn('⚠️ No blockchain providers initialized - running in mock mode');
+                this.mockMode = true;
+            }
+            
+        } catch (error) {
+            console.error('❌ Failed to initialize providers:', error);
+            console.warn('⚠️ Running Web3Service in mock mode');
+            this.mockMode = true;
+        }
+    }
+    
+    /**
+     * Initialize Hedera integration
+     */
+    async initializeHederaIntegration() {
+        try {
+            if (!this.config.hederaService.isConnected) {
+                console.warn('⚠️ HederaService not connected');
+                return;
+            }
+            
+            console.log('🔗 Hedera integration initialized');
+            
+        } catch (error) {
+            console.error('❌ Failed to initialize Hedera integration:', error);
+            throw error;
+        }
+    }
+    
+    /**
+     * Load contract instances
+     */
+    async loadContracts() {
+        try {
+            // Load contracts for each network
+            for (const network of this.config.networks) {
+                if (network === 'hedera') continue;
+                
+                const networkContracts = this.contractAddresses[network];
+                if (!networkContracts) continue;
+                
+                const provider = this.providers.get(network);
+                if (!provider) continue;
+                
+                // Load AION Vault contract
+                if (networkContracts.aionVault) {
+                    const contractKey = `${network}_aionVault`;
+                    console.log(`📄 Loaded AION Vault contract for ${network}`);
+                }
+                
+                // Load strategy contracts
+                for (const [strategyName, address] of Object.entries(networkContracts.strategies || {})) {
+                    const contractKey = `${network}_strategy_${strategyName}`;
+                    console.log(`📄 Loaded ${strategyName} strategy contract for ${network}`);
+                }
+            }
+            
+        } catch (error) {
+            console.error('❌ Failed to load contracts:', error);
+            throw error;
+        }
+    }
+    
+    // ========== Network Operations ==========
+    
+    /**
+     * Switch to different network
+     * @param {string} network - Target network
+     */
+    async switchNetwork(network) {
+        try {
+            if (!this.config.networks.includes(network)) {
+                throw new Error(`Network not supported: ${network}`);
+            }
+            
+            this.currentNetwork = network;
+            this.emit('networkSwitched', { network, timestamp: Date.now() });
+            
+            console.log(`🔄 Switched to ${network} network`);
+            
+        } catch (error) {
+            console.error('❌ Failed to switch network:', error);
+            throw error;
+        }
+    }
+    
+    /**
+     * Get current provider
+     * @returns {ethers.providers.Provider} Current provider
+     */
+    getCurrentProvider() {
+        if (this.currentNetwork === 'hedera') {
+            return this.config.hederaService;
+        }
+        
+        return this.providers.get(this.currentNetwork);
+    }
+    
+    /**
+     * Get network status
+     * @param {string} network - Network name
+     * @returns {Promise<object>} Network status
+     */
+    async getNetworkStatus(network = this.currentNetwork) {
+        try {
+            if (network === 'hedera') {
+                return await this.getHederaNetworkStatus();
+            }
+            
+            const provider = this.providers.get(network);
+            if (!provider) {
+                throw new Error(`Provider not found for network: ${network}`);
+            }
+            
+            const [networkInfo, blockNumber, feeData] = await Promise.all([
+                provider.getNetwork(),
+                provider.getBlockNumber(),
+                provider.getFeeData()
+            ]);
+            
+            return {
+                network: network,
+                chainId: networkInfo.chainId,
+                name: networkInfo.name,
+                blockNumber: blockNumber,
+                gasPrice: feeData.gasPrice?.toString() || '0',
+                connected: true,
+                timestamp: Date.now()
+            };
+            
+        } catch (error) {
+            console.error(`❌ Failed to get network status for ${network}:`, error);
+            return {
+                network: network,
+                connected: false,
+                error: error.message,
+                timestamp: Date.now()
+            };
+        }
+    }
+    
+    /**
+     * Get Hedera network status
+     * @returns {Promise<object>} Hedera network status
+     */
+    async getHederaNetworkStatus() {
+        try {
+            if (!this.config.hederaService) {
+                throw new Error('Hedera service not configured');
+            }
+            
+            const status = this.config.hederaService.getStatus();
+            
+            return {
+                network: 'hedera',
+                connected: status.isConnected,
+                services: status.services,
+                metrics: status.metrics,
+                timestamp: Date.now()
+            };
+            
+        } catch (error) {
+            console.error('❌ Failed to get Hedera network status:', error);
+            return {
+                network: 'hedera',
+                connected: false,
+                error: error.message,
+                timestamp: Date.now()
+            };
+        }
+    }
+    
+    // ========== Transaction Operations ==========
+    
+    /**
+     * Execute contract function
+     * @param {string} contractAddress - Contract address
+     * @param {string} functionName - Function name
+     * @param {Array} params - Function parameters
+     * @param {object} options - Transaction options
+     * @returns {Promise<object>} Transaction result
+     */
+    async executeContractFunction(contractAddress, functionName, params = [], options = {}) {
+        try {
+            const startTime = Date.now();
+            const network = options.network || this.currentNetwork;
+            
+            // Validate transaction
+            if (this.config.enableTransactionValidation) {
+                await this.validateTransaction(contractAddress, functionName, params, options);
+            }
+            
+            let result;
+            
+            if (network === 'hedera') {
+                result = await this.executeHederaContractFunction(contractAddress, functionName, params, options);
+            } else {
+                result = await this.executeEVMContractFunction(contractAddress, functionName, params, options);
+            }
+            
+            // Update metrics
+            const transactionTime = Date.now() - startTime;
+            this.updateTransactionMetrics(true, transactionTime, result.gasUsed);
+            
+            // Log to Hedera if enabled
+            if (this.config.enableHederaIntegration && this.config.hederaService) {
+                await this.logTransactionToHedera({
+                    network: network,
+                    contractAddress: contractAddress,
+                    functionName: functionName,
+                    params: params,
+                    result: result,
+                    timestamp: Date.now()
+                });
+            }
+            
+            this.emit('transactionExecuted', {
+                network: network,
+                contractAddress: contractAddress,
+                functionName: functionName,
+                transactionHash: result.transactionHash,
+                success: true,
+                transactionTime: transactionTime
+            });
+            
+            return result;
+            
+        } catch (error) {
+            console.error('❌ Failed to execute contract function:', error);
+            this.updateTransactionMetrics(false, 0, 0);
+            
+            this.emit('transactionFailed', {
+                contractAddress: contractAddress,
+                functionName: functionName,
+                error: error.message
+            });
+            
+            throw error;
+        }
+    }
+    
+    /**
+     * Execute EVM contract function
+     * @param {string} contractAddress - Contract address
+     * @param {string} functionName - Function name
+     * @param {Array} params - Function parameters
+     * @param {object} options - Transaction options
+     * @returns {Promise<object>} Transaction result
+     */
+    async executeEVMContractFunction(contractAddress, functionName, params, options) {
+        const network = options.network || this.currentNetwork;
+        const provider = this.providers.get(network);
+        
+        if (!provider) {
+            throw new Error(`Provider not found for network: ${network}`);
+        }
+        
+        // Simulated result for now
+        return {
+            transactionHash: `0x${Date.now().toString(16)}`,
+            blockNumber: await provider.getBlockNumber() + 1,
+            gasUsed: 150000,
+            status: 1,
+            network: network
+        };
+    }
+    
+    /**
+     * Execute Hedera contract function
+     * @param {string} contractAddress - Contract address
+     * @param {string} functionName - Function name
+     * @param {Array} params - Function parameters
+     * @param {object} options - Transaction options
+     * @returns {Promise<object>} Transaction result
+     */
+    async executeHederaContractFunction(contractAddress, functionName, params, options) {
+        if (!this.config.hederaService) {
+            throw new Error('Hedera service not configured');
+        }
+        
+        this.metrics.hederaOperations++;
+        
+        return {
+            transactionId: `0.0.${Date.now()}@${Date.now()}.${Math.floor(Math.random() * 1000000000)}`,
+            consensusTimestamp: Date.now(),
+            status: 'SUCCESS',
+            network: 'hedera'
+        };
+    }
+    
+    /**
+     * Validate transaction
+     * @param {string} contractAddress - Contract address
+     * @param {string} functionName - Function name
+     * @param {Array} params - Function parameters
+     * @param {object} options - Transaction options
+     */
+    async validateTransaction(contractAddress, functionName, params, options) {
+        // Basic validation
+        if (!contractAddress || !ethers.isAddress(contractAddress)) {
+            throw new Error('Invalid contract address');
+        }
+        
+        if (!functionName || typeof functionName !== 'string') {
+            throw new Error('Invalid function name');
+        }
+        
+        // Value validation
+        if (options.value && BigInt(options.value) > this.config.maxTransactionValue) {
+            throw new Error('Transaction value exceeds maximum allowed');
+        }
+        
+        // Gas validation
+        if (options.gasLimit && options.gasLimit > this.config.gasLimit * 2) {
+            throw new Error('Gas limit too high');
+        }
+    }
+    
+    // ========== Utility Methods ==========
+    
+    /**
+     * Update transaction metrics
+     * @param {boolean} success - Transaction success
+     * @param {number} transactionTime - Transaction time in ms
+     * @param {number} gasUsed - Gas used
+     */
+    updateTransactionMetrics(success, transactionTime, gasUsed) {
+        this.metrics.totalTransactions++;
+        
+        if (success) {
+            this.metrics.successfulTransactions++;
+        } else {
+            this.metrics.failedTransactions++;
+        }
+        
+        if (transactionTime > 0) {
+            this.performanceData.transactionTimes.push(transactionTime);
+            
+            // Keep only last 100 measurements
+            if (this.performanceData.transactionTimes.length > 100) {
+                this.performanceData.transactionTimes.shift();
+            }
+            
+            // Update average
+            const times = this.performanceData.transactionTimes;
+            this.metrics.averageTransactionTime = times.reduce((a, b) => a + b, 0) / times.length;
+        }
+        
+        if (gasUsed > 0) {
+            this.performanceData.gasUsages.push(gasUsed);
+            
+            // Keep only last 100 measurements
+            if (this.performanceData.gasUsages.length > 100) {
+                this.performanceData.gasUsages.shift();
+            }
+            
+            // Update average
+            const gasUsages = this.performanceData.gasUsages;
+            this.metrics.averageGasUsed = gasUsages.reduce((a, b) => a + b, 0) / gasUsages.length;
+        }
+        
+        this.metrics.lastTransactionTime = Date.now();
+    }
+    
+    /**
+     * Log transaction to Hedera
+     * @param {object} transactionData - Transaction data
+     */
+    async logTransactionToHedera(transactionData) {
+        try {
+            const message = {
+                type: 'WEB3_TRANSACTION',
+                data: transactionData,
+                timestamp: Date.now(),
+                version: '2.0.0'
+            };
+            
+            await this.config.hederaService.submitToHCS(
+                this.config.hederaService.config.hcsTopicId,
+                message
+            );
+            
+        } catch (error) {
+            console.error('❌ Failed to log transaction to Hedera:', error);
+            // Don't throw - logging failure shouldn't break the main operation
+        }
+    }
+    
+    // ========== Metrics and Monitoring ==========
+    
+    /**
+     * Start metrics collection
+     */
+    startMetricsCollection() {
+        setInterval(() => {
+            this.collectMetrics();
+        }, this.config.metricsInterval);
+        
+        console.log(`📊 Metrics collection started (${this.config.metricsInterval}ms interval)`);
+    }
+    
+    /**
+     * Collect and emit metrics
+     */
+    collectMetrics() {
+        const currentTime = Date.now();
+        
+        const metricsData = {
+            ...this.metrics,
+            timestamp: currentTime,
+            networks: {
+                total: this.config.networks.length,
+                connected: this.providers.size + (this.config.enableHederaIntegration ? 1 : 0),
+                current: this.currentNetwork
+            },
+            contracts: {
+                loaded: this.contracts.size
+            },
+            performance: {
+                averageTransactionTime: this.metrics.averageTransactionTime,
+                averageGasUsed: this.metrics.averageGasUsed,
+                successRate: this.metrics.totalTransactions > 0 ?
+                    (this.metrics.successfulTransactions / this.metrics.totalTransactions) * 100 : 0
+            }
+        };
+        
+        this.emit('metrics', metricsData);
+    }
+    
+    /**
+     * Get current metrics
+     * @returns {object} Current metrics
+     */
+    getMetrics() {
+        return {
+            ...this.metrics,
+            networks: {
+                total: this.config.networks.length,
+                connected: this.providers.size + (this.config.enableHederaIntegration ? 1 : 0),
+                current: this.currentNetwork,
+                supported: this.config.networks
+            },
+            contracts: {
+                loaded: this.contracts.size
+            },
+            performance: {
+                averageTransactionTime: this.metrics.averageTransactionTime,
+                averageGasUsed: this.metrics.averageGasUsed,
+                successRate: this.metrics.totalTransactions > 0 ?
+                    (this.metrics.successfulTransactions / this.metrics.totalTransactions) * 100 : 0
+            }
+        };
+    }
+    
+    /**
+     * Get service status
+     * @returns {object} Service status
+     */
+    getStatus() {
+        return {
+            isInitialized: this.isInitialized,
+            currentNetwork: this.currentNetwork,
+            configuration: {
+                networks: this.config.networks,
+                enableHederaIntegration: this.config.enableHederaIntegration,
+                enableCrossChain: this.config.enableCrossChain,
+                confirmations: this.config.confirmations
+            },
+            metrics: this.getMetrics(),
+            health: {
+                providersConnected: this.providers.size,
+                contractsLoaded: this.contracts.size,
+                hederaConnected: this.config.hederaService ? this.config.hederaService.isConnected : false
+            }
+        };
+    }
+    
+    /**
+     * Gracefully shutdown the service
+     */
+    async shutdown() {
+        try {
+            console.log('🛑 Shutting down Web3 Service...');
+            
+            // Clear providers
+            this.providers.clear();
+            
+            // Clear contracts
+            this.contracts.clear();
+            
+            this.isInitialized = false;
+            this.emit('shutdown', { timestamp: Date.now() });
+            
+            console.log('✅ Web3 Service shutdown complete');
+            
+        } catch (error) {
+            console.error('❌ Error during shutdown:', error);
+            throw error;
+        }
+    }
+}
+
+export default Web3Service;

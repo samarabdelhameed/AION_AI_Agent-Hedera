@@ -1004,7 +1004,7 @@ app.get('/api/transactions', async (request, reply) => {
     if (address) {
       try {
         // Try to get real transactions from web3 service
-        const web3Service = require('./services/web3Service').Web3Service;
+        const { Web3Service } = await import('./services/Web3Service.js');
         if (web3Service && web3Service.prototype.getTransactionHistory) {
           const web3Instance = new web3Service();
           const realTransactions = web3Instance.getTransactionHistory(50);

@@ -3,8 +3,8 @@
  * Logs all cross-chain bridge operations to HCS for audit trail
  */
 
-const { HederaService } = require('./hederaService');
-const { AIDecisionLogger } = require('./aiDecisionLogger');
+import { HederaService } from './hederaService.js';
+import { AIDecisionLogger } from './aiDecisionLogger.js';
 
 class BridgeOperationLogger {
     constructor(hederaService, aiDecisionLogger) {
@@ -506,4 +506,4 @@ class BridgeOperationLogger {
     }
 }
 
-module.exports = { BridgeOperationLogger };
+export { BridgeOperationLogger };

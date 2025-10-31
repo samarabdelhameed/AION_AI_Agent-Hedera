@@ -133,7 +133,7 @@ class ComprehensiveMonitoringSystem {
 
         } catch (error) {
             console.error('❌ Failed to start comprehensive monitoring:', error.message);
-            
+
             this.logger.logHealthCheck('comprehensive_monitoring', 'unhealthy', {
                 error: error.message,
                 startupFailed: new Date().toISOString()
@@ -217,12 +217,12 @@ class ComprehensiveMonitoringSystem {
             };
 
             // Determine overall health
-            const hasErrors = Object.values(healthCheck.services).some(service => 
+            const hasErrors = Object.values(healthCheck.services).some(service =>
                 service.status === 'error' || service.status === 'unhealthy'
             );
 
-            const hasWarnings = Object.values(healthCheck.services).some(service => 
-                service.status === 'warning' || 
+            const hasWarnings = Object.values(healthCheck.services).some(service =>
+                service.status === 'warning' ||
                 Object.values(service.checks || {}).some(check => check.status === 'warning')
             );
 

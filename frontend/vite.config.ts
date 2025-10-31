@@ -1,41 +1,32 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import path from 'path'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
+  optimizeDeps: {
+    exclude: ['lucide-react', '@reown/appkit-siwx'],
+    force: true, // Force re-optimization
   },
   server: {
-    port: 3000,
-    host: true,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3001',
-        changeOrigin: true,
-        secure: false,
-      }
-    }
+    port: 5173,
+    strictPort: true,
+    hmr: {
+      overlay: false, // Disable error overlay
+    },
   },
   build: {
     outDir: 'dist',
     sourcemap: false,
-    minify: 'terser',
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          router: ['react-router-dom']
-        }
-      }
-    }
+        manualChunks: undefined, // Disable manual chunks to prevent 404 errors
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+      },
+    },
   },
-  define: {
-    'process.env': process.env,
-    __APP_VERSION__: JSON.stringify('2.0.0'),
-    __BUILD_TIME__: JSON.stringify(new Date().toISOString())
-  }
-})
+  base: '/',
+  clearScreen: false,
+});

@@ -149,4 +149,4 @@ async function executeStrategy(strategyId, parameters, dryRun) {
     };
 }
 
-module.exports = { registerExecuteRoutes };
+export { registerExecuteRoutes };
