@@ -42,7 +42,7 @@ class AIONServer {
     constructor(options = {}) {
         console.log('🏗️ Creating AION Server instance...');
         this.config = {
-            port: options.port || process.env.PORT || 3000,
+            port: options.port || process.env.PORT || 3003,
             host: options.host || process.env.HOST || '0.0.0.0',
             environment: options.environment || process.env.NODE_ENV || 'development',
             ...options
@@ -399,7 +399,7 @@ process.on('SIGINT', async () => {
 async function main() {
     console.log('🎯 Starting main function...');
     const server = new AIONServer({
-        port: process.env.PORT || 3000,
+        port: process.env.PORT || 3003,
         host: process.env.HOST || '0.0.0.0',
         environment: process.env.NODE_ENV || 'development'
     });

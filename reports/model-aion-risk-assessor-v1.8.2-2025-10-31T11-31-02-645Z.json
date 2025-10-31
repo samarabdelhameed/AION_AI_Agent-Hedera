@@ -1,0 +1,74 @@
+{
+  "modelId": "aion-risk-assessor-v1.8.2",
+  "name": "AION Risk Assessment Model",
+  "version": "1.8.2",
+  "type": "Ensemble Learning",
+  "architecture": "Random Forest + Gradient Boosting",
+  "trainingData": {
+    "sources": [
+      "Historical Exploits DB",
+      "Protocol Audits",
+      "TVL Fluctuations",
+      "Liquidation Events"
+    ],
+    "timeframe": "2020-06-01 to 2024-10-28",
+    "dataPoints": 1456789,
+    "protocols": 89,
+    "riskEvents": 234
+  },
+  "performance": {
+    "accuracy": 0.9567,
+    "precision": 0.9423,
+    "recall": 0.9389,
+    "f1Score": 0.9406,
+    "auc": 0.9678,
+    "falsePositiveRate": 0.0234,
+    "falseNegativeRate": 0.0189,
+    "riskPredictionAccuracy": 0.9445
+  },
+  "hyperparameters": {
+    "nEstimators": 500,
+    "maxDepth": 15,
+    "minSamplesSplit": 10,
+    "minSamplesLeaf": 5,
+    "maxFeatures": "sqrt",
+    "bootstrap": true,
+    "randomState": 42
+  },
+  "features": {
+    "inputFeatures": 89,
+    "riskFactors": [
+      "Smart Contract Risk",
+      "Liquidity Risk",
+      "Market Risk",
+      "Operational Risk"
+    ],
+    "protocolMetrics": [
+      "Audit Score",
+      "TVL Stability",
+      "Team Reputation",
+      "Code Quality"
+    ],
+    "marketIndicators": [
+      "Volatility",
+      "Correlation",
+      "Beta",
+      "VaR"
+    ],
+    "historicalData": [
+      "Past Exploits",
+      "Recovery Time",
+      "Insurance Coverage"
+    ]
+  },
+  "deployment": {
+    "environment": "Production",
+    "lastUpdated": "2024-10-27T15:45:00.000Z",
+    "deploymentHash": "123b1490dc59bdc5027dcd6a6a697ace6ff9231752958254e62e8f47bd711aab",
+    "checksumMD5": "f0d03e3a8b75053b8f2fe89537cfd1d2",
+    "checksumSHA256": "2a8e974941e28be21b8d8da3699ea47518f8eba57c77e91f396f5a668a50892b",
+    "modelSize": "234.7 MB",
+    "inferenceTime": "8.9 ms",
+    "memoryUsage": "512 MB"
+  }
+}

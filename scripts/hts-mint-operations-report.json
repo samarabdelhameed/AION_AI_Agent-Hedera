@@ -1,0 +1,118 @@
+{
+  "timestamp": "2025-10-31T13:59:21.671Z",
+  "network": "hedera-testnet",
+  "tokenId": "0.0.7168261",
+  "operations": [
+    {
+      "scenario": "Initial User Deposit",
+      "user": "user1",
+      "amount": 100000,
+      "error": "Token Transfer - user1 failed after 4 attempts: Token Transfer - user1 - Receipt Validation failed after 4 attempts: receipt for transaction 0.0.7149926@1761919158.822395572 contained error status TOKEN_NOT_ASSOCIATED_TO_ACCOUNT",
+      "timestamp": "2025-10-31T13:59:26.780Z",
+      "status": "FAILED"
+    },
+    {
+      "scenario": "Large Investor Deposit",
+      "user": "user2",
+      "amount": 250000,
+      "error": "Token Transfer - user2 failed after 4 attempts: Token Transfer - user2 - Receipt Validation failed after 4 attempts: receipt for transaction 0.0.7149926@1761919163.333317847 contained error status TOKEN_NOT_ASSOCIATED_TO_ACCOUNT",
+      "timestamp": "2025-10-31T13:59:30.338Z",
+      "status": "FAILED"
+    },
+    {
+      "scenario": "Treasury Allocation",
+      "user": "treasury",
+      "amount": 50000,
+      "description": "Treasury allocation for protocol operations",
+      "reason": "Reserve funds for emergency operations and rewards",
+      "mintHash": "0.0.7149926@1761919166.747657413",
+      "transferHash": null,
+      "timestamp": "2025-10-31T13:59:32.739Z",
+      "duration": 2400,
+      "status": "SUCCESS",
+      "explorerLinks": {
+        "mint": "https://hashscan.io/testnet/transaction/0.0.7149926@1761919166.747657413",
+        "transfer": null
+      }
+    },
+    {
+      "scenario": "Community Rewards",
+      "user": "user1",
+      "amount": 25000,
+      "error": "Token Transfer - user1 failed after 4 attempts: Token Transfer - user1 - Receipt Validation failed after 4 attempts: receipt for transaction 0.0.7149926@1761919174.255197357 contained error status TOKEN_NOT_ASSOCIATED_TO_ACCOUNT",
+      "timestamp": "2025-10-31T13:59:41.251Z",
+      "status": "FAILED"
+    },
+    {
+      "scenario": "Yield Distribution",
+      "user": "user2",
+      "amount": 75000,
+      "error": "Token Transfer - user2 failed after 4 attempts: Token Transfer - user2 - Receipt Validation failed after 4 attempts: receipt for transaction 0.0.7149926@1761919177.168994833 contained error status TOKEN_NOT_ASSOCIATED_TO_ACCOUNT",
+      "timestamp": "2025-10-31T13:59:47.172Z",
+      "status": "FAILED"
+    }
+  ],
+  "userBalances": {
+    "operator": {
+      "accountId": "0.0.7149926",
+      "hbarBalance": "562.82439825 ℏ",
+      "tokenBalance": 1500000,
+      "tokenBalanceFormatted": "1,500,000",
+      "timestamp": "2025-10-31T13:59:47.613Z"
+    },
+    "user1": {
+      "accountId": "0.0.7152091",
+      "hbarBalance": "50 ℏ",
+      "tokenBalance": 0,
+      "tokenBalanceFormatted": "0",
+      "timestamp": "2025-10-31T13:59:48.050Z"
+    },
+    "user2": {
+      "accountId": "0.0.7152093",
+      "hbarBalance": "30 ℏ",
+      "tokenBalance": 0,
+      "tokenBalanceFormatted": "0",
+      "timestamp": "2025-10-31T13:59:48.336Z"
+    },
+    "aiAgent": {
+      "accountId": "0.0.7152096",
+      "hbarBalance": "25 ℏ",
+      "tokenBalance": 0,
+      "tokenBalanceFormatted": "0",
+      "timestamp": "2025-10-31T13:59:48.550Z"
+    },
+    "treasury": {
+      "accountId": "0.0.7152097",
+      "hbarBalance": "20 ℏ",
+      "tokenBalance": 0,
+      "tokenBalanceFormatted": "0",
+      "timestamp": "2025-10-31T13:59:49.016Z"
+    }
+  },
+  "summary": {
+    "tokenSupply": {
+      "tokenId": "0.0.7168261",
+      "name": "AION Vault Shares",
+      "symbol": "AION",
+      "totalSupply": "1500000",
+      "totalSupplyFormatted": "1,500,000",
+      "decimals": 18,
+      "treasury": "0.0.7149926",
+      "queryTimestamp": "2025-10-31T13:59:49.559Z"
+    },
+    "totalOperations": 5,
+    "successfulOperations": 1,
+    "failedOperations": 4,
+    "totalTokensMinted": 50000,
+    "totalTokensMintedFormatted": "50,000",
+    "averageOperationTime": 2400,
+    "reportGenerated": "2025-10-31T13:59:49.559Z"
+  },
+  "judgeInstructions": {
+    "step1": "Click on mint transaction links to view on Hedera Explorer",
+    "step2": "Verify each mint operation shows correct token amounts",
+    "step3": "Check transfer transactions moved tokens to correct users",
+    "step4": "Confirm total supply increased by minted amounts",
+    "step5": "Validate user balances reflect received tokens"
+  }
+}

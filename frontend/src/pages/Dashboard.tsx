@@ -18,9 +18,10 @@ import { useRealData } from '../hooks/useRealData';
 import { useHistoricalPerformance } from '../hooks/useHistorical';
 import { useStrategies } from '../hooks/useStrategies';
 import { useRecentActivity } from '../hooks/useRecentActivity';
-import { useHedera } from '../hooks/useHedera';
-import { HederaStatus } from '../components/hedera/HederaStatus';
-import { HederaTokenInfo } from '../components/hedera/HederaTokenInfo';
+import { HederaIntegrationCard } from '../components/hedera/HederaIntegrationCard';
+import { HederaDecisionLog } from '../components/hedera/HederaDecisionLog';
+import { HederaMetrics } from '../components/hedera/HederaMetrics';
+import { HederaPoweredIndicator } from '../components/hedera/HederaFeatureBadge';
 
 // Default data constants
 const SYSTEM_HEALTH = [
@@ -114,17 +115,6 @@ export function Dashboard({ onNavigate }: DashboardProps) {
   
   const wallet = useWalletOnchain();
   const recent = useRecentActivity(3);
-  
-  // Hedera integration
-  const { 
-    status: hederaStatus, 
-    balance: hederaBalance, 
-    tokenInfo, 
-    isConnected: hederaConnected,
-    loading: hederaLoading,
-    error: hederaError,
-    refresh: refreshHedera
-  } = useHedera();
 
   // Mock transactions data for now
   const transactions = {
@@ -439,12 +429,13 @@ export function Dashboard({ onNavigate }: DashboardProps) {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 flex-wrap">
                 <p className="text-gray-400">Welcome to your AION control center</p>
+                <HederaPoweredIndicator />
                    <div className="flex items-center gap-2">
                    <div className="w-2 h-2 rounded-full bg-blue-400" />
                    <span className="text-xs text-gray-400">
-                     Stable Data (Optimized for UX)
+                     Real-time Data
                    </span>
                   {lastUpdated && (
                     <span className="text-xs text-gray-500">
@@ -626,52 +617,6 @@ export function Dashboard({ onNavigate }: DashboardProps) {
               </div>
             </Card>
 
-            {/* Hedera Integration Status */}
-            <Card>
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-5 h-5 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
-                    <span className="text-xs font-bold text-white">H</span>
-                  </div>
-                  <h3 className="text-lg font-semibold text-white">Hedera Network</h3>
-                </div>
-                <Button 
-                  size="sm" 
-                  variant="ghost" 
-                  icon={RefreshCw}
-                  onClick={refreshHedera}
-                  loading={hederaLoading}
-                >
-                  Refresh
-                </Button>
-              </div>
-              
-              <HederaStatus 
-                status={hederaStatus}
-                isConnected={hederaConnected}
-                loading={hederaLoading}
-                error={hederaError}
-              />
-              
-              {hederaBalance && (
-                <div className="mt-4 p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-purple-300">HBAR Balance</span>
-                    <span className="text-white font-medium">{hederaBalance.hbars}</span>
-                  </div>
-                  <div className="text-xs text-gray-400">
-                    Account: {hederaBalance.accountId}
-                  </div>
-                </div>
-              )}
-              
-              {tokenInfo && (
-                <div className="mt-3">
-                  <HederaTokenInfo tokenInfo={tokenInfo} />
-                </div>
-              )}
-            </Card>
-
             {/* Market Sentiment */}
             <Card>
               <div className="flex items-center justify-between mb-4">
@@ -832,80 +777,8 @@ export function Dashboard({ onNavigate }: DashboardProps) {
               </div>
             </Card>
 
-            {/* Hedera Integration Overview */}
-            <Card>
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
-                    <span className="text-sm font-bold text-white">H</span>
-                  </div>
-                  <h3 className="text-lg font-semibold text-white">Hedera Integration</h3>
-                </div>
-                <Button 
-                  size="sm" 
-                  variant="secondary"
-                  onClick={() => onNavigate('hedera')}
-                >
-                  View Details
-                </Button>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-xl border border-purple-500/30">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className={`w-2 h-2 rounded-full ${hederaConnected ? 'bg-green-400' : 'bg-red-400'}`} />
-                    <span className="text-sm font-medium text-white">Network Status</span>
-                  </div>
-                  <div className="text-lg font-bold text-white">
-                    {hederaConnected ? 'Connected' : 'Disconnected'}
-                  </div>
-                  <div className="text-xs text-gray-400">
-                    {hederaStatus?.network || 'Testnet'}
-                  </div>
-                </div>
-                
-                <div className="p-4 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-xl border border-green-500/30">
-                  <div className="flex items-center gap-2 mb-2">
-                    <CheckCircle className="w-4 h-4 text-green-400" />
-                    <span className="text-sm font-medium text-white">HCS Messages</span>
-                  </div>
-                  <div className="text-lg font-bold text-white">
-                    {hederaStatus?.hcsMessages || 0}
-                  </div>
-                  <div className="text-xs text-gray-400">AI Decisions Logged</div>
-                </div>
-                
-                <div className="p-4 bg-gradient-to-br from-gold-500/20 to-yellow-500/20 rounded-xl border border-gold-500/30">
-                  <div className="flex items-center gap-2 mb-2">
-                    <TrendingUp className="w-4 h-4 text-gold-400" />
-                    <span className="text-sm font-medium text-white">HTS Tokens</span>
-                  </div>
-                  <div className="text-lg font-bold text-white">
-                    {tokenInfo?.totalSupply || '0'}
-                  </div>
-                  <div className="text-xs text-gray-400">Total Supply</div>
-                </div>
-              </div>
-              
-              {hederaError && (
-                <div className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
-                  <div className="flex items-center gap-2 mb-1">
-                    <AlertCircle className="w-4 h-4 text-red-400" />
-                    <span className="text-sm font-medium text-red-300">Connection Error</span>
-                  </div>
-                  <p className="text-xs text-gray-400">{hederaError}</p>
-                </div>
-              )}
-              
-              <div className="mt-4 flex items-center justify-between text-xs">
-                <span className="text-gray-400">
-                  Hedera services: HCS, HTS, HFS integrated
-                </span>
-                <span className="text-purple-400">
-                  Ultra-fast, low-cost transactions
-                </span>
-              </div>
-            </Card>
+            {/* Hedera Integration Card */}
+            <HederaIntegrationCard onViewDetails={() => onNavigate('settings')} />
 
             {/* AI Recommendations */}
             <AIRecommendationCard userAddress={wallet.address} maxRecommendations={3} />
@@ -916,6 +789,12 @@ export function Dashboard({ onNavigate }: DashboardProps) {
 
           {/* Right Column - Activity & Health */}
           <div className="lg:col-span-3 space-y-6">
+            {/* Hedera Metrics - Real blockchain data */}
+            <HederaMetrics variant="compact" />
+
+            {/* Hedera Decision Log - Real HCS data */}
+            <HederaDecisionLog limit={5} compact={true} />
+
             {/* Market Overview */}
             <Card>
               <div className="flex items-center justify-between mb-4">

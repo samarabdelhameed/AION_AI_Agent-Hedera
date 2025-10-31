@@ -1,0 +1,460 @@
+{
+  "timestamp": "2025-10-31T14:00:09.718Z",
+  "network": "hedera-testnet",
+  "topicId": "0.0.7168284",
+  "decisions": [
+    {
+      "decisionType": "REBALANCE",
+      "fromStrategy": "Venus BNB Lending",
+      "toStrategy": "PancakeSwap BNB-BUSD LP",
+      "amount": "75000000000000000000",
+      "amountFormatted": "75 BNB",
+      "reason": "Higher APY detected: PancakeSwap LP (12.3%) vs Venus lending (8.5%)",
+      "confidence": 0.94,
+      "expectedGain": "3.8% additional yield annually (~$1,650 extra per year)",
+      "riskScore": 0.25,
+      "marketAnalysis": {
+        "venusAPY": "8.5%",
+        "pancakeAPY": "12.3%",
+        "impermanentLossRisk": "Low (stable pair)",
+        "liquidityDepth": "$2.4M",
+        "tradingVolume24h": "$45.2M"
+      },
+      "technicalIndicators": {
+        "rsi": 65,
+        "macd": "Bullish",
+        "volumeProfile": "High",
+        "supportLevel": "$575",
+        "resistanceLevel": "$590"
+      },
+      "sequenceNumber": 1,
+      "messageFormat": "AION_AI_DECISION_V1",
+      "timestamp": "2025-10-31T14:00:09.743Z",
+      "modelVersion": "v2.3.2",
+      "networkId": "hedera-testnet",
+      "vaultAddress": "0.0.7149926",
+      "messageId": "6cc9241c1fc1c12a0665c8d3da484d72",
+      "marketData": {
+        "timestamp": 1761919209743,
+        "bnbPrice": 580.45,
+        "busdPrice": 1,
+        "ethPrice": 3420.8,
+        "btcPrice": 67890.5,
+        "volatilityIndex": 0.35,
+        "liquidityScore": 0.82
+      },
+      "submittedBy": "AION_AI_Agent",
+      "validationHash": "8ddd5fa9b36d030292c8a7e030f7b857576bc76a70ff41b0298c01cc6229247a"
+    },
+    {
+      "decisionType": "OPTIMIZE",
+      "fromStrategy": "PancakeSwap BNB-BUSD LP",
+      "toStrategy": "Beefy Auto-Compound BNB-BUSD",
+      "amount": "50000000000000000000",
+      "amountFormatted": "50 BNB",
+      "reason": "Auto-compounding opportunity: Beefy (15.2% APY) vs manual LP (12.3%)",
+      "confidence": 0.91,
+      "expectedGain": "2.9% additional yield through auto-compounding",
+      "riskScore": 0.35,
+      "marketAnalysis": {
+        "beefyAPY": "15.2%",
+        "baseAPY": "12.3%",
+        "compoundingFrequency": "Every 4 hours",
+        "protocolTVL": "$125M",
+        "auditStatus": "Audited by CertiK"
+      },
+      "riskFactors": {
+        "smartContractRisk": "Medium",
+        "protocolRisk": "Low",
+        "liquidityRisk": "Low",
+        "impermanentLoss": "Mitigated by auto-compound"
+      },
+      "sequenceNumber": 2,
+      "messageFormat": "AION_AI_DECISION_V1",
+      "timestamp": "2025-10-31T15:00:09.743Z",
+      "modelVersion": "v2.3.2",
+      "networkId": "hedera-testnet",
+      "vaultAddress": "0.0.7149926",
+      "messageId": "7d44cad36cc2549292be3d0c71b4ab03",
+      "marketData": {
+        "timestamp": 1761919209743,
+        "bnbPrice": 580.45,
+        "busdPrice": 1,
+        "ethPrice": 3420.8,
+        "btcPrice": 67890.5,
+        "volatilityIndex": 0.35,
+        "liquidityScore": 0.82
+      },
+      "submittedBy": "AION_AI_Agent",
+      "validationHash": "d230d4b7a6eb2a29acd0ae5339923bb584f5b98f19a9561837447e2a01790aee"
+    },
+    {
+      "decisionType": "EMERGENCY",
+      "fromStrategy": "Beefy Auto-Compound BNB-BUSD",
+      "toStrategy": "SAFE_VAULT",
+      "amount": "25000000000000000000",
+      "amountFormatted": "25 BNB",
+      "reason": "Protocol health score dropped below threshold (0.65 < 0.70)",
+      "confidence": 0.99,
+      "expectedGain": "Capital preservation - avoiding potential 8-12% loss",
+      "riskScore": 0.05,
+      "emergencyTriggers": {
+        "protocolHealthScore": 0.65,
+        "threshold": 0.7,
+        "tvlDrop": "15% in 24h",
+        "unusualActivity": "Large withdrawals detected",
+        "oracleDeviation": "2.3% price feed deviation"
+      },
+      "safetyMeasures": {
+        "action": "Immediate withdrawal",
+        "destination": "Treasury safe vault",
+        "monitoring": "Continuous health monitoring",
+        "reentryCondition": "Health score > 0.80 for 48h"
+      },
+      "sequenceNumber": 3,
+      "messageFormat": "AION_AI_DECISION_V1",
+      "timestamp": "2025-10-31T16:00:09.743Z",
+      "modelVersion": "v2.3.2",
+      "networkId": "hedera-testnet",
+      "vaultAddress": "0.0.7149926",
+      "messageId": "6e0cba35fb8059fb6c0dfc9804ea12b8",
+      "marketData": {
+        "timestamp": 1761919209743,
+        "bnbPrice": 580.45,
+        "busdPrice": 1,
+        "ethPrice": 3420.8,
+        "btcPrice": 67890.5,
+        "volatilityIndex": 0.35,
+        "liquidityScore": 0.82
+      },
+      "submittedBy": "AION_AI_Agent",
+      "validationHash": "69ef5bd6195ee2a9d004c6e6506c4d7380cf096a4f2d56103b66f59346055fad"
+    },
+    {
+      "decisionType": "DIVERSIFY",
+      "fromStrategy": "SAFE_VAULT",
+      "toStrategy": "Multi-Protocol Distribution",
+      "amount": "100000000000000000000",
+      "amountFormatted": "100 BNB",
+      "reason": "Risk diversification across 3 protocols for optimal risk-adjusted returns",
+      "confidence": 0.88,
+      "expectedGain": "Balanced 10.8% APY with reduced protocol risk",
+      "riskScore": 0.2,
+      "diversificationPlan": {
+        "venus": {
+          "allocation": "40%",
+          "amount": "40 BNB",
+          "apy": "8.5%",
+          "risk": "Low"
+        },
+        "pancakeswap": {
+          "allocation": "35%",
+          "amount": "35 BNB",
+          "apy": "12.3%",
+          "risk": "Medium"
+        },
+        "aave": {
+          "allocation": "25%",
+          "amount": "25 BNB",
+          "apy": "9.2%",
+          "risk": "Low"
+        }
+      },
+      "riskMetrics": {
+        "correlationReduction": "65%",
+        "maxDrawdownReduction": "40%",
+        "sharpeRatioImprovement": "1.8x",
+        "diversificationBenefit": "2.3% risk reduction"
+      },
+      "sequenceNumber": 4,
+      "messageFormat": "AION_AI_DECISION_V1",
+      "timestamp": "2025-10-31T17:00:09.743Z",
+      "modelVersion": "v2.3.2",
+      "networkId": "hedera-testnet",
+      "vaultAddress": "0.0.7149926",
+      "messageId": "8ed624fd6dd57b22fa0cd6df42c1f828",
+      "marketData": {
+        "timestamp": 1761919209743,
+        "bnbPrice": 580.45,
+        "busdPrice": 1,
+        "ethPrice": 3420.8,
+        "btcPrice": 67890.5,
+        "volatilityIndex": 0.35,
+        "liquidityScore": 0.82
+      },
+      "submittedBy": "AION_AI_Agent",
+      "validationHash": "c7ca1edaa974b40df8fa6816546b757575aa44551d19e6767634053ce25a3f1a"
+    },
+    {
+      "decisionType": "REBALANCE",
+      "fromStrategy": "Multi-Protocol Distribution",
+      "toStrategy": "Concentrated Venus Position",
+      "amount": "80000000000000000000",
+      "amountFormatted": "80 BNB",
+      "reason": "Market conditions favor stable lending: volatility spike detected",
+      "confidence": 0.87,
+      "expectedGain": "Risk reduction during market uncertainty",
+      "riskScore": 0.15,
+      "marketConditions": {
+        "volatilitySpike": "45% increase in 6h",
+        "fearGreedIndex": 25,
+        "btcCorrelation": 0.85,
+        "liquidationRisk": "High across DeFi",
+        "stablecoinDemand": "Increased 23%"
+      },
+      "strategicReasoning": {
+        "flightToSafety": "Users seeking stable yields",
+        "liquidityPreservation": "Maintaining capital during volatility",
+        "opportunityWaiting": "Positioning for next opportunity",
+        "riskManagement": "Protecting user funds first"
+      },
+      "sequenceNumber": 5,
+      "messageFormat": "AION_AI_DECISION_V1",
+      "timestamp": "2025-10-31T18:00:09.743Z",
+      "modelVersion": "v2.3.2",
+      "networkId": "hedera-testnet",
+      "vaultAddress": "0.0.7149926",
+      "messageId": "5d63cb82100aefbac2830daf1365900b",
+      "marketData": {
+        "timestamp": 1761919209743,
+        "bnbPrice": 580.45,
+        "busdPrice": 1,
+        "ethPrice": 3420.8,
+        "btcPrice": 67890.5,
+        "volatilityIndex": 0.35,
+        "liquidityScore": 0.82
+      },
+      "submittedBy": "AION_AI_Agent",
+      "validationHash": "a796ef0dc9f92a69ffcfb4492e6ddf4c7186f9cb648604192564221d7a34f4d1"
+    },
+    {
+      "decisionType": "OPTIMIZE",
+      "fromStrategy": "Concentrated Venus Position",
+      "toStrategy": "Venus + Compound Dual Strategy",
+      "amount": "60000000000000000000",
+      "amountFormatted": "60 BNB",
+      "reason": "Yield enhancement through dual lending protocol arbitrage",
+      "confidence": 0.92,
+      "expectedGain": "1.4% additional yield through rate arbitrage",
+      "riskScore": 0.18,
+      "arbitrageOpportunity": {
+        "venusRate": "8.5%",
+        "compoundRate": "9.9%",
+        "rateDifferential": "1.4%",
+        "arbitrageDuration": "Expected 2-3 days",
+        "profitPotential": "$840 additional annual yield"
+      },
+      "executionPlan": {
+        "phase1": "Partial Venus withdrawal (60 BNB)",
+        "phase2": "Compound deposit (60 BNB)",
+        "phase3": "Monitor rate convergence",
+        "phase4": "Rebalance when rates equalize"
+      },
+      "sequenceNumber": 6,
+      "messageFormat": "AION_AI_DECISION_V1",
+      "timestamp": "2025-10-31T19:00:09.743Z",
+      "modelVersion": "v2.3.2",
+      "networkId": "hedera-testnet",
+      "vaultAddress": "0.0.7149926",
+      "messageId": "83468b71b25133bc5b14ee4ca7b37982",
+      "marketData": {
+        "timestamp": 1761919209743,
+        "bnbPrice": 580.45,
+        "busdPrice": 1,
+        "ethPrice": 3420.8,
+        "btcPrice": 67890.5,
+        "volatilityIndex": 0.35,
+        "liquidityScore": 0.82
+      },
+      "submittedBy": "AION_AI_Agent",
+      "validationHash": "1304051a6b41a9bb73ca61f306015e5aa5adb8b167ebd2bb3f4ae3b3bf95dfa6"
+    },
+    {
+      "decisionType": "EMERGENCY",
+      "fromStrategy": "Venus + Compound Dual Strategy",
+      "toStrategy": "Immediate Liquidity",
+      "amount": "30000000000000000000",
+      "amountFormatted": "30 BNB",
+      "reason": "Flash crash detected: BNB price dropped 12% in 15 minutes",
+      "confidence": 0.98,
+      "expectedGain": "Avoiding liquidation cascade - protecting $17,400",
+      "riskScore": 0.08,
+      "flashCrashMetrics": {
+        "priceDropPercent": "12%",
+        "timeframe": "15 minutes",
+        "volumeSpike": "340% above average",
+        "liquidationsCascade": "$45M liquidated",
+        "marketCapLoss": "$2.1B"
+      },
+      "protectiveMeasures": {
+        "immediateAction": "Convert to stablecoins",
+        "liquidityPreservation": "Maintain 100% liquidity",
+        "reentryStrategy": "Wait for 20% recovery",
+        "stopLoss": "Activated at 15% drop"
+      },
+      "sequenceNumber": 7,
+      "messageFormat": "AION_AI_DECISION_V1",
+      "timestamp": "2025-10-31T20:00:09.743Z",
+      "modelVersion": "v2.3.2",
+      "networkId": "hedera-testnet",
+      "vaultAddress": "0.0.7149926",
+      "messageId": "040860e0b3fd31fff225797fbb3b11a6",
+      "marketData": {
+        "timestamp": 1761919209743,
+        "bnbPrice": 580.45,
+        "busdPrice": 1,
+        "ethPrice": 3420.8,
+        "btcPrice": 67890.5,
+        "volatilityIndex": 0.35,
+        "liquidityScore": 0.82
+      },
+      "submittedBy": "AION_AI_Agent",
+      "validationHash": "296015918491a75ea0527054556285a738815ceccb523e62b3dee46caedcef57"
+    }
+  ],
+  "submissions": [
+    {
+      "sequenceNumber": 1,
+      "decisionType": "REBALANCE",
+      "messageId": "6cc9241c1fc1c12a0665c8d3da484d72",
+      "hcsSequenceNumber": {
+        "low": 1,
+        "high": 0,
+        "unsigned": false
+      },
+      "transactionHash": "0.0.7149926@1761919205.570949412",
+      "explorerLink": "https://hashscan.io/testnet/transaction/0.0.7149926@1761919205.570949412",
+      "messageSize": 1311,
+      "submissionTime": 1774,
+      "timestamp": "2025-10-31T14:00:11.518Z",
+      "status": "SUCCESS"
+    },
+    {
+      "sequenceNumber": 2,
+      "decisionType": "OPTIMIZE",
+      "messageId": "7d44cad36cc2549292be3d0c71b4ab03",
+      "hcsSequenceNumber": {
+        "low": 3,
+        "high": 0,
+        "unsigned": false
+      },
+      "transactionHash": "0.0.7149926@1761919209.892724915",
+      "explorerLink": "https://hashscan.io/testnet/transaction/0.0.7149926@1761919209.892724915",
+      "messageSize": 1320,
+      "submissionTime": 2100,
+      "timestamp": "2025-10-31T14:00:17.620Z",
+      "status": "SUCCESS"
+    },
+    {
+      "sequenceNumber": 3,
+      "decisionType": "EMERGENCY",
+      "messageId": "6e0cba35fb8059fb6c0dfc9804ea12b8",
+      "hcsSequenceNumber": {
+        "low": 5,
+        "high": 0,
+        "unsigned": false
+      },
+      "transactionHash": "0.0.7149926@1761919217.818156396",
+      "explorerLink": "https://hashscan.io/testnet/transaction/0.0.7149926@1761919217.818156396",
+      "messageSize": 1380,
+      "submissionTime": 1657,
+      "timestamp": "2025-10-31T14:00:23.279Z",
+      "status": "SUCCESS"
+    },
+    {
+      "sequenceNumber": 4,
+      "decisionType": "DIVERSIFY",
+      "messageId": "8ed624fd6dd57b22fa0cd6df42c1f828",
+      "hcsSequenceNumber": {
+        "low": 7,
+        "high": 0,
+        "unsigned": false
+      },
+      "transactionHash": "0.0.7149926@1761919220.083550153",
+      "explorerLink": "https://hashscan.io/testnet/transaction/0.0.7149926@1761919220.083550153",
+      "messageSize": 1530,
+      "submissionTime": 2181,
+      "timestamp": "2025-10-31T14:00:29.462Z",
+      "status": "SUCCESS"
+    },
+    {
+      "sequenceNumber": 5,
+      "decisionType": "REBALANCE",
+      "messageId": "5d63cb82100aefbac2830daf1365900b",
+      "hcsSequenceNumber": {
+        "low": 9,
+        "high": 0,
+        "unsigned": false
+      },
+      "transactionHash": "0.0.7149926@1761919229.383691563",
+      "explorerLink": "https://hashscan.io/testnet/transaction/0.0.7149926@1761919229.383691563",
+      "messageSize": 1440,
+      "submissionTime": 1997,
+      "timestamp": "2025-10-31T14:00:35.460Z",
+      "status": "SUCCESS"
+    },
+    {
+      "sequenceNumber": 6,
+      "decisionType": "OPTIMIZE",
+      "messageId": "83468b71b25133bc5b14ee4ca7b37982",
+      "hcsSequenceNumber": {
+        "low": 11,
+        "high": 0,
+        "unsigned": false
+      },
+      "transactionHash": "0.0.7149926@1761919234.203327938",
+      "explorerLink": "https://hashscan.io/testnet/transaction/0.0.7149926@1761919234.203327938",
+      "messageSize": 1385,
+      "submissionTime": 1853,
+      "timestamp": "2025-10-31T14:00:41.316Z",
+      "status": "SUCCESS"
+    },
+    {
+      "sequenceNumber": 7,
+      "decisionType": "EMERGENCY",
+      "messageId": "040860e0b3fd31fff225797fbb3b11a6",
+      "hcsSequenceNumber": {
+        "low": 13,
+        "high": 0,
+        "unsigned": false
+      },
+      "transactionHash": "0.0.7149926@1761919238.532638625",
+      "explorerLink": "https://hashscan.io/testnet/transaction/0.0.7149926@1761919238.532638625",
+      "messageSize": 1389,
+      "submissionTime": 2230,
+      "timestamp": "2025-10-31T14:00:47.547Z",
+      "status": "SUCCESS"
+    }
+  ],
+  "summary": {
+    "totalDecisions": 7,
+    "successfulSubmissions": 7,
+    "failedSubmissions": 0,
+    "successRate": "100.0%",
+    "decisionTypes": [
+      "REBALANCE",
+      "OPTIMIZE",
+      "EMERGENCY",
+      "DIVERSIFY"
+    ],
+    "totalAmountBNB": "420.00",
+    "averageConfidence": "92.7%",
+    "averageSubmissionTime": 1970,
+    "totalMessageSize": 9755,
+    "reportGenerated": "2025-10-31T14:00:52.635Z"
+  },
+  "verification": {
+    "topicId": "0.0.7168284",
+    "currentSequenceNumber": "14",
+    "runningHash": "Present",
+    "messagesSubmitted": 7,
+    "verifiedAt": "2025-10-31T14:00:52.634Z"
+  },
+  "judgeInstructions": {
+    "step1": "Click on transaction links to view messages on Hedera Explorer",
+    "step2": "Verify each message contains comprehensive AI decision data",
+    "step3": "Check HCS sequence numbers are sequential and valid",
+    "step4": "Confirm message content includes market analysis and reasoning",
+    "step5": "Validate decision types cover realistic DeFi scenarios"
+  }
+}

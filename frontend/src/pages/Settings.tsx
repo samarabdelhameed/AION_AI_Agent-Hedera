@@ -76,6 +76,7 @@ export function Settings({ onNavigate }: SettingsProps) {
     { id: 'security', name: 'Security', icon: Lock, description: '2FA, sessions, and security settings' },
     { id: 'risk', name: 'Risk & Trading', icon: Shield, description: 'Risk management and trading preferences' },
     { id: 'wallets', name: 'Wallets', icon: Wallet, description: 'Connected wallets and addresses' },
+    { id: 'hedera', name: 'Hedera', icon: Zap, description: 'Hedera blockchain integration settings' },
     { id: 'notifications', name: 'Notifications', icon: Bell, description: 'Alert preferences and channels' },
     { id: 'developer', name: 'Developer', icon: Code, description: 'API keys and developer tools' },
   ];
@@ -839,6 +840,159 @@ export function Settings({ onNavigate }: SettingsProps) {
               <Button size="sm" variant="secondary" icon={ExternalLink}>
                 View API Docs
               </Button>
+            </div>
+          </div>
+        );
+
+      case 'hedera':
+        return (
+          <div className="space-y-6">
+            {/* Hedera Integration Card */}
+            <div className="p-6 bg-gradient-to-br from-purple-500/10 to-blue-500/10 border border-purple-500/30 rounded-xl">
+              <div className="flex items-center gap-3 mb-4">
+                <Zap className="w-8 h-8 text-purple-400" />
+                <div>
+                  <h3 className="text-xl font-semibold text-white">Hedera Network Integration</h3>
+                  <p className="text-gray-400 text-sm">Enterprise blockchain for AI-powered DeFi</p>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-3 gap-4 mb-4">
+                <div className="text-center p-4 bg-dark-700/50 rounded-lg">
+                  <div className="text-2xl font-bold text-purple-400">HCS</div>
+                  <div className="text-xs text-gray-400 mt-1">Consensus Service</div>
+                </div>
+                <div className="text-center p-4 bg-dark-700/50 rounded-lg">
+                  <div className="text-2xl font-bold text-blue-400">HTS</div>
+                  <div className="text-xs text-gray-400 mt-1">Token Service</div>
+                </div>
+                <div className="text-center p-4 bg-dark-700/50 rounded-lg">
+                  <div className="text-2xl font-bold text-green-400">HFS</div>
+                  <div className="text-xs text-gray-400 mt-1">File Service</div>
+                </div>
+              </div>
+
+              <Button 
+                className="w-full" 
+                icon={ExternalLink}
+                onClick={() => window.open('/hedera', '_self')}
+              >
+                View Full Hedera Integration
+              </Button>
+            </div>
+
+            {/* Network Configuration */}
+            <div className="space-y-4">
+              <h4 className="text-white font-medium">Network Configuration</h4>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">Network</label>
+                <select
+                  className="w-full px-4 py-3 bg-dark-700/50 border border-dark-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                  defaultValue="testnet"
+                >
+                  <option value="testnet">Hedera Testnet</option>
+                  <option value="mainnet">Hedera Mainnet</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">Account ID</label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value="0.0.12345"
+                    readOnly
+                    className="flex-1 px-4 py-3 bg-dark-700/50 border border-dark-600 rounded-xl text-white font-mono"
+                  />
+                  <Button size="sm" variant="ghost" icon={Copy} onClick={() => copyToClipboard('0.0.12345')}>
+                    Copy
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Service Status */}
+            <div className="space-y-4">
+              <h4 className="text-white font-medium">Service Status</h4>
+              
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-4 bg-dark-700/30 rounded-xl">
+                  <div className="flex items-center gap-3">
+                    <Shield className="w-5 h-5 text-purple-400" />
+                    <div>
+                      <p className="text-white font-medium">Consensus Service (HCS)</p>
+                      <p className="text-sm text-gray-400">AI decision logging</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                    <span className="text-green-400 text-sm">Active</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between p-4 bg-dark-700/30 rounded-xl">
+                  <div className="flex items-center gap-3">
+                    <Wallet className="w-5 h-5 text-blue-400" />
+                    <div>
+                      <p className="text-white font-medium">Token Service (HTS)</p>
+                      <p className="text-sm text-gray-400">Vault share tokenization</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                    <span className="text-green-400 text-sm">Active</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between p-4 bg-dark-700/30 rounded-xl">
+                  <div className="flex items-center gap-3">
+                    <Code className="w-5 h-5 text-green-400" />
+                    <div>
+                      <p className="text-white font-medium">File Service (HFS)</p>
+                      <p className="text-sm text-gray-400">Proof storage</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                    <span className="text-green-400 text-sm">Active</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Resources */}
+            <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-xl">
+              <h4 className="text-white font-medium mb-3">Resources & Documentation</h4>
+              <div className="space-y-2">
+                <Button 
+                  className="w-full justify-start" 
+                  size="sm" 
+                  variant="ghost"
+                  icon={ExternalLink}
+                  onClick={() => window.open('https://hedera.com', '_blank')}
+                >
+                  Hedera Official Website
+                </Button>
+                <Button 
+                  className="w-full justify-start" 
+                  size="sm" 
+                  variant="ghost"
+                  icon={ExternalLink}
+                  onClick={() => window.open('https://docs.hedera.com', '_blank')}
+                >
+                  Hedera Documentation
+                </Button>
+                <Button 
+                  className="w-full justify-start" 
+                  size="sm" 
+                  variant="ghost"
+                  icon={ExternalLink}
+                  onClick={() => window.open('https://hashscan.io', '_blank')}
+                >
+                  HashScan Explorer
+                </Button>
+              </div>
             </div>
           </div>
         );

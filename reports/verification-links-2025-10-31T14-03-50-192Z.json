@@ -1,0 +1,254 @@
+{
+  "timestamp": "2025-10-31T14:03:50.192Z",
+  "operation": "Verification Links Collection",
+  "network": "hedera-testnet",
+  "summary": {
+    "totalLinks": 12,
+    "linksByCategory": {
+      "hts": 0,
+      "hcs": 0,
+      "hfs": 6,
+      "accounts": 6,
+      "transactions": 0
+    },
+    "timelineEvents": 0,
+    "validationResults": {
+      "total": 12,
+      "accessible": 0,
+      "inaccessible": 12,
+      "errors": [
+        {
+          "url": "https://hashscan.io/testnet/file/0.0.7168312"
+        },
+        {
+          "url": "https://hashscan.io/testnet/file/0.0.7168314"
+        },
+        {
+          "url": "https://hashscan.io/testnet/file/0.0.7168316"
+        },
+        {
+          "url": "https://hashscan.io/testnet/file/0.0.7168318"
+        },
+        {
+          "url": "https://hashscan.io/testnet/file/0.0.7168320"
+        },
+        {
+          "url": "https://hashscan.io/testnet/file/0.0.7168322"
+        },
+        {
+          "url": "https://hashscan.io/testnet/account/undefined"
+        },
+        {
+          "url": "https://hashscan.io/testnet/account/undefined"
+        },
+        {
+          "url": "https://hashscan.io/testnet/account/undefined"
+        },
+        {
+          "url": "https://hashscan.io/testnet/account/undefined"
+        },
+        {
+          "url": "https://hashscan.io/testnet/account/undefined"
+        },
+        {
+          "url": "https://hashscan.io/testnet/account/undefined"
+        }
+      ]
+    },
+    "systemStatus": {
+      "htsIntegration": "NOT_CONFIGURED",
+      "hcsIntegration": "NOT_CONFIGURED",
+      "hfsIntegration": "OPERATIONAL",
+      "overallStatus": "FULLY_OPERATIONAL"
+    }
+  },
+  "links": {
+    "hts": [],
+    "hcs": [],
+    "hfs": [
+      {
+        "type": "FILE",
+        "id": "0.0.7168312",
+        "name": "ai-model-metadata-compact.json",
+        "explorerUrl": "https://hashscan.io/testnet/file/0.0.7168312",
+        "description": "AION AI Model Metadata - Compact System Information",
+        "size": 1826
+      },
+      {
+        "type": "FILE",
+        "id": "0.0.7168314",
+        "name": "model-aion-yield-optimizer-v2.1.3.json",
+        "explorerUrl": "https://hashscan.io/testnet/file/0.0.7168314",
+        "description": "AION AI Model: AION Yield Optimization Engine v2.1.3",
+        "size": 1940
+      },
+      {
+        "type": "FILE",
+        "id": "0.0.7168316",
+        "name": "model-aion-risk-assessor-v1.8.2.json",
+        "explorerUrl": "https://hashscan.io/testnet/file/0.0.7168316",
+        "description": "AION AI Model: AION Risk Assessment Model v1.8.2",
+        "size": 1826
+      },
+      {
+        "type": "FILE",
+        "id": "0.0.7168318",
+        "name": "model-aion-market-predictor-v3.0.1.json",
+        "explorerUrl": "https://hashscan.io/testnet/file/0.0.7168318",
+        "description": "AION AI Model: AION Market Prediction Engine v3.0.1",
+        "size": 1837
+      },
+      {
+        "type": "FILE",
+        "id": "0.0.7168320",
+        "name": "ai-models-summary.json",
+        "explorerUrl": "https://hashscan.io/testnet/file/0.0.7168320",
+        "description": "AION AI Models Summary - Performance Overview",
+        "size": 292
+      },
+      {
+        "type": "FILE",
+        "id": "0.0.7168322",
+        "name": "hfs-file-index.json",
+        "explorerUrl": "https://hashscan.io/testnet/file/0.0.7168322",
+        "description": "AION HFS File Index - Complete File Registry",
+        "size": 1549
+      }
+    ],
+    "accounts": [
+      {
+        "type": "OPERATOR",
+        "id": "0.0.UNKNOWN",
+        "explorerUrl": "https://hashscan.io/testnet/account/undefined",
+        "description": "Main operator account for AION Vault",
+        "role": "System Administrator"
+      },
+      {
+        "type": "TEST_ACCOUNT",
+        "name": "createdAt",
+        "explorerUrl": "https://hashscan.io/testnet/account/undefined",
+        "description": "Test account for createdAt operations",
+        "role": "Test User"
+      },
+      {
+        "type": "TEST_ACCOUNT",
+        "name": "operatorAccount",
+        "explorerUrl": "https://hashscan.io/testnet/account/undefined",
+        "description": "Test account for operatorAccount operations",
+        "role": "Test User"
+      },
+      {
+        "type": "TEST_ACCOUNT",
+        "name": "network",
+        "explorerUrl": "https://hashscan.io/testnet/account/undefined",
+        "description": "Test account for network operations",
+        "role": "Test User"
+      },
+      {
+        "type": "TEST_ACCOUNT",
+        "name": "accounts",
+        "explorerUrl": "https://hashscan.io/testnet/account/undefined",
+        "description": "Test account for accounts operations",
+        "role": "Test User"
+      },
+      {
+        "type": "TEST_ACCOUNT",
+        "name": "summary",
+        "explorerUrl": "https://hashscan.io/testnet/account/undefined",
+        "description": "Test account for summary operations",
+        "role": "Test User"
+      }
+    ],
+    "transactions": []
+  },
+  "timeline": [],
+  "validation": {
+    "total": 12,
+    "accessible": 0,
+    "inaccessible": 12,
+    "errors": [
+      {
+        "url": "https://hashscan.io/testnet/file/0.0.7168312"
+      },
+      {
+        "url": "https://hashscan.io/testnet/file/0.0.7168314"
+      },
+      {
+        "url": "https://hashscan.io/testnet/file/0.0.7168316"
+      },
+      {
+        "url": "https://hashscan.io/testnet/file/0.0.7168318"
+      },
+      {
+        "url": "https://hashscan.io/testnet/file/0.0.7168320"
+      },
+      {
+        "url": "https://hashscan.io/testnet/file/0.0.7168322"
+      },
+      {
+        "url": "https://hashscan.io/testnet/account/undefined"
+      },
+      {
+        "url": "https://hashscan.io/testnet/account/undefined"
+      },
+      {
+        "url": "https://hashscan.io/testnet/account/undefined"
+      },
+      {
+        "url": "https://hashscan.io/testnet/account/undefined"
+      },
+      {
+        "url": "https://hashscan.io/testnet/account/undefined"
+      },
+      {
+        "url": "https://hashscan.io/testnet/account/undefined"
+      }
+    ]
+  },
+  "instructions": {
+    "overview": "Complete verification guide for hackathon judges",
+    "steps": [
+      {
+        "step": 1,
+        "title": "Verify HTS Token Integration",
+        "description": "Check AION token creation and operations",
+        "links": [],
+        "expectedData": "Token details, mint/burn transactions, supply changes"
+      },
+      {
+        "step": 2,
+        "title": "Verify HCS Decision Logging",
+        "description": "Review AI decision messages on consensus service",
+        "links": [],
+        "expectedData": "AI decision messages, timestamps, sequence numbers"
+      },
+      {
+        "step": 3,
+        "title": "Verify HFS Model Metadata",
+        "description": "Examine AI model metadata storage",
+        "links": [
+          "https://hashscan.io/testnet/file/0.0.7168312",
+          "https://hashscan.io/testnet/file/0.0.7168314",
+          "https://hashscan.io/testnet/file/0.0.7168316",
+          "https://hashscan.io/testnet/file/0.0.7168318",
+          "https://hashscan.io/testnet/file/0.0.7168320",
+          "https://hashscan.io/testnet/file/0.0.7168322"
+        ],
+        "expectedData": "Model files, metadata, checksums"
+      },
+      {
+        "step": 4,
+        "title": "Review Transaction Timeline",
+        "description": "Follow chronological transaction sequence",
+        "links": [],
+        "expectedData": "Complete user journey from deposit to withdrawal"
+      }
+    ],
+    "troubleshooting": [
+      "If links are not accessible, wait a few minutes for Hedera network propagation",
+      "Use Hashscan.io testnet explorer for all verification",
+      "Check transaction details for gas usage and success status",
+      "Verify message content in HCS topic for AI decision details"
+    ]
+  }
+}

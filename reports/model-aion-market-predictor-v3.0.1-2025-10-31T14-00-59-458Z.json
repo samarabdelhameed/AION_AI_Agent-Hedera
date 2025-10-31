@@ -1,0 +1,79 @@
+{
+  "modelId": "aion-market-predictor-v3.0.1",
+  "name": "AION Market Prediction Engine",
+  "version": "3.0.1",
+  "type": "Long Short-Term Memory (LSTM)",
+  "architecture": "Bidirectional LSTM with Attention",
+  "trainingData": {
+    "sources": [
+      "Binance",
+      "CoinMarketCap",
+      "DeFiLlama",
+      "The Graph",
+      "Chainlink Oracles"
+    ],
+    "timeframe": "2021-01-01 to 2024-10-28",
+    "dataPoints": 3892456,
+    "assets": 156,
+    "timeSeriesLength": 8760
+  },
+  "performance": {
+    "accuracy": 0.8934,
+    "mse": 0.0234,
+    "mae": 0.0156,
+    "rmse": 0.0489,
+    "mape": 0.0678,
+    "directionAccuracy": 0.9123,
+    "profitFactor": 1.87,
+    "maxConsecutiveWins": 23,
+    "maxConsecutiveLosses": 4
+  },
+  "hyperparameters": {
+    "lstmUnits": 128,
+    "sequenceLength": 60,
+    "batchSize": 64,
+    "epochs": 200,
+    "learningRate": 0.001,
+    "dropout": 0.2,
+    "recurrentDropout": 0.2,
+    "optimizer": "Adam"
+  },
+  "features": {
+    "inputFeatures": 45,
+    "priceData": [
+      "Open",
+      "High",
+      "Low",
+      "Close",
+      "Volume"
+    ],
+    "technicalIndicators": [
+      "SMA",
+      "EMA",
+      "RSI",
+      "MACD",
+      "Stochastic"
+    ],
+    "marketMetrics": [
+      "Market Cap",
+      "Trading Volume",
+      "Volatility",
+      "Momentum"
+    ],
+    "externalFactors": [
+      "Social Sentiment",
+      "News Impact",
+      "Regulatory Events"
+    ]
+  },
+  "deployment": {
+    "environment": "Production",
+    "lastUpdated": "2024-10-26T09:15:00.000Z",
+    "deploymentHash": "9bb01c84ea645f7466a30aa0a65788ecc0198729101c73dec0633c0c528e936c",
+    "checksumMD5": "37f34228c6d8e6c6b0bf614028d1172a",
+    "checksumSHA256": "1d017be34e119a7462f7c6d90169540f1037e7a56f993ba6a2089481bcd4cf64",
+    "modelSize": "456.8 MB",
+    "inferenceTime": "15.7 ms",
+    "memoryUsage": "1.2 GB"
+  }
+}

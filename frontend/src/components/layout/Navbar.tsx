@@ -19,7 +19,6 @@ const navigation = [
 ];
 
 const moreNavigation = [
-  { name: 'Hedera Integration', href: 'hedera' as Page },
   { name: 'Advanced', href: 'advanced' as Page },
   { name: 'Timeline', href: 'timeline' as Page },
   { name: 'Settings', href: 'settings' as Page },
@@ -45,6 +44,8 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
     switch (chainId) {
       case 56: return 'BNB Chain';
       case 97: return 'BSC Testnet';
+      case 296: return 'Hedera Testnet';
+      case 295: return 'Hedera Mainnet';
       default: return 'Unknown';
     }
   };

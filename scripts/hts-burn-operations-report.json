@@ -1,0 +1,132 @@
+{
+  "timestamp": "2025-10-31T13:59:52.147Z",
+  "network": "hedera-testnet",
+  "tokenId": "0.0.7168261",
+  "initialSupply": 1500000,
+  "operations": [
+    {
+      "scenario": "Partial User Withdrawal",
+      "user": "user1",
+      "amount": 30000,
+      "error": "Token Transfer for Burn - user1 failed after 4 attempts: transaction.execute is not a function",
+      "timestamp": "2025-10-31T13:59:52.232Z",
+      "status": "FAILED"
+    },
+    {
+      "scenario": "Emergency Withdrawal",
+      "user": "user2",
+      "amount": 50000,
+      "error": "Token Transfer for Burn - user2 failed after 4 attempts: transaction.execute is not a function",
+      "timestamp": "2025-10-31T13:59:52.249Z",
+      "status": "FAILED"
+    },
+    {
+      "scenario": "Profit Taking",
+      "user": "user1",
+      "amount": 25000,
+      "error": "Token Transfer for Burn - user1 failed after 4 attempts: transaction.execute is not a function",
+      "timestamp": "2025-10-31T13:59:52.273Z",
+      "status": "FAILED"
+    },
+    {
+      "scenario": "Treasury Burn",
+      "user": "treasury",
+      "amount": 20000,
+      "withdrawalType": "DEFLATIONARY",
+      "description": "Treasury burns tokens for deflationary pressure",
+      "reason": "Protocol tokenomics - reduce circulating supply",
+      "transferHash": null,
+      "burnHash": "0.0.7149926@1761919187.734433247",
+      "timestamp": "2025-10-31T13:59:53.976Z",
+      "duration": 1703,
+      "status": "SUCCESS",
+      "explorerLinks": {
+        "transfer": null,
+        "burn": "https://hashscan.io/testnet/transaction/0.0.7149926@1761919187.734433247"
+      }
+    },
+    {
+      "scenario": "Complete Exit",
+      "user": "user2",
+      "amount": 75000,
+      "error": "Token Transfer for Burn - user2 failed after 4 attempts: transaction.execute is not a function",
+      "timestamp": "2025-10-31T13:59:57.997Z",
+      "status": "FAILED"
+    }
+  ],
+  "finalBalances": {
+    "operator": {
+      "accountId": "0.0.7149926",
+      "hbarBalance": "562.81878661 ℏ",
+      "tokenBalance": 1480000,
+      "tokenBalanceFormatted": "1,480,000",
+      "timestamp": "2025-10-31T13:59:58.541Z"
+    },
+    "user1": {
+      "accountId": "0.0.7152091",
+      "hbarBalance": "50 ℏ",
+      "tokenBalance": 0,
+      "tokenBalanceFormatted": "0",
+      "timestamp": "2025-10-31T13:59:58.843Z"
+    },
+    "user2": {
+      "accountId": "0.0.7152093",
+      "hbarBalance": "30 ℏ",
+      "tokenBalance": 0,
+      "tokenBalanceFormatted": "0",
+      "timestamp": "2025-10-31T13:59:59.800Z"
+    },
+    "aiAgent": {
+      "accountId": "0.0.7152096",
+      "hbarBalance": "25 ℏ",
+      "tokenBalance": 0,
+      "tokenBalanceFormatted": "0",
+      "timestamp": "2025-10-31T14:00:00.212Z"
+    },
+    "treasury": {
+      "accountId": "0.0.7152097",
+      "hbarBalance": "20 ℏ",
+      "tokenBalance": 0,
+      "tokenBalanceFormatted": "0",
+      "timestamp": "2025-10-31T14:00:00.567Z"
+    }
+  },
+  "summary": {
+    "finalSupply": {
+      "tokenId": "0.0.7168261",
+      "name": "AION Vault Shares",
+      "symbol": "AION",
+      "finalTotalSupply": "1480000",
+      "finalTotalSupplyFormatted": "1,480,000",
+      "initialSupply": 1500000,
+      "initialSupplyFormatted": "1,500,000",
+      "totalBurned": 20000,
+      "totalBurnedFormatted": "20,000",
+      "supplyReduction": "1.33",
+      "decimals": 18,
+      "treasury": "0.0.7149926",
+      "queryTimestamp": "2025-10-31T14:00:01.363Z"
+    },
+    "totalOperations": 5,
+    "successfulOperations": 1,
+    "failedOperations": 4,
+    "totalTokensBurned": 20000,
+    "totalTokensBurnedFormatted": "20,000",
+    "averageOperationTime": 1703,
+    "burnTypes": {
+      "PARTIAL": 0,
+      "EMERGENCY": 0,
+      "PROFIT_TAKING": 0,
+      "DEFLATIONARY": 1,
+      "COMPLETE_EXIT": 0
+    },
+    "reportGenerated": "2025-10-31T14:00:01.363Z"
+  },
+  "judgeInstructions": {
+    "step1": "Click on burn transaction links to view on Hedera Explorer",
+    "step2": "Verify each burn operation shows correct token amounts",
+    "step3": "Check transfer transactions moved tokens before burning",
+    "step4": "Confirm total supply decreased by burned amounts",
+    "step5": "Validate final user balances reflect burned tokens"
+  }
+}

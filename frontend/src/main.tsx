@@ -10,6 +10,7 @@ import { config } from "./lib/web3Config";
 import { appInitializer } from "./lib/appInitializer";
 import App from "./App.tsx";
 import "./index.css";
+import "./lib/cleanConsole";
 
 // Initialize error suppression and graceful degradation
 appInitializer.initialize().then((result) => {

@@ -91,13 +91,13 @@ async function setupServices() {
     await hederaService.initialize();
     serviceContainer.singleton('hederaService', () => hederaService);
     
-    // Initialize AI Decision Logger with Web3 provider
-    if (web3Service) {
-      const contractAddress = process.env.VAULT_CONTRACT_ADDRESS || '0x1234567890123456789012345678901234567890';
-      aiDecisionLogger = new AIDecisionLogger(web3Service.getProvider(), contractAddress, []);
-      await aiDecisionLogger.initialize();
-      serviceContainer.singleton('aiDecisionLogger', () => aiDecisionLogger);
-    }
+    // Initialize AI Decision Logger (works with or without Web3)
+    const contractAddress = process.env.VAULT_CONTRACT_ADDRESS || '0x1234567890123456789012345678901234567890';
+    const provider = web3Service ? web3Service.getProvider() : null;
+    aiDecisionLogger = new AIDecisionLogger(provider, contractAddress, []);
+    await aiDecisionLogger.initialize();
+    serviceContainer.singleton('aiDecisionLogger', () => aiDecisionLogger);
+    console.log('✅ AI Decision Logger initialized successfully');
     
     // Initialize Model Metadata Manager
     modelMetadataManager = new ModelMetadataManager();

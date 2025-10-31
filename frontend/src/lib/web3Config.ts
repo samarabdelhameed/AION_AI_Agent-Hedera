@@ -2,6 +2,45 @@ import { http, createConfig } from "wagmi";
 import { bsc, bscTestnet } from "wagmi/chains";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { configManager } from './config';
+import { defineChain } from 'viem';
+
+// Define Hedera Testnet
+export const hederaTestnet = defineChain({
+  id: 296,
+  name: 'Hedera Testnet',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'HBAR',
+    symbol: 'HBAR',
+  },
+  rpcUrls: {
+    default: { http: ['https://testnet.hashio.io/api'] },
+    public: { http: ['https://testnet.hashio.io/api'] },
+  },
+  blockExplorers: {
+    default: { name: 'HashScan', url: 'https://hashscan.io/testnet' },
+  },
+  testnet: true,
+});
+
+// Define Hedera Mainnet
+export const hederaMainnet = defineChain({
+  id: 295,
+  name: 'Hedera Mainnet',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'HBAR',
+    symbol: 'HBAR',
+  },
+  rpcUrls: {
+    default: { http: ['https://mainnet.hashio.io/api'] },
+    public: { http: ['https://mainnet.hashio.io/api'] },
+  },
+  blockExplorers: {
+    default: { name: 'HashScan', url: 'https://hashscan.io/mainnet' },
+  },
+  testnet: false,
+});
 
 // Contract address type definition
 type ContractAddresses = {
@@ -41,10 +80,12 @@ class Web3ConfigManager {
       const config = getDefaultConfig({
         appName: "AION DeFi Platform",
         projectId,
-        chains: [bscTestnet, bsc],
+        chains: [bscTestnet, bsc, hederaTestnet, hederaMainnet],
         transports: {
           [bsc.id]: http("https://bsc-dataseed.binance.org/"),
           [bscTestnet.id]: http(appConfig.bscTestnetRpc),
+          [hederaTestnet.id]: http("https://testnet.hashio.io/api"),
+          [hederaMainnet.id]: http("https://mainnet.hashio.io/api"),
         },
         ssr: false,
         // Add wallet connection options to prevent multiple connection attempts
@@ -79,10 +120,12 @@ class Web3ConfigManager {
   private createFallbackConfig(appConfig: any) {
     try {
       const config = createConfig({
-        chains: [bscTestnet, bsc],
+        chains: [bscTestnet, bsc, hederaTestnet, hederaMainnet],
         transports: {
           [bsc.id]: http("https://bsc-dataseed.binance.org/"),
           [bscTestnet.id]: http(appConfig.bscTestnetRpc || "https://data-seed-prebsc-1-s1.binance.org:8545/"),
+          [hederaTestnet.id]: http("https://testnet.hashio.io/api"),
+          [hederaMainnet.id]: http("https://mainnet.hashio.io/api"),
         },
       });
 
@@ -332,6 +375,10 @@ class Web3ConfigManager {
         return 'BSC Testnet';
       case bsc.id:
         return 'BSC Mainnet';
+      case 296:
+        return 'Hedera Testnet';
+      case 295:
+        return 'Hedera Mainnet';
       default:
         return `Chain ${chainId}`;
     }

@@ -1,0 +1,93 @@
+{
+  "timestamp": "2025-10-31T14:03:52.404Z",
+  "environment": "hedera-testnet",
+  "checks": [
+    {
+      "check": "Hedera Account ID",
+      "status": "REAL",
+      "value": "0.0.7149926",
+      "explorerUrl": "https://hashscan.io/testnet/account/0.0.7149926"
+    },
+    {
+      "check": "Hedera Private Key",
+      "status": "REAL",
+      "value": "Present (hidden for security)"
+    },
+    {
+      "check": "HTS Token Report",
+      "status": "MISSING",
+      "issue": "No HTS token report found",
+      "solution": "Run npm run create:hts"
+    },
+    {
+      "check": "HCS Topic Report",
+      "status": "MISSING",
+      "issue": "No HCS topic report found",
+      "solution": "Run npm run create:hcs"
+    },
+    {
+      "check": "HFS File IDs",
+      "status": "REAL",
+      "value": "6 files",
+      "explorerUrl": "https://hashscan.io/testnet/file/0.0.7167610"
+    },
+    {
+      "check": "Transaction Hashes",
+      "status": "REAL",
+      "value": "5/5 real hashes",
+      "issue": null,
+      "solution": null
+    }
+  ],
+  "realData": {
+    "accountId": "0.0.7149926",
+    "fileIds": [
+      "0.0.7167610",
+      "0.0.7167611",
+      "0.0.7167612",
+      "0.0.7167613",
+      "0.0.7167614",
+      "0.0.7167615"
+    ]
+  },
+  "issues": [
+    {
+      "check": "HTS Token Report",
+      "status": "MISSING",
+      "issue": "No HTS token report found",
+      "solution": "Run npm run create:hts"
+    },
+    {
+      "check": "HCS Topic Report",
+      "status": "MISSING",
+      "issue": "No HCS topic report found",
+      "solution": "Run npm run create:hcs"
+    }
+  ],
+  "summary": {
+    "totalChecks": 6,
+    "realDataChecks": 4,
+    "placeholderChecks": 0,
+    "missingChecks": 2,
+    "errorChecks": 0,
+    "realDataPercentage": "66.7%",
+    "readyForDemo": false,
+    "criticalIssues": 2
+  },
+  "actionPlan": {
+    "priority1": [],
+    "priority2": [
+      {
+        "issue": "No HTS token report found",
+        "solution": "Run npm run create:hts",
+        "check": "HTS Token Report"
+      },
+      {
+        "issue": "No HCS topic report found",
+        "solution": "Run npm run create:hcs",
+        "check": "HCS Topic Report"
+      }
+    ],
+    "priority3": []
+  }
+}

@@ -1,0 +1,289 @@
+{
+  "timestamp": "2025-10-31T14:03:02.491Z",
+  "network": "hedera-testnet",
+  "operation": "Hedera Performance Measurement",
+  "operator": "0.0.7149926",
+  "summary": {
+    "totalOperations": 13,
+    "successfulOperations": 3,
+    "failedOperations": 10,
+    "overallSuccessRate": "23.1%",
+    "averageDuration": 467,
+    "minDuration": 304,
+    "maxDuration": 604,
+    "totalExecutionTime": 1402,
+    "serviceMetrics": {
+      "HTS": {
+        "operationCount": 1,
+        "averageDuration": 604,
+        "minDuration": 604,
+        "maxDuration": 604,
+        "successRate": "25.0%",
+        "totalTime": 604
+      },
+      "HCS": {
+        "operationCount": 1,
+        "averageDuration": 304,
+        "minDuration": 304,
+        "maxDuration": 304,
+        "successRate": "16.7%",
+        "totalTime": 304
+      },
+      "HFS": {
+        "operationCount": 1,
+        "averageDuration": 494,
+        "minDuration": 494,
+        "maxDuration": 494,
+        "successRate": "33.3%",
+        "totalTime": 494
+      }
+    },
+    "networkCharacteristics": {
+      "network": "Hedera Testnet",
+      "consensusAlgorithm": "Hashgraph",
+      "finalityType": "Immediate",
+      "averageConfirmationTime": "3-5 seconds",
+      "feeStructure": "Fixed HBAR fees",
+      "throughput": "10,000+ TPS theoretical"
+    }
+  },
+  "measurements": [
+    {
+      "operationName": "HTS Token Creation",
+      "operationDetails": {
+        "service": "HTS",
+        "operation": "CREATE_TOKEN"
+      },
+      "startTime": 1761919360143,
+      "endTime": 1761919360747,
+      "duration": 604,
+      "success": true,
+      "transactionHash": "�����c�_\u001b����z�g.G�\f>�Ⱥs��o|P�\\<a��^��\u0006(vC�\fM",
+      "gasUsed": "N/A (Hedera uses fixed fees)",
+      "networkFee": "20 HBAR",
+      "confirmationTime": 604,
+      "error": null
+    },
+    {
+      "operationName": "HTS Token Mint",
+      "operationDetails": {
+        "service": "HTS",
+        "operation": "MINT_TOKEN",
+        "iteration": 1
+      },
+      "startTime": 1761919364000,
+      "endTime": 1761919364001,
+      "duration": 1,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "error": "failed to parse entity id: 0.0.DYNAMIC"
+    },
+    {
+      "operationName": "HTS Token Mint",
+      "operationDetails": {
+        "service": "HTS",
+        "operation": "MINT_TOKEN",
+        "iteration": 2
+      },
+      "startTime": 1761919365003,
+      "endTime": 1761919365004,
+      "duration": 1,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "error": "failed to parse entity id: 0.0.DYNAMIC"
+    },
+    {
+      "operationName": "HTS Token Mint",
+      "operationDetails": {
+        "service": "HTS",
+        "operation": "MINT_TOKEN",
+        "iteration": 3
+      },
+      "startTime": 1761919366005,
+      "endTime": 1761919366006,
+      "duration": 1,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "error": "failed to parse entity id: 0.0.DYNAMIC"
+    },
+    {
+      "operationName": "HCS Topic Creation",
+      "operationDetails": {
+        "service": "HCS",
+        "operation": "CREATE_TOPIC"
+      },
+      "startTime": 1761919367008,
+      "endTime": 1761919367312,
+      "duration": 304,
+      "success": true,
+      "transactionHash": "�\u0013O��yu�;�RY�Ds\u0014a\u0007Z**���a�\u0002���=-OO;~mIR:�P�\b{-�",
+      "gasUsed": "N/A (Hedera uses fixed fees)",
+      "networkFee": "2 HBAR",
+      "confirmationTime": 304,
+      "error": null
+    },
+    {
+      "operationName": "HCS Message Submit",
+      "operationDetails": {
+        "service": "HCS",
+        "operation": "SUBMIT_MESSAGE",
+        "iteration": 1
+      },
+      "startTime": 1761919370435,
+      "endTime": 1761919370438,
+      "duration": 3,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "error": "failed to parse entity id: 0.0.DYNAMIC"
+    },
+    {
+      "operationName": "HCS Message Submit",
+      "operationDetails": {
+        "service": "HCS",
+        "operation": "SUBMIT_MESSAGE",
+        "iteration": 2
+      },
+      "startTime": 1761919371440,
+      "endTime": 1761919371440,
+      "duration": 0,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "error": "failed to parse entity id: 0.0.DYNAMIC"
+    },
+    {
+      "operationName": "HCS Message Submit",
+      "operationDetails": {
+        "service": "HCS",
+        "operation": "SUBMIT_MESSAGE",
+        "iteration": 3
+      },
+      "startTime": 1761919372441,
+      "endTime": 1761919372442,
+      "duration": 1,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "error": "failed to parse entity id: 0.0.DYNAMIC"
+    },
+    {
+      "operationName": "HCS Message Submit",
+      "operationDetails": {
+        "service": "HCS",
+        "operation": "SUBMIT_MESSAGE",
+        "iteration": 4
+      },
+      "startTime": 1761919373443,
+      "endTime": 1761919373443,
+      "duration": 0,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "error": "failed to parse entity id: 0.0.DYNAMIC"
+    },
+    {
+      "operationName": "HCS Message Submit",
+      "operationDetails": {
+        "service": "HCS",
+        "operation": "SUBMIT_MESSAGE",
+        "iteration": 5
+      },
+      "startTime": 1761919374446,
+      "endTime": 1761919374446,
+      "duration": 0,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "error": "failed to parse entity id: 0.0.DYNAMIC"
+    },
+    {
+      "operationName": "HFS File Creation",
+      "operationDetails": {
+        "service": "HFS",
+        "operation": "CREATE_FILE",
+        "fileSize": 1024,
+        "fileName": "Small File"
+      },
+      "startTime": 1761919375448,
+      "endTime": 1761919375942,
+      "duration": 494,
+      "success": true,
+      "transactionHash": "��\u0014%W ��u��K���>�׻\u0006����'���7�f�\u001dEq�j���%��݊�",
+      "gasUsed": "N/A (Hedera uses fixed fees)",
+      "networkFee": "0.01 HBAR",
+      "confirmationTime": 494,
+      "error": null
+    },
+    {
+      "operationName": "HFS File Creation",
+      "operationDetails": {
+        "service": "HFS",
+        "operation": "CREATE_FILE",
+        "fileSize": 10240,
+        "fileName": "Medium File"
+      },
+      "startTime": 1761919379121,
+      "endTime": 1761919379730,
+      "duration": 609,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "error": "2 UNKNOWN: "
+    },
+    {
+      "operationName": "HFS File Creation",
+      "operationDetails": {
+        "service": "HFS",
+        "operation": "CREATE_FILE",
+        "fileSize": 51200,
+        "fileName": "Large File"
+      },
+      "startTime": 1761919380732,
+      "endTime": 1761919381487,
+      "duration": 755,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "error": "2 UNKNOWN: "
+    }
+  ],
+  "analysis": {
+    "performanceRating": 66,
+    "strengths": [
+      "Fast transaction processing under 2 seconds",
+      "Immediate finality without confirmation delays",
+      "Fixed fee structure provides cost predictability",
+      "High theoretical throughput (10,000+ TPS)"
+    ],
+    "optimizationOpportunities": [
+      "Improve error handling and retry logic",
+      "Implement transaction batching for bulk operations",
+      "Consider connection pooling for high-volume scenarios"
+    ],
+    "comparisonReadiness": true
+  }
+}

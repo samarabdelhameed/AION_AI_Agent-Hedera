@@ -30,6 +30,8 @@ import { useAIAgent, AIMessage, AIAction } from '../hooks/useAIAgent';
 import { useRealData } from '../hooks/useRealData';
 import { useStrategies } from '../hooks/useStrategies';
 import { useVaultOnchain } from '../hooks/useVaultOnchain';
+import { HederaDecisionLog } from '../components/hedera/HederaDecisionLog';
+import { HederaFeatureBadge } from '../components/hedera/HederaFeatureBadge';
 import React from 'react';
 
 interface AgentStudioProps {
@@ -125,7 +127,10 @@ export function AgentStudio({ onNavigate }: AgentStudioProps) {
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-white">AI Agent Studio</h1>
-                <p className="text-gray-400">Your intelligent DeFi assistant with real-time market analysis</p>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <p className="text-gray-400">Your intelligent DeFi assistant with real-time market analysis</p>
+                  <HederaFeatureBadge features={['hcs']} variant="inline" showLabels={false} />
+                </div>
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -429,6 +434,9 @@ export function AgentStudio({ onNavigate }: AgentStudioProps) {
                 </Button>
               </div>
             </Card>
+
+            {/* Hedera AI Decision Log */}
+            <HederaDecisionLog limit={5} compact={true} showHeader={true} />
 
             {/* Quick Actions */}
             <Card>

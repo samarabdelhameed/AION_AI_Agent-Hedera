@@ -1,0 +1,139 @@
+{
+  "timestamp": "2025-10-31T14:01:21.913Z",
+  "network": "hedera-testnet",
+  "operation": "HFS Model Metadata Storage",
+  "operator": "0.0.7149926",
+  "summary": {
+    "totalFiles": 6,
+    "totalSize": 9270,
+    "allFilesVerified": true,
+    "storageSuccess": true
+  },
+  "files": [
+    {
+      "fileId": "0.0.7168312",
+      "transactionHash": "B\u001a)\t>�R���c��n�&��\u001f{@�����9�.&����B�X?1%�����L�",
+      "size": 1826,
+      "memo": "AION AI Model Metadata - Compact System Information",
+      "fileName": "ai-model-metadata-compact.json",
+      "explorerUrl": "https://hashscan.io/testnet/file/0.0.7168312",
+      "transactionUrl": "https://hashscan.io/testnet/transaction/B\u001a)\t>�R���c��n�&��\u001f{@�����9�.&����B�X?1%�����L�"
+    },
+    {
+      "fileId": "0.0.7168314",
+      "transactionHash": "t��5`�$({㾓�Tݛ�e�ꀐU�ݺ\\\u000e��\u0018\"�W���T\u0011��\u0017�ּ-3",
+      "size": 1940,
+      "memo": "AION AI Model: AION Yield Optimization Engine v2.1.3",
+      "fileName": "model-aion-yield-optimizer-v2.1.3.json",
+      "explorerUrl": "https://hashscan.io/testnet/file/0.0.7168314",
+      "transactionUrl": "https://hashscan.io/testnet/transaction/t��5`�$({㾓�Tݛ�e�ꀐU�ݺ\\\u000e��\u0018\"�W���T\u0011��\u0017�ּ-3"
+    },
+    {
+      "fileId": "0.0.7168316",
+      "transactionHash": "\"]�\u0002%h{��*i�h�wT����\u0004?�a�3����o�}\u0018oK�\u0012Ӏ�2b�)�",
+      "size": 1826,
+      "memo": "AION AI Model: AION Risk Assessment Model v1.8.2",
+      "fileName": "model-aion-risk-assessor-v1.8.2.json",
+      "explorerUrl": "https://hashscan.io/testnet/file/0.0.7168316",
+      "transactionUrl": "https://hashscan.io/testnet/transaction/\"]�\u0002%h{��*i�h�wT����\u0004?�a�3����o�}\u0018oK�\u0012Ӏ�2b�)�"
+    },
+    {
+      "fileId": "0.0.7168318",
+      "transactionHash": "�WT\u0010�\u0016�&�f��\u001a�\u001f3@W�a��(�\u0001%G�-�va�k���\u001f^��J4U�`\u0018",
+      "size": 1837,
+      "memo": "AION AI Model: AION Market Prediction Engine v3.0.1",
+      "fileName": "model-aion-market-predictor-v3.0.1.json",
+      "explorerUrl": "https://hashscan.io/testnet/file/0.0.7168318",
+      "transactionUrl": "https://hashscan.io/testnet/transaction/�WT\u0010�\u0016�&�f��\u001a�\u001f3@W�a��(�\u0001%G�-�va�k���\u001f^��J4U�`\u0018"
+    },
+    {
+      "fileId": "0.0.7168320",
+      "transactionHash": "처�bs\u001e��>\u0007㩻�!\tw���Ɋ��#7�X0�\b%0f��\u0016��zuֹb�^",
+      "size": 292,
+      "memo": "AION AI Models Summary - Performance Overview",
+      "fileName": "ai-models-summary.json",
+      "explorerUrl": "https://hashscan.io/testnet/file/0.0.7168320",
+      "transactionUrl": "https://hashscan.io/testnet/transaction/처�bs\u001e��>\u0007㩻�!\tw���Ɋ��#7�X0�\b%0f��\u0016��zuֹb�^"
+    },
+    {
+      "fileId": "0.0.7168322",
+      "transactionHash": "h�\u0014ߏ43��\u0002�\n���j\u001fOl\u00127o�\f�Q���s�#d����\flHP��ch�\u0014�",
+      "size": 1549,
+      "memo": "AION HFS File Index - Complete File Registry",
+      "fileName": "hfs-file-index.json",
+      "explorerUrl": "https://hashscan.io/testnet/file/0.0.7168322",
+      "transactionUrl": "https://hashscan.io/testnet/transaction/h�\u0014ߏ43��\u0002�\n���j\u001fOl\u00127o�\f�Q���s�#d����\flHP��ch�\u0014�"
+    }
+  ],
+  "verification": {
+    "method": "SHA256 content hashing",
+    "allPassed": true,
+    "timestamp": "2025-10-31T14:01:21.913Z"
+  },
+  "explorerLinks": {
+    "files": [
+      {
+        "fileName": "ai-model-metadata-compact.json",
+        "fileId": "0.0.7168312",
+        "url": "https://hashscan.io/testnet/file/0.0.7168312"
+      },
+      {
+        "fileName": "model-aion-yield-optimizer-v2.1.3.json",
+        "fileId": "0.0.7168314",
+        "url": "https://hashscan.io/testnet/file/0.0.7168314"
+      },
+      {
+        "fileName": "model-aion-risk-assessor-v1.8.2.json",
+        "fileId": "0.0.7168316",
+        "url": "https://hashscan.io/testnet/file/0.0.7168316"
+      },
+      {
+        "fileName": "model-aion-market-predictor-v3.0.1.json",
+        "fileId": "0.0.7168318",
+        "url": "https://hashscan.io/testnet/file/0.0.7168318"
+      },
+      {
+        "fileName": "ai-models-summary.json",
+        "fileId": "0.0.7168320",
+        "url": "https://hashscan.io/testnet/file/0.0.7168320"
+      },
+      {
+        "fileName": "hfs-file-index.json",
+        "fileId": "0.0.7168322",
+        "url": "https://hashscan.io/testnet/file/0.0.7168322"
+      }
+    ],
+    "transactions": [
+      {
+        "fileName": "ai-model-metadata-compact.json",
+        "transactionHash": "B\u001a)\t>�R���c��n�&��\u001f{@�����9�.&����B�X?1%�����L�",
+        "url": "https://hashscan.io/testnet/transaction/B\u001a)\t>�R���c��n�&��\u001f{@�����9�.&����B�X?1%�����L�"
+      },
+      {
+        "fileName": "model-aion-yield-optimizer-v2.1.3.json",
+        "transactionHash": "t��5`�$({㾓�Tݛ�e�ꀐU�ݺ\\\u000e��\u0018\"�W���T\u0011��\u0017�ּ-3",
+        "url": "https://hashscan.io/testnet/transaction/t��5`�$({㾓�Tݛ�e�ꀐU�ݺ\\\u000e��\u0018\"�W���T\u0011��\u0017�ּ-3"
+      },
+      {
+        "fileName": "model-aion-risk-assessor-v1.8.2.json",
+        "transactionHash": "\"]�\u0002%h{��*i�h�wT����\u0004?�a�3����o�}\u0018oK�\u0012Ӏ�2b�)�",
+        "url": "https://hashscan.io/testnet/transaction/\"]�\u0002%h{��*i�h�wT����\u0004?�a�3����o�}\u0018oK�\u0012Ӏ�2b�)�"
+      },
+      {
+        "fileName": "model-aion-market-predictor-v3.0.1.json",
+        "transactionHash": "�WT\u0010�\u0016�&�f��\u001a�\u001f3@W�a��(�\u0001%G�-�va�k���\u001f^��J4U�`\u0018",
+        "url": "https://hashscan.io/testnet/transaction/�WT\u0010�\u0016�&�f��\u001a�\u001f3@W�a��(�\u0001%G�-�va�k���\u001f^��J4U�`\u0018"
+      },
+      {
+        "fileName": "ai-models-summary.json",
+        "transactionHash": "처�bs\u001e��>\u0007㩻�!\tw���Ɋ��#7�X0�\b%0f��\u0016��zuֹb�^",
+        "url": "https://hashscan.io/testnet/transaction/처�bs\u001e��>\u0007㩻�!\tw���Ɋ��#7�X0�\b%0f��\u0016��zuֹb�^"
+      },
+      {
+        "fileName": "hfs-file-index.json",
+        "transactionHash": "h�\u0014ߏ43��\u0002�\n���j\u001fOl\u00127o�\f�Q���s�#d����\flHP��ch�\u0014�",
+        "url": "https://hashscan.io/testnet/transaction/h�\u0014ߏ43��\u0002�\n���j\u001fOl\u00127o�\f�Q���s�#d����\flHP��ch�\u0014�"
+      }
+    ]
+  }
+}

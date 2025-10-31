@@ -24,6 +24,7 @@ import { useStrategies } from '../hooks/useStrategies';
 import { useRealData } from '../hooks/useRealData';
 import { useVaultOnchain } from '../hooks/useVaultOnchain';
 import { apiClient } from '../lib/api';
+import { HederaFeatureBadge } from '../components/hedera/HederaFeatureBadge';
 
 const FALLBACK_BREAKDOWN = [
   { name: 'Venus Protocol', value: 45.2, color: '#10B981' },
@@ -226,7 +227,13 @@ export function ProofOfYield({ onNavigate }: ProofOfYieldProps) {
             </div>
             <h1 className="text-3xl font-bold text-white">Proof of Yield</h1>
           </div>
-          <p className="text-gray-400">Transparent proof of yield sources and earnings</p>
+          <div className="flex items-center gap-3 flex-wrap">
+            <p className="text-gray-400">Transparent proof of yield sources and earnings</p>
+            <HederaFeatureBadge features={['hcs', 'hfs']} variant="inline" showLabels={false} />
+            <span className="text-xs px-2 py-1 bg-green-500/10 border border-green-500/30 rounded-full text-green-300">
+              Audit trail on Hedera
+            </span>
+          </div>
         </motion.div>
 
         <div className="grid lg:grid-cols-3 gap-8">

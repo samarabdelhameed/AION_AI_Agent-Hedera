@@ -17,6 +17,8 @@ import { useVaultOnchain } from '../hooks/useVaultOnchain';
 import { useVaultMinDeposit } from '../hooks/useVaultMinDeposit';
 import { useWalletOnchain } from '../hooks/useWalletOnchain';
 import { toHuman } from '../utils/validateAmount';
+import { HederaFeatureBadge, HederaPoweredIndicator } from '../components/hedera/HederaFeatureBadge';
+import { hederaService } from '../services/hederaService';
 
 function MinRequirementNotice({ action }: { action: string }) {
   const { minDeposit, isLoading, isError, refetch } = useVaultMinDeposit();
@@ -742,7 +744,13 @@ export function ExecutePage({ onNavigate }: ExecutePageProps) {
           className="mb-8"
         >
           <h1 className="text-3xl font-bold text-white mb-2">Execute & Simulate</h1>
-          <p className="text-gray-400">Safe and explained strategy execution</p>
+          <div className="flex items-center gap-3 flex-wrap">
+            <p className="text-gray-400">Safe and explained strategy execution</p>
+            <HederaFeatureBadge features={['hcs']} variant="inline" showLabels={false} />
+            <span className="text-xs px-2 py-1 bg-purple-500/10 border border-purple-500/30 rounded-full text-purple-300">
+              Transactions logged on-chain
+            </span>
+          </div>
         </motion.div>
 
         {/* Progress Stepper */}

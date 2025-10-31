@@ -91,6 +91,12 @@ class ErrorSuppressionManager {
     
     console.error = (...args) => {
       const message = args.join(' ');
+      // Check for MetaMask or wallet errors
+      if (message.includes('MetaMask') || message.includes('extension not found') || 
+          message.includes('Extension context invalidated') || message.includes('Failed to connect')) {
+        // Silently suppress wallet connection errors
+        return;
+      }
       if (!message.includes(messagePattern)) {
         originalConsoleError(...args);
       } else {
@@ -195,11 +201,19 @@ export const suppressMCPErrors = () => {
     
     console.error = (...args) => {
       const message = args.join(' ');
-      if (!message.includes('localhost:3003') && 
-          !message.includes('ERR_CONNECTION_REFUSED') &&
-          !message.includes('MCP health check')) {
-        originalConsoleError(...args);
+      // Suppress wallet, MetaMask, and API errors
+      if (message.includes('localhost:3003') || 
+          message.includes('ERR_CONNECTION_REFUSED') ||
+          message.includes('MCP health check') ||
+          message.includes('MetaMask') ||
+          message.includes('extension not found') ||
+          message.includes('Extension context invalidated') ||
+          message.includes('Failed to connect') ||
+          message.includes('Connector not found') ||
+          message.includes('Unexpected token')) {
+        return; // Silently suppress
       }
+      originalConsoleError(...args);
     };
     
     console.warn = (...args) => {

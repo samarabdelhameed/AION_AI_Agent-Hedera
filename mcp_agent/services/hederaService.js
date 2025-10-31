@@ -123,9 +123,27 @@ class HederaService extends EventEmitter {
             isConnected: this.isConnected,
             network: this.config.network,
             operatorId: this.config.operatorId,
-            metrics: this.metrics,
+            services: {
+                hcs: this.isConnected,
+                hts: this.isConnected,
+                hfs: this.isConnected
+            },
             cacheSize: this.cache.size,
             subscriptions: Array.from(this.subscriptions.keys())
+        };
+    }
+
+    /**
+     * Get metrics
+     */
+    getMetrics() {
+        return {
+            totalTransactions: this.metrics.totalTransactions || 0,
+            successfulTransactions: this.metrics.successfulTransactions || 0,
+            failedTransactions: this.metrics.failedTransactions || 0,
+            averageResponseTime: this.metrics.averageResponseTime || 0,
+            totalGasUsed: this.metrics.totalGasUsed || 0,
+            lastUpdateTime: this.metrics.lastUpdateTime || Date.now()
         };
     }
 

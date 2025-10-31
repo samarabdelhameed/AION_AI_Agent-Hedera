@@ -1,0 +1,289 @@
+{
+  "timestamp": "2025-10-31T14:03:44.128Z",
+  "network": "bsc-testnet",
+  "operation": "BSC Performance Comparison",
+  "walletAddress": "0xBD298A580B672Cd58aA77962d8aa12a99034e50C",
+  "summary": {
+    "totalOperations": 13,
+    "successfulOperations": 0,
+    "failedOperations": 13,
+    "overallSuccessRate": "0.0%",
+    "averageDuration": 0,
+    "minDuration": 0,
+    "maxDuration": 0,
+    "averageConfirmationTime": 0,
+    "averageGasUsed": 0,
+    "totalExecutionTime": 0,
+    "operationMetrics": {},
+    "networkCharacteristics": {
+      "network": "BSC Testnet",
+      "consensusAlgorithm": "Proof of Staked Authority (PoSA)",
+      "finalityType": "Probabilistic",
+      "averageBlockTime": "3 seconds",
+      "feeStructure": "Gas-based (Gwei)",
+      "throughput": "100 TPS average"
+    }
+  },
+  "measurements": [
+    {
+      "operationName": "BNB Transfer",
+      "operationDetails": {
+        "service": "BSC",
+        "operation": "TRANSFER",
+        "iteration": 1
+      },
+      "startTime": 1761919386816,
+      "endTime": 1761919387908,
+      "duration": 1092,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "gasPrice": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "blockNumber": null,
+      "error": "insufficient funds for intrinsic transaction cost (transaction=\"0xf86b808405f5e10082520894bd298a580b672cd58aa77962d8aa12a99034e50c87038d7ea4c680008081e6a082a0dc851d3e977ac3f51d295328be95a7ddd5995b4f196c5997ffbffd97be0ca013b90fbd7a5d50bde00d4c33dff03e06381f53cfbab4baf2f8c923d32926a241\", info={ \"error\": { \"code\": -32000, \"message\": \"insufficient funds for gas * price + value: balance 0, tx cost 1002100000000000, overshot 1002100000000000\" } }, code=INSUFFICIENT_FUNDS, version=6.15.0)"
+    },
+    {
+      "operationName": "BNB Transfer",
+      "operationDetails": {
+        "service": "BSC",
+        "operation": "TRANSFER",
+        "iteration": 2
+      },
+      "startTime": 1761919389910,
+      "endTime": 1761919390999,
+      "duration": 1089,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "gasPrice": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "blockNumber": null,
+      "error": "insufficient funds for intrinsic transaction cost (transaction=\"0xf86b808405f5e10082520894bd298a580b672cd58aa77962d8aa12a99034e50c87038d7ea4c680008081e6a082a0dc851d3e977ac3f51d295328be95a7ddd5995b4f196c5997ffbffd97be0ca013b90fbd7a5d50bde00d4c33dff03e06381f53cfbab4baf2f8c923d32926a241\", info={ \"error\": { \"code\": -32000, \"message\": \"insufficient funds for gas * price + value: balance 0, tx cost 1002100000000000, overshot 1002100000000000\" } }, code=INSUFFICIENT_FUNDS, version=6.15.0)"
+    },
+    {
+      "operationName": "BNB Transfer",
+      "operationDetails": {
+        "service": "BSC",
+        "operation": "TRANSFER",
+        "iteration": 3
+      },
+      "startTime": 1761919392999,
+      "endTime": 1761919394096,
+      "duration": 1097,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "gasPrice": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "blockNumber": null,
+      "error": "insufficient funds for intrinsic transaction cost (transaction=\"0xf86b808405f5e10082520894bd298a580b672cd58aa77962d8aa12a99034e50c87038d7ea4c680008081e6a082a0dc851d3e977ac3f51d295328be95a7ddd5995b4f196c5997ffbffd97be0ca013b90fbd7a5d50bde00d4c33dff03e06381f53cfbab4baf2f8c923d32926a241\", info={ \"error\": { \"code\": -32000, \"message\": \"insufficient funds for gas * price + value: balance 0, tx cost 1002100000000000, overshot 1002100000000000\" } }, code=INSUFFICIENT_FUNDS, version=6.15.0)"
+    },
+    {
+      "operationName": "Token Query",
+      "operationDetails": {
+        "service": "BSC",
+        "operation": "TOKEN_QUERY",
+        "iteration": 1
+      },
+      "startTime": 1761919396098,
+      "endTime": 1761919396338,
+      "duration": 240,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "gasPrice": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "blockNumber": null,
+      "error": "result.wait is not a function"
+    },
+    {
+      "operationName": "Token Query",
+      "operationDetails": {
+        "service": "BSC",
+        "operation": "TOKEN_QUERY",
+        "iteration": 2
+      },
+      "startTime": 1761919398340,
+      "endTime": 1761919398567,
+      "duration": 227,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "gasPrice": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "blockNumber": null,
+      "error": "result.wait is not a function"
+    },
+    {
+      "operationName": "Token Query",
+      "operationDetails": {
+        "service": "BSC",
+        "operation": "TOKEN_QUERY",
+        "iteration": 3
+      },
+      "startTime": 1761919400570,
+      "endTime": 1761919400803,
+      "duration": 233,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "gasPrice": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "blockNumber": null,
+      "error": "result.wait is not a function"
+    },
+    {
+      "operationName": "Contract Deployment",
+      "operationDetails": {
+        "service": "BSC",
+        "operation": "DEPLOY_CONTRACT"
+      },
+      "startTime": 1761919402805,
+      "endTime": 1761919404408,
+      "duration": 1603,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "gasPrice": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "blockNumber": null,
+      "error": "insufficient funds for intrinsic transaction cost (transaction=\"0xf901a7808405f5e1008307a1208080b90154608060405234801561001057600080fd5b50610150806100206000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c8063368b87721461004657806341c0e1b51461007657806347064d6a14610080575b600080fd5b6100746004803603602081101561005c57600080fd5b81019080803590602001909291905050506100b0565b005b61007e6100ca565b005b61009e6004803603602081101561009657600080fd5b8035906020019092919050505061010c565b60405180821515815260200191505060405180910390f35b8060008190555050565b3373ffffffffffffffffffffffffffffffffffffffff16ff5b60008082141561011f5760019050610123565b5060005b919050565b56fea2646970667358221220d85b6a81c6b5b5c6b5b5c6b5b5c6b5b5c6b5b5c6b5b5c6b5b5c6b5b5c6b5b564736f6c6343000706003381e5a0e6d496ff916d7e4cadbd24c707a3c347d628eaf76a3e9f6c283fc37c81219cf1a07fec43d8bfb1137b55fa4c14d5e0baaa5d3a890a764b3e31963da16fd722101e\", info={ \"error\": { \"code\": -32000, \"message\": \"insufficient funds for gas * price + value: balance 0, tx cost 50000000000000, overshot 50000000000000\" } }, code=INSUFFICIENT_FUNDS, version=6.15.0)"
+    },
+    {
+      "operationName": "Message Storage",
+      "operationDetails": {
+        "service": "BSC",
+        "operation": "STORE_MESSAGE",
+        "iteration": 1
+      },
+      "startTime": 1761919406411,
+      "endTime": 1761919407514,
+      "duration": 1103,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "gasPrice": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "blockNumber": null,
+      "error": "insufficient funds for intrinsic transaction cost (transaction=\"0xf8d2808405f5e100830186a094bd298a580b672cd58aa77962d8aa12a99034e50c80b86c7b226d6573736167654964223a312c2274696d657374616d70223a22323032352d31302d33315431343a30333a32362e3431315a222c2264617461223a224253432074657374206d6573736167652031222c22636f6d70617269736f6e223a226865646572612d686373227d81e6a016cb25f51e9706be6b65ac13bf8e76621eeaae8366859c0376fa631c26bf8f0ea02db8dac1f7e06643f4c0fe4fc1255c3987cf0c4dc030bbcdddbe9cb70a7e53f1\", info={ \"error\": { \"code\": -32000, \"message\": \"insufficient funds for gas * price + value: balance 0, tx cost 10000000000000, overshot 10000000000000\" } }, code=INSUFFICIENT_FUNDS, version=6.15.0)"
+    },
+    {
+      "operationName": "Message Storage",
+      "operationDetails": {
+        "service": "BSC",
+        "operation": "STORE_MESSAGE",
+        "iteration": 2
+      },
+      "startTime": 1761919409516,
+      "endTime": 1761919410612,
+      "duration": 1096,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "gasPrice": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "blockNumber": null,
+      "error": "insufficient funds for intrinsic transaction cost (transaction=\"0xf8d2808405f5e100830186a094bd298a580b672cd58aa77962d8aa12a99034e50c80b86c7b226d6573736167654964223a322c2274696d657374616d70223a22323032352d31302d33315431343a30333a32392e3531365a222c2264617461223a224253432074657374206d6573736167652032222c22636f6d70617269736f6e223a226865646572612d686373227d81e5a0d8f31d66bdec1363404c72679c392c794739474b5a5e04badb7de7de7f5d366aa00fbf138b1197963345f4f5fa4d0de449b699945978137f587bdd7c189384b064\", info={ \"error\": { \"code\": -32000, \"message\": \"insufficient funds for gas * price + value: balance 0, tx cost 10000000000000, overshot 10000000000000\" } }, code=INSUFFICIENT_FUNDS, version=6.15.0)"
+    },
+    {
+      "operationName": "Message Storage",
+      "operationDetails": {
+        "service": "BSC",
+        "operation": "STORE_MESSAGE",
+        "iteration": 3
+      },
+      "startTime": 1761919412614,
+      "endTime": 1761919413721,
+      "duration": 1107,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "gasPrice": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "blockNumber": null,
+      "error": "insufficient funds for intrinsic transaction cost (transaction=\"0xf8d2808405f5e100830186a094bd298a580b672cd58aa77962d8aa12a99034e50c80b86c7b226d6573736167654964223a332c2274696d657374616d70223a22323032352d31302d33315431343a30333a33322e3631345a222c2264617461223a224253432074657374206d6573736167652033222c22636f6d70617269736f6e223a226865646572612d686373227d81e5a0e6b2a4ab97f40854de016628386cba4429bc90de20ee08854c2be995e9e81279a061755800d13d3ba8f9af211be50b60c5a2f4392ea7af210cee441c5c04bac944\", info={ \"error\": { \"code\": -32000, \"message\": \"insufficient funds for gas * price + value: balance 0, tx cost 10000000000000, overshot 10000000000000\" } }, code=INSUFFICIENT_FUNDS, version=6.15.0)"
+    },
+    {
+      "operationName": "Message Storage",
+      "operationDetails": {
+        "service": "BSC",
+        "operation": "STORE_MESSAGE",
+        "iteration": 4
+      },
+      "startTime": 1761919415722,
+      "endTime": 1761919416796,
+      "duration": 1074,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "gasPrice": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "blockNumber": null,
+      "error": "insufficient funds for intrinsic transaction cost (transaction=\"0xf8d2808405f5e100830186a094bd298a580b672cd58aa77962d8aa12a99034e50c80b86c7b226d6573736167654964223a342c2274696d657374616d70223a22323032352d31302d33315431343a30333a33352e3732325a222c2264617461223a224253432074657374206d6573736167652034222c22636f6d70617269736f6e223a226865646572612d686373227d81e5a0cdcc6849c3bfb82ca2d10360aff55f2a366cd7e1cdda7d15e7eafbb4a74646fea04613460ca7863a93a690e9970a2cc5586d20a51429223d980a19b6c63386eded\", info={ \"error\": { \"code\": -32000, \"message\": \"insufficient funds for gas * price + value: balance 0, tx cost 10000000000000, overshot 10000000000000\" } }, code=INSUFFICIENT_FUNDS, version=6.15.0)"
+    },
+    {
+      "operationName": "Message Storage",
+      "operationDetails": {
+        "service": "BSC",
+        "operation": "STORE_MESSAGE",
+        "iteration": 5
+      },
+      "startTime": 1761919418798,
+      "endTime": 1761919419899,
+      "duration": 1101,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "gasPrice": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "blockNumber": null,
+      "error": "insufficient funds for intrinsic transaction cost (transaction=\"0xf8d2808405f5e100830186a094bd298a580b672cd58aa77962d8aa12a99034e50c80b86c7b226d6573736167654964223a352c2274696d657374616d70223a22323032352d31302d33315431343a30333a33382e3739385a222c2264617461223a224253432074657374206d6573736167652035222c22636f6d70617269736f6e223a226865646572612d686373227d81e6a02e7b30ab6b7dacb441d7b203b6b1e8db9b8b1c364206ec72b486d4fc2adca54fa076846daeb33cf73a10bf92bafe794536d4ec4ae8602f74b6aac1c2dc75e36ef9\", info={ \"error\": { \"code\": -32000, \"message\": \"insufficient funds for gas * price + value: balance 0, tx cost 10000000000000, overshot 10000000000000\" } }, code=INSUFFICIENT_FUNDS, version=6.15.0)"
+    },
+    {
+      "operationName": "Batch Operations",
+      "operationDetails": {
+        "service": "BSC",
+        "operation": "BATCH_QUERY"
+      },
+      "startTime": 1761919421900,
+      "endTime": 1761919422124,
+      "duration": 224,
+      "success": false,
+      "transactionHash": null,
+      "gasUsed": null,
+      "gasPrice": null,
+      "networkFee": null,
+      "confirmationTime": null,
+      "blockNumber": null,
+      "error": "result.wait is not a function"
+    }
+  ],
+  "analysis": {
+    "performanceRating": 55,
+    "strengths": [
+      "Reasonable confirmation times under 15 seconds",
+      "Mature ecosystem with extensive tooling",
+      "EVM compatibility enables easy migration",
+      "Large developer community and resources"
+    ],
+    "challenges": [
+      "Variable gas fees based on network congestion",
+      "Probabilistic finality requires multiple confirmations",
+      "Lower theoretical throughput compared to Hedera"
+    ],
+    "comparisonReadiness": true
+  }
+}
