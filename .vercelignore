@@ -1,0 +1,14 @@
+node_modules
+mcp_agent
+contracts
+scripts
+logs
+test-logs
+reports
+*.log
+.env*
+*.md
+!VERCEL_DEPLOYMENT.md
+certificate
+docs
+
