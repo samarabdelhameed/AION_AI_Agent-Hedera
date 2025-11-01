@@ -11,6 +11,12 @@
 
 _Making AI Decisions Transparent, Trustworthy & Economically Viable_
 
+---
+
+### **🌐 [🚀 LIVE DEMO ON VERCEL](https://aion-ai-agent-hedera-lqeojpt2o.vercel.app)** ⭐
+
+**Try it now:** [https://aion-ai-agent-hedera-lqeojpt2o.vercel.app](https://aion-ai-agent-hedera-lqeojpt2o.vercel.app)
+
 </div>
 
 ---
@@ -964,6 +970,10 @@ curl https://testnet.mirrornode.hedera.com/api/v1/accounts/0.0.7149926 | jq .
 
 ## 🌐 **All Verification Links**
 
+### **Live Application:**
+
+- 🚀 **Live Demo (Vercel):** https://aion-ai-agent-hedera-lqeojpt2o.vercel.app
+
 ### **Hedera Testnet:**
 
 - 🪙 Token: https://hashscan.io/testnet/token/0.0.7150671
@@ -1044,7 +1054,7 @@ MIT License - see [LICENSE](LICENSE) file
 
 ### **Making AI Transparent, Trustworthy & Economically Viable**
 
-**[⭐ Star this Repo](https://github.com/samarabdelhameed/AION_AI_Agent-Hedera)** • **[🎥 Watch Demo](https://youtu.be/bxUEt6NXvNg)** • **[📖 Documentation](mcp_agent/README.md)**
+**[⭐ Star this Repo](https://github.com/samarabdelhameed/AION_AI_Agent-Hedera)** • **[🚀 Live Demo](https://aion-ai-agent-hedera-lqeojpt2o.vercel.app)** • **[🎥 Watch Demo](https://youtu.be/bxUEt6NXvNg)** • **[📖 Documentation](mcp_agent/README.md)**
 
 ---
 
