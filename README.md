@@ -813,15 +813,13 @@ curl https://testnet.mirrornode.hedera.com/api/v1/accounts/0.0.7149926 | jq .
 
 ## 📚 **Documentation**
 
-| Guide               | Description                        | Link                                                                               |
-| ------------------- | ---------------------------------- | ---------------------------------------------------------------------------------- |
-| **🎤 Presentation** | Hackathon presentation (15 slides) | [HACKATHON_PRESENTATION_SCRIPT.md](HACKATHON_PRESENTATION_SCRIPT.md)               |
-| **🏆 Judge Guide**  | 5-minute evaluation guide          | [mcp_agent/JUDGES_QUICK_START.md](mcp_agent/JUDGES_QUICK_START.md)                 |
-| **📖 MCP Agent**    | Backend setup & API docs           | [mcp_agent/README.md](mcp_agent/README.md)                                         |
-| **🔄 Architecture** | Technical flowcharts               | [mcp_agent/TECHNICAL_FLOWCHART.md](mcp_agent/TECHNICAL_FLOWCHART.md)               |
-| **🏗️ Contracts**    | Smart contract documentation       | [contracts/README.md](contracts/README.md)                                         |
-| **✅ Verification** | Integration proof                  | [HEDERA_HACKATHON_VERIFICATION_REPORT.md](HEDERA_HACKATHON_VERIFICATION_REPORT.md) |
-| **⚛️ Frontend**     | React app guide                    | [frontend/README.md](frontend/README.md)                                           |
+| Guide               | Description                  | Link                                                                               |
+| ------------------- | ---------------------------- | ---------------------------------------------------------------------------------- |
+| **📖 MCP Agent**    | Backend setup & API docs     | [mcp_agent/README.md](mcp_agent/README.md)                                         |
+| **🔄 Architecture** | Technical flowcharts         | [mcp_agent/TECHNICAL_FLOWCHART.md](mcp_agent/TECHNICAL_FLOWCHART.md)               |
+| **🏗️ Contracts**    | Smart contract documentation | [contracts/README.md](contracts/README.md)                                         |
+| **✅ Verification** | Integration proof            | [HEDERA_HACKATHON_VERIFICATION_REPORT.md](HEDERA_HACKATHON_VERIFICATION_REPORT.md) |
+| **⚛️ Frontend**     | React app guide              | [frontend/README.md](frontend/README.md)                                           |
 
 ---
 
