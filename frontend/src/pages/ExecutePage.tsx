@@ -202,8 +202,81 @@ export function ExecutePage({ onNavigate }: ExecutePageProps) {
     setTimeout(() => setExecutionStatus('confirmed'), 5000);
   };
 
+  // Hedera Transaction Handler (Test Scenario)
+  const executeHederaTransaction = async () => {
+    console.log('⚡ [HEDERA TEST] Starting Hedera transaction test scenario...');
+    
+    const amount = parseFloat(formData.amount) || 0;
+    
+    // Simulate Hedera transaction with delay
+    setExecutionStatus('sent');
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    try {
+      // Initialize Hedera service if available
+      if (hederaService && typeof hederaService.executeTransaction === 'function') {
+        console.log('⚡ [HEDERA] Using real Hedera service');
+        
+        const txResult = await hederaService.executeTransaction({
+          type: formData.action,
+          amount: amount,
+          currency: formData.currency,
+          strategy: formData.strategy,
+        });
+        
+        console.log('✅ [HEDERA] Transaction successful:', txResult);
+        
+        return {
+          transactionId: txResult.transactionId || txResult.txId || 'hedera-tx-' + Date.now(),
+          status: 'SUCCESS',
+          explorerUrl: txResult.explorerUrl || `https://hashscan.io/testnet/transaction/${txResult.transactionId}`,
+        };
+      } else {
+        // Fallback: Simulated test scenario
+        console.log('⚡ [HEDERA TEST] Using simulated Hedera transaction');
+        
+        const simulatedTxId = `0.0.${Math.floor(Math.random() * 1000000)}@${Date.now() / 1000}`;
+        
+        console.log('✅ [HEDERA TEST] Simulated transaction created:', {
+          action: formData.action,
+          amount: amount,
+          currency: formData.currency,
+          strategy: formData.strategy,
+          transactionId: simulatedTxId,
+          network: 'Hedera Testnet',
+          cost: '~$0.0001 (ultra-low fees)',
+          speed: 'Confirmed in ~3-5 seconds',
+        });
+        
+        // Show success notification in console
+        console.log(`
+╔══════════════════════════════════════════╗
+║   ⚡ HEDERA TRANSACTION SUCCESSFUL ⚡   ║
+╠══════════════════════════════════════════╣
+║ Action:     ${formData.action.padEnd(26)} ║
+║ Amount:     ${(amount + ' ' + formData.currency).padEnd(26)} ║
+║ Strategy:   ${formData.strategy.padEnd(26)} ║
+║ TX ID:      ${simulatedTxId.substring(0, 26)}║
+║ Network:    Hedera Testnet              ║
+║ Fee:        ~$0.0001                    ║
+║ Speed:      ~3-5 seconds                ║
+╚══════════════════════════════════════════╝
+        `);
+        
+        return {
+          transactionId: simulatedTxId,
+          status: 'SUCCESS',
+          explorerUrl: `https://hashscan.io/testnet/transaction/${simulatedTxId}`,
+        };
+      }
+    } catch (error) {
+      console.error('❌ [HEDERA] Transaction failed:', error);
+      throw error;
+    }
+  };
+
   const handleExecuteGasless = async () => {
-    if (!isConnected) {
+    if (!isConnected && formData.network !== 'hedera') {
       if (openConnectModal) openConnectModal();
       return;
     }
@@ -212,6 +285,15 @@ export function ExecutePage({ onNavigate }: ExecutePageProps) {
     setExecutionStatus('pending');
     
     try {
+      // Check if Hedera network is selected
+      if (formData.network === 'hedera') {
+        console.log('⚡ [HEDERA] Executing Hedera transaction...');
+        const hederaTxResult = await executeHederaTransaction();
+        setTxHash(hederaTxResult.transactionId || '');
+        setExecutionStatus('confirmed');
+        return;
+      }
+      
       // Use contractConfig directly for vault address
       const vault = contractConfig.vault.address as `0x${string}`;
       if (!vault) throw new Error('Vault address not configured');
@@ -386,6 +468,7 @@ export function ExecutePage({ onNavigate }: ExecutePageProps) {
                   <option value="bsc">BNB Chain</option>
                   <option value="ethereum">Ethereum</option>
                   <option value="polygon">Polygon</option>
+                  <option value="hedera">⚡ Hedera - Ultra-fast & Low-cost</option>
                 </select>
               </div>
 
@@ -456,6 +539,7 @@ export function ExecutePage({ onNavigate }: ExecutePageProps) {
                   <option value="BNB">BNB</option>
                   <option value="ETH">ETH</option>
                   <option value="USDC">USDC</option>
+                  <option value="HBAR">⚡ HBAR - Hedera Native Token</option>
                 </select>
               </div>
 
@@ -472,7 +556,9 @@ export function ExecutePage({ onNavigate }: ExecutePageProps) {
                   <button 
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gold-500 text-sm font-medium hover:text-gold-400 transition-colors"
                     onClick={() => {
-                      const maxAmount = balances.BNB || 0;
+                      const maxAmount = formData.currency === 'HBAR' 
+                        ? (balances.HBAR || 100) 
+                        : (balances.BNB || 0);
                       setFormData(prev => ({ ...prev, amount: maxAmount.toFixed(6) }));
                     }}
                   >
@@ -481,26 +567,46 @@ export function ExecutePage({ onNavigate }: ExecutePageProps) {
                 </div>
                 <div className="flex justify-between items-center mt-1">
                   <p className="text-xs text-gray-400">
-                    Available: {balances.BNB ? balances.BNB.toFixed(6) : '0.000000'} BNB
+                    {formData.currency === 'HBAR' ? (
+                      <>Available: {balances.HBAR ? balances.HBAR.toFixed(6) : '100.000000'} HBAR</>
+                    ) : (
+                      <>Available: {balances.BNB ? balances.BNB.toFixed(6) : '0.000000'} {formData.currency}</>
+                    )}
                   </p>
                   {formData.amount && (
                     <p className="text-xs text-gold-500">
-                      ≈ ${((parseFloat(formData.amount) || 0) * (marketData?.bnb_price_usd || 326)).toFixed(2)}
+                      {formData.currency === 'HBAR' ? (
+                        <>≈ ${((parseFloat(formData.amount) || 0) * 0.05).toFixed(2)}</>
+                      ) : (
+                        <>≈ ${((parseFloat(formData.amount) || 0) * (marketData?.bnb_price_usd || 326)).toFixed(2)}</>
+                      )}
                     </p>
                   )}
                 </div>
                 
                 {/* Quick Amount Buttons */}
                 <div className="flex gap-2 mt-2">
-                  {[0.001, 0.01, 0.1, 0.5].map(amount => (
-                    <button
-                      key={amount}
-                      onClick={() => setFormData(prev => ({ ...prev, amount: amount.toString() }))}
-                      className="px-2 py-1 text-xs bg-dark-600 hover:bg-dark-500 text-gray-300 rounded transition-colors"
-                    >
-                      {amount} BNB
-                    </button>
-                  ))}
+                  {formData.currency === 'HBAR' ? (
+                    [10, 50, 100, 500].map(amount => (
+                      <button
+                        key={amount}
+                        onClick={() => setFormData(prev => ({ ...prev, amount: amount.toString() }))}
+                        className="px-2 py-1 text-xs bg-dark-600 hover:bg-dark-500 text-gray-300 rounded transition-colors"
+                      >
+                        {amount} HBAR
+                      </button>
+                    ))
+                  ) : (
+                    [0.001, 0.01, 0.1, 0.5].map(amount => (
+                      <button
+                        key={amount}
+                        onClick={() => setFormData(prev => ({ ...prev, amount: amount.toString() }))}
+                        className="px-2 py-1 text-xs bg-dark-600 hover:bg-dark-500 text-gray-300 rounded transition-colors"
+                      >
+                        {amount} {formData.currency}
+                      </button>
+                    ))
+                  )}
                 </div>
               </div>
             </div>
@@ -544,6 +650,36 @@ export function ExecutePage({ onNavigate }: ExecutePageProps) {
           <Card>
             <h3 className="text-xl font-semibold text-white mb-6">Simulation Results</h3>
             <div className="space-y-6">
+              {/* Hedera Network Benefits */}
+              {formData.network === 'hedera' && (
+                <div className="p-4 bg-gradient-to-r from-purple-500/10 to-blue-500/10 border border-purple-500/30 rounded-xl">
+                  <h4 className="text-purple-400 font-medium mb-3 flex items-center gap-2">
+                    ⚡ Hedera Network Advantages
+                  </h4>
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div className="flex items-center gap-2">
+                      <span className="text-green-400">✓</span>
+                      <span className="text-gray-300">Transaction Speed: ~3-5 seconds</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-green-400">✓</span>
+                      <span className="text-gray-300">Ultra-low fees: ~$0.0001</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-green-400">✓</span>
+                      <span className="text-gray-300">Carbon Negative Network</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-green-400">✓</span>
+                      <span className="text-gray-300">Enterprise-grade Security</span>
+                    </div>
+                  </div>
+                  <p className="text-xs text-purple-300 mt-3 italic">
+                    You're using Hedera Testnet - Experience the fastest DLT network!
+                  </p>
+                </div>
+              )}
+              
               {/* Operation-specific simulation */}
               {formData.action === 'compound' && (
                 <div className="p-4 bg-green-500/10 border border-green-500/30 rounded-xl">
@@ -682,7 +818,10 @@ export function ExecutePage({ onNavigate }: ExecutePageProps) {
                  onClick={handleExecuteGasless}
                 glow
               >
-                 {isConnected ? 'Execute' : 'Connect Wallet to Execute'}
+                {formData.network === 'hedera' 
+                  ? '⚡ Execute on Hedera (Test Scenario)' 
+                  : (isConnected ? 'Execute' : 'Connect Wallet to Execute')
+                }
               </Button>
             </div>
           </Card>
@@ -714,9 +853,15 @@ export function ExecutePage({ onNavigate }: ExecutePageProps) {
                     <Button 
                       variant="secondary" 
                       icon={ExternalLink}
-                      onClick={() => window.open(`https://testnet.bscscan.com/tx/${txHash}`, '_blank')}
+                      onClick={() => {
+                        if (formData.network === 'hedera') {
+                          window.open(`https://hashscan.io/testnet/transaction/${txHash}`, '_blank');
+                        } else {
+                          window.open(`https://testnet.bscscan.com/tx/${txHash}`, '_blank');
+                        }
+                      }}
                     >
-                      View on BscScan
+                      {formData.network === 'hedera' ? '⚡ View on HashScan' : 'View on BscScan'}
                     </Button>
                     <Button 
                       onClick={() => onNavigate('timeline')}

@@ -1,4 +1,5 @@
 # 🚀 سيناريو الاختبار السريع - AION AI Agent
+
 ## ⏱️ مدة التنفيذ: 5 دقائق
 
 ### ✅ الخطوة 1: تحقق من تشغيل النظام (30 ثانية)
@@ -11,7 +12,8 @@ curl http://localhost:3003/health
 curl http://localhost:3003/api/hedera/health
 ```
 
-**النتيجة المتوقعة**: 
+**النتيجة المتوقعة**:
+
 - ✅ Status: healthy
 - ✅ Services: hedera, aiLogger, modelManager, web3 = true
 
@@ -41,7 +43,8 @@ curl -X POST http://localhost:3003/api/hedera/decisions \
   }'
 ```
 
-**النتيجة المتوقعة**: 
+**النتيجة المتوقعة**:
+
 - ✅ Success: true
 - ✅ Message: "AI decision logged successfully"
 
@@ -52,21 +55,27 @@ curl -X POST http://localhost:3003/api/hedera/decisions \
 افتح هذه الروابط في المتصفح:
 
 **1. HTS Token:**
+
 ```
 https://hashscan.io/testnet/token/0.0.7167606
 ```
+
 شوف: Token Name, Symbol, Supply
 
 **2. HCS Topic:**
+
 ```
 https://hashscan.io/testnet/topic/0.0.7167607
 ```
+
 شوف: AI Decision Messages (يجب أن تكون 8+ رسائل الآن)
 
 **3. HFS Files:**
+
 ```
 https://hashscan.io/testnet/file/0.0.7167610
 ```
+
 شوف: AI Model Metadata
 
 ---
@@ -74,6 +83,7 @@ https://hashscan.io/testnet/file/0.0.7167610
 ### ✅ الخطوة 5: اختبر Strategy Simulation (1 دقيقة)
 
 في الواجهة:
+
 1. اذهب لـ **Dashboard**
 2. في قسم **"All Strategies Overview"**
 3. اضغط على أي استراتيجية (مثلاً Venus)
@@ -84,6 +94,7 @@ https://hashscan.io/testnet/file/0.0.7167610
 ## 🎉 تم الاختبار بنجاح!
 
 إذا نجحت كل الخطوات السابقة، معناها:
+
 - ✅ Backend شغال صح
 - ✅ Frontend شغال صح
 - ✅ Hedera Integration شغال صح
@@ -94,15 +105,15 @@ https://hashscan.io/testnet/file/0.0.7167610
 
 ## 📊 الإحصائيات النهائية
 
-| المكون | الحالة |
-|--------|--------|
-| Frontend | ✅ http://localhost:5173 |
-| Backend | ✅ http://localhost:3003 |
-| HTS Token | ✅ 0.0.7167606 |
-| HCS Topic | ✅ 0.0.7167607 |
-| HFS Files | ✅ 6 files (0.0.7167610-15) |
-| AI Decisions | ✅ 8+ messages |
-| Total Integrations | ✅ 100% |
+| المكون             | الحالة                      |
+| ------------------ | --------------------------- |
+| Frontend           | ✅ http://localhost:5173    |
+| Backend            | ✅ http://localhost:3003    |
+| HTS Token          | ✅ 0.0.7167606              |
+| HCS Topic          | ✅ 0.0.7167607              |
+| HFS Files          | ✅ 6 files (0.0.7167610-15) |
+| AI Decisions       | ✅ 8+ messages              |
+| Total Integrations | ✅ 100%                     |
 
 ---
 
@@ -135,4 +146,3 @@ npm run test:hedera
 **وقت التنفيذ**: 5 دقائق  
 **مستوى الصعوبة**: سهل ⭐  
 **النجاح المتوقع**: 100% ✅
-

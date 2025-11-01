@@ -1,9 +1,11 @@
 # 🎯 سيناريوهات الاختبار المتقدمة - AION AI Agent
+
 ## ⏱️ مدة التنفيذ: 20-30 دقيقة
 
 ---
 
 ## 🎬 السيناريو المتقدم #1: رحلة المستثمر الكاملة
+
 ### ⏱️ المدة: 10 دقائق
 
 يحاكي هذا السيناريو مستثمر حقيقي يستخدم AION من البداية للنهاية.
@@ -24,6 +26,7 @@ curl -X POST http://localhost:3003/api/vault/deposit \
 ### الخطوة 2: استلام AION Shares
 
 تحقق من HTS Token:
+
 ```
 https://hashscan.io/testnet/token/0.0.7167606
 ```
@@ -38,6 +41,7 @@ curl http://localhost:3003/api/ai/recommend-strategy
 ### الخطوة 4: تنفيذ الاستراتيجية
 
 في الواجهة:
+
 1. اذهب لـ Dashboard
 2. اضغط "Execute" في Vault Position
 3. اختر الاستراتيجية المقترحة
@@ -45,6 +49,7 @@ curl http://localhost:3003/api/ai/recommend-strategy
 ### الخطوة 5: مراقبة الأداء
 
 شاهد:
+
 - Vault Performance Graph
 - Daily Profit
 - Current APY
@@ -52,6 +57,7 @@ curl http://localhost:3003/api/ai/recommend-strategy
 ### الخطوة 6: إعادة التوازن التلقائي
 
 AI يعيد توزيع الأموال:
+
 ```bash
 npm run ai:rebalancing
 ```
@@ -71,6 +77,7 @@ curl -X POST http://localhost:3003/api/vault/withdraw \
 ---
 
 ## 🎬 السيناريو المتقدم #2: مقارنة الاستراتيجيات
+
 ### ⏱️ المدة: 5 دقائق
 
 قارن أداء استراتيجيات مختلفة.
@@ -84,6 +91,7 @@ curl http://localhost:3003/api/strategies/all
 ### الخطوة 2: حلل كل استراتيجية
 
 في الواجهة:
+
 1. اذهب لـ "Strategies" من القائمة
 2. اضغط على كل استراتيجية لرؤية:
    - APY
@@ -113,6 +121,7 @@ curl -X POST http://localhost:3003/api/strategies/simulate \
 ### الخطوة 4: قارن النتائج
 
 شاهد في الواجهة أو استخدم:
+
 ```bash
 npm run compare:performance
 ```
@@ -120,6 +129,7 @@ npm run compare:performance
 ---
 
 ## 🎬 السيناريو المتقدم #3: اختبار قرارات AI
+
 ### ⏱️ المدة: 5 دقائق
 
 اختبر ذكاء النظام في اتخاذ القرارات.
@@ -170,11 +180,13 @@ curl http://localhost:3003/api/ai/decisions?type=EMERGENCY
 ### الخطوة 3: تحقق من HCS Topic
 
 افتح:
+
 ```
 https://hashscan.io/testnet/topic/0.0.7167607
 ```
 
 شوف جميع القرارات المسجلة مع:
+
 - Timestamp
 - Decision Type
 - Confidence Level
@@ -183,6 +195,7 @@ https://hashscan.io/testnet/topic/0.0.7167607
 ---
 
 ## 🎬 السيناريو المتقدم #4: اختبار Hedera Services
+
 ### ⏱️ المدة: 7 دقائق
 
 اختبر كل خدمة من خدمات Hedera.
@@ -201,6 +214,7 @@ npm run burn:hts
 ```
 
 تحقق من النتائج:
+
 ```
 https://hashscan.io/testnet/token/0.0.7167606
 ```
@@ -216,6 +230,7 @@ npm run validate:hcs
 ```
 
 تحقق من النتائج:
+
 ```
 https://hashscan.io/testnet/topic/0.0.7167607
 ```
@@ -234,6 +249,7 @@ npm run cross:reference
 ```
 
 تحقق من النتائج:
+
 ```
 https://hashscan.io/testnet/file/0.0.7167610
 https://hashscan.io/testnet/file/0.0.7167611
@@ -243,6 +259,7 @@ https://hashscan.io/testnet/file/0.0.7167612
 ---
 
 ## 🎬 السيناريو المتقدم #5: قياس الأداء والمقارنة
+
 ### ⏱️ المدة: 5 دقائق
 
 قارن أداء Hedera مع BSC.
@@ -254,6 +271,7 @@ npm run measure:hedera
 ```
 
 النتائج المتوقعة:
+
 - Response Time: < 2s
 - Transaction Cost: ~$0.0001
 - Finality: 3-5 seconds
@@ -266,6 +284,7 @@ npm run measure:bsc
 ```
 
 النتائج المتوقعة:
+
 - Response Time: 3-5s
 - Transaction Cost: ~$0.5
 - Finality: 15-20 seconds
@@ -282,6 +301,7 @@ npm run compare:performance
 ---
 
 ## 🎬 السيناريو المتقدم #6: اختبار الحالات الطارئة
+
 ### ⏱️ المدة: 3 دقائق
 
 اختبر كيف يتصرف النظام في الحالات الطارئة.
@@ -331,17 +351,17 @@ curl -X POST http://localhost:3003/api/emergency/high-volatility \
 
 بعد إتمام جميع السيناريوهات، يجب أن تحقق:
 
-| المؤشر | الهدف | الحالة |
-|--------|-------|--------|
-| Frontend Response | < 500ms | ⏳ |
-| Backend Response | < 100ms | ⏳ |
-| Hedera Transactions | 100% Success | ⏳ |
-| AI Decisions Logged | 15+ messages | ⏳ |
-| HTS Operations | All successful | ⏳ |
-| HCS Messages | All verified | ⏳ |
-| HFS Files | All accessible | ⏳ |
-| Strategy Simulations | All completed | ⏳ |
-| Emergency Responses | All triggered | ⏳ |
+| المؤشر               | الهدف          | الحالة |
+| -------------------- | -------------- | ------ |
+| Frontend Response    | < 500ms        | ⏳     |
+| Backend Response     | < 100ms        | ⏳     |
+| Hedera Transactions  | 100% Success   | ⏳     |
+| AI Decisions Logged  | 15+ messages   | ⏳     |
+| HTS Operations       | All successful | ⏳     |
+| HCS Messages         | All verified   | ⏳     |
+| HFS Files            | All accessible | ⏳     |
+| Strategy Simulations | All completed  | ⏳     |
+| Emergency Responses  | All triggered  | ⏳     |
 
 ---
 
@@ -350,16 +370,19 @@ curl -X POST http://localhost:3003/api/emergency/high-volatility \
 بعد إتمام الاختبارات:
 
 ### Frontend
+
 - Dashboard: http://localhost:5173
 - Strategies: http://localhost:5173/strategies
 - Analytics: http://localhost:5173/analytics
 
 ### Backend API
+
 - Health: http://localhost:3003/health
 - Hedera: http://localhost:3003/api/hedera/health
 - Strategies: http://localhost:3003/api/strategies/all
 
 ### Hedera Testnet
+
 - HTS: https://hashscan.io/testnet/token/0.0.7167606
 - HCS: https://hashscan.io/testnet/topic/0.0.7167607
 - HFS: https://hashscan.io/testnet/file/0.0.7167610
@@ -375,6 +398,7 @@ npm run generate:hackathon
 ```
 
 سيتم إنشاء:
+
 - `HEDERA_HACKATHON_VERIFICATION_REPORT.md`
 - `reports/complete-test-results.json`
 - `reports/performance-metrics.json`
@@ -384,6 +408,7 @@ npm run generate:hackathon
 ## 🏆 الخاتمة
 
 إذا أتممت جميع السيناريوهات بنجاح:
+
 - ✅ فهمت كامل وظائف AION AI Agent
 - ✅ اختبرت تكامل Hedera الكامل
 - ✅ قارنت الأداء مع blockchain أخرى
@@ -393,4 +418,3 @@ npm run generate:hackathon
 **مدة الاختبار الكلية**: 20-30 دقيقة  
 **مستوى الصعوبة**: متقدم ⭐⭐⭐  
 **القيمة التعليمية**: عالية جداً 🎓
-
